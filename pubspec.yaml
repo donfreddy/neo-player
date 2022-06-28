@@ -17,6 +17,9 @@ dependencies:
   # Icons for IOS
   cupertino_icons: ^1.0.2
 
+  # Flutter package for Eva Icons.
+  eva_icons_flutter: ^3.1.0
+
   # Neumorphic ui kit for Flutter.
   flutter_neumorphic: ^3.2.0
 
@@ -50,16 +53,23 @@ dependencies:
 
   # Supplies the app with the directory location for storing files
   path_provider: ^2.0.11
+  provider: ^6.0.3
   path: ^1.8.0
 
   # A Flutter plugin for launching a URL.
   # url_launcher: ^6.1.4
 
   # Querying information about an application package.
-  # package_info_plus: ^1.4.2
+  package_info_plus: ^1.4.2
+
+  # Sharing content via the platform share UI,
+  share_plus: ^4.0.10
 
   # Get current device information
-  # device_info_plus: ^4.0.0
+  device_info_plus: ^4.0.0
+
+  # A Flutter plugin for launching a URL
+  url_launcher: ^6.1.4
 
 dev_dependencies:
   flutter_test:

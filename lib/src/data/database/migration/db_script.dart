@@ -1,4 +1,4 @@
-import 'package:neo_player/src/database/migration/db_init.dart';
+import 'db_init.dart';
 
 class DbMigrator {
   static final Map<int, String> migrations = {

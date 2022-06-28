@@ -1,4 +1,4 @@
-import 'package:neo_player/src/model/song.dart';
+import '../../../domain/model/song.dart';
 
 final String createSongsTable = """
       CREATE TABLE ${Song.tableName} (

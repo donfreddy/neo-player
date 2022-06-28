@@ -1,5 +1,3 @@
-import 'package:neo_player/src/repository/song_repository.dart';
-
 import '../database/db_provider.dart';
 
 /// [SongDao] is dedicated to manage all local Database Create Read

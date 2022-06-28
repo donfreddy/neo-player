@@ -4,10 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:neo_player/src/neo_player_app.dart';
+import 'package:neo_player/src/presentation/bloc/settings/settings.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
 
   // Only portrait
   await SystemChrome.setPreferredOrientations(
@@ -30,7 +34,11 @@ Future<void> main() async {
       path: 'assets/locales',
       fallbackLocale: const Locale('en'),
       useOnlyLangCode: true,
-      child: const NeoPlayerApp(),
+      child: ChangeNotifierProvider(
+        create: (_) => Settings(prefs),
+        lazy: false,
+        child: const NeoPlayerApp(),
+      ),
     ),
   );
 }

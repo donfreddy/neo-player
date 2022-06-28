@@ -1,8 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:neo_player/src/constants/constants.dart';
-import 'package:neo_player/src/routes/route.dart';
-import 'package:neo_player/src/routes/route_constants.dart';
+import 'package:neo_player/src/presentation/bloc/settings/settings.dart';
+import 'package:provider/provider.dart';
+
+import 'common/routes/route.dart';
+import 'common/constants/constants.dart';
+import 'common/routes/route_constants.dart';
+import 'common/shared/theme.dart';
 
 class NeoPlayerApp extends StatelessWidget {
   const NeoPlayerApp({Key? key}) : super(key: key);
@@ -16,33 +20,11 @@ class NeoPlayerApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       title: Constants.appName,
-      theme: const NeumorphicThemeData(
-        baseColor: Colors.blue,
-      ),
+      themeMode: context.watch<Settings>().themeMode,
+      theme: lightTheme(),
+      darkTheme: darkTheme(),
       initialRoute: initialRoute,
       onGenerateRoute: generateRoute,
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: NeumorphicButton(
-          padding: const EdgeInsets.all(10.0),
-          onPressed: () => {},
-          child: const Text('home page'),
-        ),
-      ),
     );
   }
 }
