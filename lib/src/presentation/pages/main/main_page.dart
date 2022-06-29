@@ -33,9 +33,11 @@ class _MainPageState extends State<MainPage> {
           // centerTitle: true,
           actions: <Widget>[
             IconBtn(
-              icon: EvaIcons.search,
+              icon: EvaIcons.playCircle,
               label: 'Search',
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, testRoute);
+              },
             ),
             IconBtn(
               icon: EvaIcons.menuArrowOutline,

@@ -3,6 +3,7 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:neo_player/src/common/constants/constants.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -204,8 +205,8 @@ class SettingsPage extends StatelessWidget {
 
   void _shareApp() {
     Share.share(
-      'Hey, I am using EasyDo. It\'s a free task management tool. Try it out at https://exemple.com/',
-    );
+        'Hey, I am using ${Constants.appName}. It\'s a free and simple audio player app. Try it out at https://exemple.com/',
+        subject: 'Invite a friend');
   }
 }
 
