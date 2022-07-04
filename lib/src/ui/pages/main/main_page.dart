@@ -1,13 +1,22 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:miniplayer/miniplayer.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../locator.dart';
 import '../../../constants/constants.dart';
 import '../../../provider/settings_provider.dart';
-import '../../../routes/route_constants.dart';
-import '../../components/icon_btn.dart';
+import '../../../provider/song_provider.dart';
+import '../../theme/theme.dart';
+import '../albums/albums_page.dart';
+import '../now_playing/now_playing.dart';
+
+const double kBottomNavBarHeight = 58;
+const miniPlayerPercentageDeclaration = 0.1;
+
+ValueNotifier<SongModel?> currentlyPlaying = ValueNotifier(null);
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -18,9 +27,25 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+  final SongProvider songProvider = locator<SongProvider>();
 
-  String currentName = 'Artists';
+  String currentName = 'artists';
   int currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    initSongs();
+  }
+
+  void initSongs() async {
+    await songProvider.getSongs();
+    await songProvider.getArtists();
+    await songProvider.getAlbums();
+    await songProvider.getAlbums();
+    await songProvider.getGenres();
+  }
 
   onChangePage(int index) {
     setState(() => {currentPage = index});
@@ -36,97 +61,122 @@ class _MainPageState extends State<MainPage> {
                 ? Brightness.light
                 : Brightness.dark,
       ),
-      child: Scaffold(
-        key: scaffoldKey,
-        appBar: NeumorphicAppBar(
-          title: Text(
-            currentName,
-            style: TextStyle(
-              fontFamily: Constants.fontFamily,
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-              color: NeumorphicTheme.defaultTextColor(context),
-            ),
-          ),
-          // centerTitle: true,
-          actions: <Widget>[
-            IconBtn(
-              icon: EvaIcons.playCircle,
-              label: 'Search',
-              onPressed: () {
-                Navigator.pushNamed(context, testRoute);
-              },
-            ),
-            IconBtn(
-              icon: EvaIcons.menuArrowOutline,
-              label: 'Settings',
-              onPressed: () {
-                Navigator.pushNamed(context, settingsRoute);
-              },
-            )
-          ],
-        ),
-        body: const Text("name"),
-        bottomNavigationBar: BottomAppBar(
-          notchMargin: 0,
-          color: Colors.transparent,
-          elevation: 0,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Neumorphic(
-                style: NeumorphicStyle(
-                  color: NeumorphicTheme.baseColor(context),
-                  boxShape: const NeumorphicBoxShape.rect(),
+      child: MiniplayerWillPopScope(
+        onWillPop: () async {
+          final NavigatorState navigator = _navigatorKey.currentState!;
+          if (!navigator.canPop()) return true;
+          navigator.pop();
+
+          return false;
+        },
+        child: Scaffold(
+          key: scaffoldKey,
+          body: Stack(
+            children: <Widget>[
+              Navigator(
+                key: _navigatorKey,
+                onGenerateRoute: (RouteSettings settings) => CupertinoPageRoute(
+                  settings: settings,
+                  builder: (BuildContext context) => const AlbumsPage(),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      BottomNaveItem(
-                        icon: FontAwesomeIcons.user,
-                        activeIcon: FontAwesomeIcons.solidUser,
-                        currentIndex: currentPage,
-                        index: 0,
-                        isPressed: false,
-                        isActive: true,
-                        onPressed: onChangePage(0),
-                      ),
-                      BottomNaveItem(
-                        icon: FontAwesomeIcons.music,
-                        activeIcon: EvaIcons.person,
-                        currentIndex: currentPage,
-                        index: 1,
-                        onPressed: () {},
-                      ),
-                      BottomNaveItem(
-                        icon: EvaIcons.person,
-                        activeIcon: EvaIcons.person,
-                        currentIndex: currentPage,
-                        index: 2,
-                        onPressed: () {},
-                      ),
-                      BottomNaveItem(
-                        icon: EvaIcons.settings2,
-                        activeIcon: EvaIcons.person,
-                        currentIndex: currentPage,
-                        index: 3,
-                        onPressed: () {},
-                      ),
-                      BottomNaveItem(
-                        icon: EvaIcons.settings2,
-                        activeIcon: EvaIcons.person,
-                        currentIndex: currentPage,
-                        index: 4,
-                        onPressed: () {},
-                      ),
-                    ],
+              ),
+              ValueListenableBuilder(
+                valueListenable: currentlyPlaying,
+                builder: (context, SongModel? song, Widget? child) {
+                  // return song != null ? const NowPlaying() : Container();
+                  return const NowPlaying();
+                },
+              ),
+            ],
+          ),
+          bottomNavigationBar: ValueListenableBuilder(
+            valueListenable: playerExpandProgress,
+            builder: (BuildContext context, double height, Widget? child) {
+              final value = percentageFromValueInRange(
+                  min: kMiniPlayerHeight,
+                  max: screenHeight(context),
+                  value: height);
+
+              var opacity = 1 - value;
+              if (opacity < 0) opacity = 0;
+              if (opacity > 1) opacity = 1;
+
+              return SizedBox(
+                height: kBottomNavBarHeight - kBottomNavBarHeight * value,
+                child: Transform.translate(
+                  offset: Offset(0.0, kBottomNavBarHeight * value * 0.5),
+                  child: Opacity(
+                    opacity: opacity,
+                    child: OverflowBox(
+                      maxHeight: kBottomNavBarHeight,
+                      child: child,
+                    ),
                   ),
                 ),
-              )
-            ],
+              );
+            },
+            child: BottomAppBar(
+              notchMargin: 0,
+              color: Colors.transparent,
+              elevation: 0,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: Neumorphic(
+                      style: NeumorphicStyle(
+                        color: NeumorphicTheme.baseColor(context),
+                        depth: 0,
+                        boxShape: const NeumorphicBoxShape.rect(),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: kAppContentPadding,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            BottomNaveItem(
+                              icon: Icons.person_rounded,
+                              currentIndex: currentPage,
+                              index: 0,
+                              isPressed: false,
+                              isActive: true,
+                              onPressed: onChangePage(0),
+                            ),
+                            BottomNaveItem(
+                              icon: Icons.album_rounded,
+                              currentIndex: currentPage,
+                              index: 1,
+                              onPressed: () {},
+                            ),
+                            BottomNaveItem(
+                              icon: Icons.library_music_rounded,
+                              currentIndex: currentPage,
+                              index: 2,
+                              onPressed: () {},
+                            ),
+                            BottomNaveItem(
+                              icon: Icons.music_note_rounded,
+                              currentIndex: currentPage,
+                              index: 3,
+                              onPressed: () {},
+                            ),
+                            BottomNaveItem(
+                              icon: Icons.playlist_play_rounded,
+                              currentIndex: currentPage,
+                              index: 4,
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -136,10 +186,8 @@ class _MainPageState extends State<MainPage> {
 
 class BottomNaveItem extends StatelessWidget {
   final IconData icon;
-  final IconData activeIcon;
   final int currentIndex;
   final int index;
-  final EdgeInsets margin;
   final String? label;
   final bool isPressed;
   final bool isActive;
@@ -148,11 +196,9 @@ class BottomNaveItem extends StatelessWidget {
   const BottomNaveItem({
     Key? key,
     required this.icon,
-    required this.activeIcon,
     this.label,
     this.isPressed = false,
     this.onPressed,
-    this.margin = const EdgeInsets.symmetric(horizontal: 6, vertical: 8.0),
     this.isActive = false,
     required this.currentIndex,
     required this.index,
@@ -163,30 +209,38 @@ class BottomNaveItem extends StatelessWidget {
     bool isActiveTab = currentIndex == index;
     return Expanded(
       child: NeumorphicButton(
-        margin: margin,
+        margin: const EdgeInsets.symmetric(vertical: 6.0),
         minDistance: 0.25,
-        onPressed: isActiveTab ? null : () {},
+        onPressed: () {},
         tooltip: label,
         drawSurfaceAboveChild: true,
         pressed: false,
         style: NeumorphicStyle(
           depth: isActiveTab ? -2 : 2,
-          color: isActiveTab ? NeumorphicTheme.accentColor(context) : null,
+
+          // color: isActiveTab ? NeumorphicTheme.accentColor(context) : null,
           shape: NeumorphicShape.flat,
-          boxShape: NeumorphicBoxShape.roundRect(
-            const BorderRadius.all(Radius.circular(10.0)),
-          ),
+          boxShape: const NeumorphicBoxShape.circle(),
         ),
-        child: FaIcon(
-          isActiveTab ? activeIcon : icon,
-          size: 22.0,
+        child: Icon(
+          icon,
+          size: 26.0,
           color: isActiveTab
-              ? Colors.white
+              ? NeumorphicTheme.accentColor(context)
               : NeumorphicTheme.defaultTextColor(context),
         ),
       ),
     );
   }
+}
+
+double valueFromPercentageInRange(
+    {required final double min, max, percentage}) {
+  return percentage * (max - min) + min;
+}
+
+double percentageFromValueInRange({required final double min, max, value}) {
+  return (value - min) / (max - min);
 }
 
 // https://github.com/right7ctrl/flutter_floating_bottom_navigation_bar/blob/master/lib/src/floating_navbar.dart

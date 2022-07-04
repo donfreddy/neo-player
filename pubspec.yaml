@@ -17,11 +17,17 @@ dependencies:
   # Icons for IOS
   cupertino_icons: ^1.0.2
 
-  # Flutter package for Eva Icons.
-  eva_icons_flutter: ^3.1.0
+  # Showcase/Highlight widgets step by step.
+  showcaseview: ^1.1.6
 
-  # The Font Awesome Icon pack available as set of Flutter Icons.
-  font_awesome_flutter: ^10.1.0
+  # A flutter package to allow drag-and-drop reordering of two-level lists.
+  drag_and_drop_lists: ^0.3.2+2
+
+  # mini player
+  miniplayer: ^1.0.1
+
+  # A Flutter implementation of sticky headers with a sliver as a child.
+  flutter_sticky_header: ^0.6.3
 
   # Neumorphic ui kit for Flutter.
   flutter_neumorphic: ^3.2.0
@@ -41,10 +47,19 @@ dependencies:
   # Loading indicators animated
   flutter_spinkit: ^5.1.0
 
+  # Easily add staggered animations to your ListView, GridView, Column
+  flutter_staggered_animations: ^1.0.0
+
   # A progress bar widget to show or change the position of an audio or video stream.
   # https://suragch.medium.com/steaming-audio-in-flutter-with-just-audio-7435fcf672bf
   # https://suragch.medium.com/managing-playlists-in-flutter-with-just-audio-c4b8f2af12eb
   audio_video_progress_bar: ^0.10.0
+
+  # pre-canned animations for commonly-desired effects
+  animations: ^2.0.3
+
+  # Powerful package to create beautiful custom animations in no time.
+  simple_animations: ^4.2.0
 
   ########################## DATA PERSISTENCE PACKAGES #########################
 
@@ -62,6 +77,9 @@ dependencies:
 
   # query audios/songs 🎶 from device storage.
   on_audio_query: ^2.6.1
+
+  # Create a room to storage audio sections
+  on_audio_room: ^2.2.1+1
 
   # To play audio in the background while the screen is off.
   # audio_service: ^0.18.6
@@ -111,8 +129,8 @@ flutter:
   # Defines files available to the app
   assets:
     - assets/
-    #    - assets/icons/
-    #    - assets/images/
+    - assets/icons/
+    - assets/images/
     - assets/locales/
     - assets/google_fonts/
 

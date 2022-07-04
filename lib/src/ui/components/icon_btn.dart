@@ -4,6 +4,8 @@ class IconBtn extends StatelessWidget {
   final IconData icon;
   final EdgeInsets margin;
   final String? label;
+  final Color? color;
+  final Color? iconColor;
   final NeumorphicBoxShape boxShape;
   final bool isPressed;
   final bool isActive;
@@ -18,6 +20,8 @@ class IconBtn extends StatelessWidget {
     this.boxShape = const NeumorphicBoxShape.circle(),
     this.margin = const EdgeInsets.all(8.0),
     this.isActive = false,
+    this.color,
+    this.iconColor,
   }) : super(key: key);
 
   @override
@@ -29,11 +33,16 @@ class IconBtn extends StatelessWidget {
       drawSurfaceAboveChild: false,
       pressed: isPressed,
       style: NeumorphicStyle(
+        color: color,
         depth: isActive ? -2 : 2,
         shape: NeumorphicShape.flat,
         boxShape: boxShape,
       ),
-      child: Icon(icon, size: 24.0),
+      child: Icon(
+        icon,
+        size: 26.0,
+        color: iconColor,
+      ),
     );
   }
 }

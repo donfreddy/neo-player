@@ -2,7 +2,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../provider/settings_provider.dart';
-import '../../../../theme/theme.dart';
+import '../../../theme/theme.dart';
 
 class Divider extends StatelessWidget {
   const Divider({Key? key}) : super(key: key);

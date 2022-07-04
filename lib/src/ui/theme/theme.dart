@@ -1,16 +1,16 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:neo_player/src/theme/style.dart';
+import 'package:neo_player/src/ui/theme/style.dart';
 
-import '../constants/constants.dart';
+import '../../constants/constants.dart';
 
 //--------------------------- Neo Player Theme -------------------------------
 
-NeumorphicThemeData lightTheme() {
+NeumorphicThemeData lightTheme(int accentColor) {
   return NeumorphicThemeData(
     defaultTextColor: lightTextColor,
     baseColor: lightBgColor,
-    accentColor: primaryColor,
-    variantColor: primaryColor,
+    accentColor: Color(accentColor),
+    variantColor: Color(accentColor),
     intensity: 0.8,
     lightSource: LightSource.topLeft,
     depth: 2,
@@ -21,13 +21,13 @@ NeumorphicThemeData lightTheme() {
   );
 }
 
-NeumorphicThemeData darkTheme() {
+NeumorphicThemeData darkTheme(int accentColor) {
   final darkTextColor = Colors.white.withOpacity(0.8);
   return NeumorphicThemeData(
     defaultTextColor: darkTextColor,
     baseColor: darkBgColor,
-    accentColor: primaryColor,
-    variantColor: primaryColor,
+    accentColor: Color(accentColor),
+    variantColor: Color(accentColor),
     intensity: 0.8,
     lightSource: LightSource.topLeft,
     shadowDarkColor: Colors.black87,

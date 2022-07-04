@@ -34,13 +34,18 @@ const Color lightBgColor = Color(0xFFDBDEE2);
 
 // DarkTheme color
 //const Color darkBgColor = Color(0xFF11263C);
-const Color darkBgColor = Color(0xFF152843);
+// const Color darkBgColor = Color(0xFF152843);
+const Color darkBgColor = Color(0xFF21272C);
 
 // Grey color for both themes
 const Color lightAndDarkColor = Color(0xFF697075);
 //const Color darkBgColor = Color(0xFF212124);
 
-
+//
+const Color white = Color(0xFFF5F5F5);
+const Color dark = Color(0xFF21272C);
+const Color dark2 = Color(0xFF24292D);
+const Color green2 = Color(0xFF1DB854);
 
 // // Theme color
 // const Color textColor = Color(0xff444444);

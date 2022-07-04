@@ -6,9 +6,9 @@ import '../local/repository/song_repository.dart';
 
 class SongProvider extends ChangeNotifier {
   final OnAudioQuery _audioQuery = OnAudioQuery();
-  final SongRepository songRepository = locator<SongRepository>();
+  final SongRepository _songRepository = locator<SongRepository>();
 
-  List<SongModel> songs = [];
+  late List<SongModel> songs;
   late List<AlbumModel> albums;
   late List<ArtistModel> artists;
   late List<GenreModel> genres;
@@ -26,20 +26,17 @@ class SongProvider extends ChangeNotifier {
 
   int get songCount => songs.length;
 
-  Future<bool> hasSong() async {
-    await getSongs();
-    return songs.isEmpty;
-  }
+  bool get hasSong => songs.isNotEmpty;
 
-  void getAlbums() async {
+  Future<void> getAlbums() async {
     albums = await _audioQuery.queryAlbums();
   }
 
-  void getArtists() async {
+  Future<void> getArtists() async {
     artists = await _audioQuery.queryArtists();
   }
 
-  void getGenres() async {
+  Future<void> getGenres() async {
     genres = await _audioQuery.queryGenres();
   }
 

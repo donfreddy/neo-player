@@ -6,12 +6,14 @@ class SettingsProvider extends ChangeNotifier {
 
   SettingsProvider(this.prefs);
 
-  // ---------------- THeme
+  // ---------------- THeme ----------------
   ThemeMode get themeMode {
-    if (prefs.getBool('darkMode') == true) {
+    if (prefs.getBool('darkMode') == false) {
+      return ThemeMode.light;
+    } else if (prefs.getBool('darkMode') == true) {
       return ThemeMode.dark;
     } else {
-      return ThemeMode.light;
+      return ThemeMode.system;
     }
   }
 
@@ -19,17 +21,16 @@ class SettingsProvider extends ChangeNotifier {
       .setBool('darkMode', mode != ThemeMode.light)
       .then((_) => notifyListeners());
 
+  bool get isLightMode => prefs.getBool('darkMode') == false;
+
   bool get isDarkMode => prefs.getBool('darkMode') == true;
 
-  // ---------------- Accent Color
-  int? get accentColor => prefs.getInt("AccentColor");
+  // ---------------- Accent Color ----------------
+  int get accentColor =>
+      prefs.getInt("accentColor") ?? 0xffdd3f5d; // return default color if null
 
-  set color(int color) =>
-      prefs.setInt("AccentColor", color).then((value) => notifyListeners());
+  set accentColor(int color) =>
+      prefs.setInt("accentColor", color).then((_) => notifyListeners());
+
+  bool get isDefaultAccentColor => prefs.getInt('accentColor') == 0xffdd3f5d;
 }
-
-// Color color = new Color(0x12345678);
-// String colorString = color.toString(); // Color(0x12345678)
-// String valueString = colorString.split('(0x')[1].split(')')[0]; // kind of hacky..
-// int value = int.parse(valueString, radix: 16);
-// Color otherColor = new Color(value);

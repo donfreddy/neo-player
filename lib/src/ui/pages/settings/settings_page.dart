@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
@@ -9,9 +8,9 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../constants/constants.dart';
 import '../../../provider/settings_provider.dart';
-import '../../../theme/style.dart';
-import '../../../theme/theme.dart';
 import '../../components/icon_btn.dart';
+import '../../theme/style.dart';
+import '../../theme/theme.dart';
 import 'components/language_item.dart';
 import 'components/setting_card.dart';
 import 'help_feedback.dart';
@@ -24,7 +23,7 @@ class SettingsPage extends StatelessWidget {
     return Scaffold(
       appBar: NeumorphicAppBar(
         leading: IconBtn(
-            icon: EvaIcons.arrowBackOutline,
+            icon: Icons.arrow_back_rounded,
             label: 'Back',
             onPressed: () {
               Navigator.pop(context);
@@ -68,7 +67,8 @@ class SettingsPage extends StatelessWidget {
                         activeColor: primaryColor,
                         onChanged: (bool dark) {
                           if (dark) {
-                            context.read<SettingsProvider>().themeMode = ThemeMode.dark;
+                            context.read<SettingsProvider>().themeMode =
+                                ThemeMode.dark;
                           } else {
                             context.read<SettingsProvider>().themeMode =
                                 ThemeMode.light;
@@ -108,7 +108,7 @@ class SettingsPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: SettingCard(
-                    icon: EvaIcons.questionMarkCircleOutline,
+                    icon: Icons.question_mark_rounded,
                     text: "Help &\nfeedback",
                     onPressed: () {
                       _modalBottom(context);
@@ -117,7 +117,7 @@ class SettingsPage extends StatelessWidget {
                 ),
                 Expanded(
                   child: SettingCard(
-                    icon: EvaIcons.personAddOutline,
+                    icon: Icons.person_add_alt_1_rounded,
                     text: "Invite a friend",
                     isLeft: false,
                     onPressed: _shareApp,

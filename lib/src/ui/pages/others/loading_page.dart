@@ -1,12 +1,12 @@
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../locator.dart';
-import '../../../theme/theme.dart';
 import '../../../constants/constants.dart';
 import '../../../provider/song_provider.dart';
 import '../../../routes/route_constants.dart';
+import '../../theme/theme.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({Key? key}) : super(key: key);
@@ -27,22 +27,35 @@ class _LoadingPageState extends State<LoadingPage> {
   Future _getStoragePermission() async {
     var status = await Permission.storage.request();
     if (status.isGranted) {
-      await checkSong();
+      await loadSongs();
+      checkSongAndNavigate();
     } else if (status.isPermanentlyDenied) {
       if (!mounted) return;
-      Navigator.pushNamed(context, storagePermissionRoute, arguments: true);
+      Navigator.pushReplacementNamed(context, storagePermissionRoute,
+          arguments: true);
     } else if (status.isDenied) {
       if (!mounted) return;
-      Navigator.pushNamed(context, storagePermissionRoute, arguments: false);
+      Navigator.pushReplacementNamed(context, storagePermissionRoute,
+          arguments: false);
     }
   }
 
-  Future<void> checkSong() async {
-    if (await songProvider.hasSong()) {
+  // Load songs from user devices
+  Future<void> loadSongs() async {
+    await songProvider.getSongs();
+    await songProvider.getArtists();
+    await songProvider.getAlbums();
+    await songProvider.getAlbums();
+    await songProvider.getGenres();
+  }
+
+  // Check if actual device has one or more songs
+  void checkSongAndNavigate() {
+    if (!songProvider.hasSong) {
       Navigator.pushReplacementNamed(context, notFoundSongRoute);
+    } else {
+      Navigator.pushReplacementNamed(context, mainRoute);
     }
-    if (!mounted) return;
-    Navigator.pushReplacementNamed(context, mainRoute);
   }
 
   @override

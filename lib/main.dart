@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:neo_player/src/provider/song_provider.dart';
 import 'package:neo_player/src/neo_player_app.dart';
 import 'package:neo_player/src/provider/settings_provider.dart';
+import 'package:neo_player/src/provider/song_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,6 +30,9 @@ Future<void> main() async {
     final license = await rootBundle.loadString('assets/google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['assets/google_fonts'], license);
   });
+
+  //Init room's.
+  // await OnAudioRoom().initRoom();
 
   await setupLocator();
 
