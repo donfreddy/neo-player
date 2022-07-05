@@ -19,15 +19,12 @@ class ArtistCard extends StatelessWidget {
         ? "${artist.numberOfAlbums} album"
         : "${artist.numberOfAlbums} albums";
 
-    String track = artist.numberOfTracks == 1
-        ? "${artist.numberOfTracks} track"
-        : "${artist.numberOfTracks} tracks";
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Neumorphic(
-          margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
+          margin: const EdgeInsets.symmetric(
+              horizontal: kAppContentPadding - 4, vertical: 4),
           style: NeumorphicStyle(
             boxShape:
                 NeumorphicBoxShape.roundRect(BorderRadius.circular(kRadius)),
@@ -78,7 +75,7 @@ class ArtistCard extends StatelessWidget {
               Opacity(
                 opacity: 0.6,
                 child: Text(
-                  "$album • $track",
+                  "$album",
                   style: Theme.of(context).textTheme.bodyLarge,
                   maxLines: 1,
                 ),

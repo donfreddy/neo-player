@@ -8,20 +8,16 @@ class SettingsProvider extends ChangeNotifier {
 
   // ---------------- THeme ----------------
   ThemeMode get themeMode {
-    if (prefs.getBool('darkMode') == false) {
-      return ThemeMode.light;
-    } else if (prefs.getBool('darkMode') == true) {
+    if (prefs.getBool('darkMode') == true) {
       return ThemeMode.dark;
     } else {
-      return ThemeMode.system;
+      return ThemeMode.light;
     }
   }
 
   set themeMode(ThemeMode mode) => prefs
       .setBool('darkMode', mode != ThemeMode.light)
       .then((_) => notifyListeners());
-
-  bool get isLightMode => prefs.getBool('darkMode') == false;
 
   bool get isDarkMode => prefs.getBool('darkMode') == true;
 

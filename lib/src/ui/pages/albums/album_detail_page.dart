@@ -4,6 +4,7 @@ import 'package:neo_player/src/ui/pages/albums/widgets/album_artwork.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../constants/constants.dart';
+import '../../../helpers/int_to_duration.dart';
 import '../../components/icon_btn.dart';
 import '../../components/song_item.dart';
 import '../../theme/theme.dart';
@@ -26,6 +27,7 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
   final OnAudioQuery _audioQuery = OnAudioQuery();
   final ScrollController _scrollController = ScrollController();
   List<SongModel> songs = [];
+  String durations = "";
 
   @override
   void initState() {
@@ -36,11 +38,17 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
   //
   void initSongs() async {
     songs = await _audioQuery.queryAudiosFrom(
-      AudiosFromType.ALBUM,
-      {"album": widget.album.album},
+      AudiosFromType.ALBUM_ID,
+      widget.album.id,
     );
 
-    // songs = await _audioQuery.querySongs();
+    if (songs.length == 1) {
+      print("################################## Sizw1: ${songs.length}");
+      durations = intToDuration(songs[0].duration ?? 0);
+    } else {
+      print("################################## Sizw Many: ${songs.length}");
+      durations = intToDuration(getTotalInt(songs));
+    }
 
     print("######################### Songs");
     print("######################### ${widget.album.id}");
@@ -128,7 +136,7 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
                           maxLines: 1,
                         ),
                         Text(
-                          "$song, 5 minutes",
+                          "$song • $durations",
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium

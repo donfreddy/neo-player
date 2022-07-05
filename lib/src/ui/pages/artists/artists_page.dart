@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:neo_player/src/constants/constants.dart';
 import 'package:neo_player/src/provider/song_provider.dart';
 import 'package:neo_player/src/ui/components/neo_app_bar.dart';
 import 'package:neo_player/src/ui/pages/artists/widgets/artist_card.dart';
@@ -24,7 +25,7 @@ class _ArtistsPageState extends State<ArtistsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: neoAppBar(context, "artists"),
+      appBar: neoAppBar(context, "Artists"),
       body: Consumer<SongProvider>(
         builder: (context, songProvider, child) {
           if (songProvider.artists.isEmpty) {
@@ -32,26 +33,29 @@ class _ArtistsPageState extends State<ArtistsPage> {
           }
           return Stack(
             children: [
-              GridView.count(
-                physics: const BouncingScrollPhysics(),
-                crossAxisCount: 2,
-                padding: const EdgeInsets.all(4.0),
-                childAspectRatio: 4 / 5,
-                children: songProvider.artists.map((artist) {
-                  return OpenContainer<bool>(
-                    closedElevation: 0.0,
-                    closedShape: const RoundedRectangleBorder(),
-                    openColor: NeumorphicTheme.baseColor(context),
-                    closedColor: NeumorphicTheme.baseColor(context),
-                    transitionDuration: const Duration(milliseconds: 500),
-                    openBuilder: (_, __) {
-                      return ArtistDetailPage(artist: artist, mode: 1);
-                    },
-                    closedBuilder: (_, openContainer) {
-                      return ArtistCard(artist: artist, onTap: openContainer);
-                    },
-                  );
-                }).toList(),
+              Container(
+                padding: const EdgeInsets.only(bottom: kMiniPlayerHeight),
+                child: GridView.count(
+                  physics: const BouncingScrollPhysics(),
+                  crossAxisCount: 2,
+                  padding: const EdgeInsets.all(4.0),
+                  childAspectRatio: 4 / 5,
+                  children: songProvider.artists.map((artist) {
+                    return OpenContainer<bool>(
+                      closedElevation: 0.0,
+                      closedShape: const RoundedRectangleBorder(),
+                      openColor: NeumorphicTheme.baseColor(context),
+                      closedColor: NeumorphicTheme.baseColor(context),
+                      transitionDuration: const Duration(milliseconds: 500),
+                      openBuilder: (_, __) {
+                        return ArtistDetailPage(artist: artist, mode: 1);
+                      },
+                      closedBuilder: (_, openContainer) {
+                        return ArtistCard(artist: artist, onTap: openContainer);
+                      },
+                    );
+                  }).toList(),
+                ),
               ),
               const CoverLine(),
             ],

@@ -69,6 +69,10 @@ dependencies:
   # Adds SQLite support with Data Access Objects and streams
   sqflite: ^2.0.2+1
 
+  # Fast, Enjoyable & Secure NoSQL Database
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
   ############################### OTHER PACKAGES ###############################
 
   # A feature-rich audio player

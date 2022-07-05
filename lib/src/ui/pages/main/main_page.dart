@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:miniplayer/miniplayer.dart';
+import 'package:neo_player/src/ui/pages/artists/artists_page.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +11,6 @@ import '../../../constants/constants.dart';
 import '../../../provider/settings_provider.dart';
 import '../../../provider/song_provider.dart';
 import '../../theme/theme.dart';
-import '../albums/albums_page.dart';
 import '../now_playing/now_playing.dart';
 
 const double kBottomNavBarHeight = 58;
@@ -77,7 +77,7 @@ class _MainPageState extends State<MainPage> {
                 key: _navigatorKey,
                 onGenerateRoute: (RouteSettings settings) => CupertinoPageRoute(
                   settings: settings,
-                  builder: (BuildContext context) => const AlbumsPage(),
+                  builder: (BuildContext context) => const ArtistsPage(),
                 ),
               ),
               ValueListenableBuilder(

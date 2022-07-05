@@ -125,7 +125,7 @@ class _NowPlayingState extends State<NowPlaying> {
             children: [
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 10),
+                  padding: const EdgeInsets.only(left: kAppContentPadding),
                   child: Row(
                     children: [
                       Neumorphic(
@@ -219,6 +219,8 @@ class _NowPlayingState extends State<NowPlaying> {
     );
   }
 }
+
+// •
 
 // https://github.com/peterscodee/miniplayer/blob/master/example/lib/widgets/player.dart
 // https://github.com/MarcusNg/flutter_youtube_ui/blob/main/lib/screens/nav_screen.dart
