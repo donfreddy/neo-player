@@ -2,7 +2,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../../constants/constants.dart';
-import 'album_artwork.dart';
+import '../../../components/query_artwork.dart';
 
 class AlbumCard extends StatelessWidget {
   final AlbumModel album;
@@ -22,8 +22,9 @@ class AlbumCard extends StatelessWidget {
         Hero(
           tag: 'album ${album.id}',
           child: Neumorphic(
-            margin: const EdgeInsets.symmetric(
-                horizontal: kAppContentPadding - 4, vertical: 4),
+            margin:
+                const EdgeInsets.symmetric(horizontal: kAppContentPadding - 4) +
+                    const EdgeInsets.only(top: 4),
             style: NeumorphicStyle(
               boxShape:
                   NeumorphicBoxShape.roundRect(BorderRadius.circular(kRadius)),
@@ -34,14 +35,19 @@ class AlbumCard extends StatelessWidget {
                 aspectRatio: 16 / 15,
                 child: Padding(
                   padding: const EdgeInsets.all(kImagePadding),
-                  child: AlbumArtwork(album: album),
+                  child: QueryArtwork(
+                    artworkId: album.id,
+                    artworkType: ArtworkType.ALBUM,
+                    defaultPath: "assets/images/album.jpg",
+                  ),
                 ),
               ),
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 12) +
+              const EdgeInsets.only(top: 6),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,

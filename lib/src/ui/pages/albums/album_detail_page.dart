@@ -1,11 +1,12 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:neo_player/src/ui/components/cover_line.dart';
-import 'package:neo_player/src/ui/pages/albums/widgets/album_artwork.dart';
+import 'package:neo_player/src/ui/components/query_artwork.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../constants/constants.dart';
 import '../../../helpers/int_to_duration.dart';
 import '../../components/icon_btn.dart';
+import '../../components/icon_text_btn.dart';
 import '../../components/song_item.dart';
 import '../../theme/theme.dart';
 
@@ -35,7 +36,6 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
     initSongs();
   }
 
-  //
   void initSongs() async {
     songs = await _audioQuery.queryAudiosFrom(
       AudiosFromType.ALBUM_ID,
@@ -43,16 +43,10 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
     );
 
     if (songs.length == 1) {
-      print("################################## Sizw1: ${songs.length}");
       durations = intToDuration(songs[0].duration ?? 0);
     } else {
-      print("################################## Sizw Many: ${songs.length}");
       durations = intToDuration(getTotalInt(songs));
     }
-
-    print("######################### Songs");
-    print("######################### ${widget.album.id}");
-    print(songs);
   }
 
   @override
@@ -75,11 +69,12 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
         ),
         actions: [
           IconBtn(
-              icon: Icons.more_horiz_rounded,
-              label: 'Option',
-              onPressed: () {
-                // Navigator.pop(context);
-              }),
+            icon: Icons.more_horiz_rounded,
+            label: 'Option',
+            onPressed: () {
+              // Navigator.pop(context);
+            },
+          ),
         ],
       ),
       body: Stack(
@@ -104,7 +99,11 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(kImagePadding),
-                          child: AlbumArtwork(album: widget.album),
+                          child: QueryArtwork(
+                            artworkId: widget.album.id,
+                            artworkType: ArtworkType.ALBUM,
+                            defaultPath: "assets/images/album.jpg",
+                          ),
                         ),
                       ),
                     ),
@@ -159,7 +158,7 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
                         Expanded(
                           child: IconTextBtn(
                             icon: Icons.play_arrow_rounded,
-                            text: "Lire",
+                            text: "Tout lire",
                             onPressed: () {},
                           ),
                         ),
@@ -195,50 +194,6 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
             ),
           ),
           const CoverLine()
-        ],
-      ),
-    );
-  }
-}
-
-class IconTextBtn extends StatelessWidget {
-  final IconData icon;
-  final String text;
-  final VoidCallback? onPressed;
-
-  const IconTextBtn({
-    Key? key,
-    required this.icon,
-    required this.text,
-    this.onPressed,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return NeumorphicButton(
-      onPressed: onPressed,
-      style: NeumorphicStyle(
-        shape: NeumorphicShape.flat,
-        boxShape: NeumorphicBoxShape.roundRect(
-          const BorderRadius.all(
-            Radius.circular(08.0),
-          ),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            color: NeumorphicTheme.accentColor(context),
-          ),
-          const SizedBox(width: 10.0),
-          Text(
-            text,
-            style: Theme.of(context).textTheme.button?.copyWith(
-                  color: NeumorphicTheme.accentColor(context),
-                ),
-          ),
         ],
       ),
     );

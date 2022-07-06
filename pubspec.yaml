@@ -26,6 +26,9 @@ dependencies:
   # mini player
   miniplayer: ^1.0.1
 
+  # A Flutter widget that scrolls text infinitely.
+  marquee: ^2.2.3
+
   # A Flutter implementation of sticky headers with a sliver as a child.
   flutter_sticky_header: ^0.6.3
 
@@ -77,9 +80,9 @@ dependencies:
 
   # A feature-rich audio player
   just_audio: ^0.9.27
-  # just_audio_background: ^0.0.1-beta.7
+  just_audio_background: ^0.0.1-beta.7
 
-  # query audios/songs 🎶 from device storage.
+  # query audios/tracks 🎶 from device storage.
   on_audio_query: ^2.6.1
 
   # Create a room to storage audio sections

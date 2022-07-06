@@ -1,5 +1,7 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:miniplayer/miniplayer.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../constants/constants.dart';
 import '../../components/icon_btn.dart';
@@ -11,13 +13,13 @@ final ValueNotifier<double> playerExpandProgress =
     ValueNotifier(kMiniPlayerHeight);
 
 class NowPlaying extends StatefulWidget {
-  // final List<SongModel> songs;
+  // final List<SongModel> tracks;
   // final int index;
   // final int mode;
 
   const NowPlaying({
     Key? key,
-    // required this.songs,
+    // required this.tracks,
     // required this.index,
     // required this.mode,
   }) : super(key: key);
@@ -42,7 +44,8 @@ class _NowPlayingState extends State<NowPlaying> {
       curve: Curves.easeOut,
       builder: (height, percentage) {
         // final bool miniPlayer = percentage < 0.04;
-        final bool miniPlayer = percentage < miniPlayerPercentageDeclaration;
+        // final bool miniPlayer = percentage < miniPlayerPercentageDeclaration;
+        const bool miniPlayer = true;
         final double width = MediaQuery.of(context).size.width;
         final maxImgSize = width * 0.4;
 
@@ -224,3 +227,42 @@ class _NowPlayingState extends State<NowPlaying> {
 
 // https://github.com/peterscodee/miniplayer/blob/master/example/lib/widgets/player.dart
 // https://github.com/MarcusNg/flutter_youtube_ui/blob/main/lib/screens/nav_screen.dart
+
+abstract class NeoPlayerHandler implements AudioHandler {
+  Stream<QueueState> get queueState;
+
+  Future<void> moveQueueItem(int currentIndex, int newIndex);
+
+  ValueStream<double> get volume;
+
+  Future<void> setVolume(double volume);
+
+  ValueStream<double> get speed;
+}
+
+class QueueState {
+  static const QueueState empty =
+      QueueState([], 0, [], AudioServiceRepeatMode.none);
+
+  final List<MediaItem> queue;
+  final int? queueIndex;
+  final List<int>? shuffleIndices;
+  final AudioServiceRepeatMode repeatMode;
+
+  const QueueState(
+    this.queue,
+    this.queueIndex,
+    this.shuffleIndices,
+    this.repeatMode,
+  );
+
+  bool get hasPrevious =>
+      repeatMode != AudioServiceRepeatMode.none || (queueIndex ?? 0) > 0;
+
+  bool get hasNext =>
+      repeatMode != AudioServiceRepeatMode.none ||
+      (queueIndex ?? 0) + 1 < queue.length;
+
+  List<int> get indices =>
+      shuffleIndices ?? List.generate(queue.length, (i) => i);
+}

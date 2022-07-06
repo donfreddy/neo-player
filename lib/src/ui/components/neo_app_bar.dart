@@ -1,20 +1,18 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
-import '../../constants/constants.dart';
 import 'icon_btn.dart';
 
 PreferredSizeWidget neoAppBar(BuildContext context, String title) {
   return PreferredSize(
-    preferredSize: const Size.fromHeight(100.0),
+    preferredSize: const Size.fromHeight(90.0),
     child: NeumorphicAppBar(
       title: Text(
         title,
-        style: TextStyle(
-          fontFamily: Constants.fontFamily,
-          fontSize: 24.0,
-          fontWeight: FontWeight.bold,
-          color: NeumorphicTheme.defaultTextColor(context),
-        ),
+        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+              color: NeumorphicTheme.accentColor(context),
+              fontSize: 26.0,
+              fontWeight: FontWeight.w700,
+            ),
       ),
       // centerTitle: true,
       actions: <Widget>[
@@ -26,8 +24,8 @@ PreferredSizeWidget neoAppBar(BuildContext context, String title) {
           },
         ),
         IconBtn(
-          icon: Icons.settings_rounded,
-          label: 'Settings',
+          icon: Icons.more_horiz_rounded,
+          label: 'Menu',
           onPressed: () {
             // Navigator.pushNamed(context, settingsRoute);
           },

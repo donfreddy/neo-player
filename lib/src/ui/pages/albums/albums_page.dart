@@ -38,8 +38,10 @@ class _AlbumsPageState extends State<AlbumsPage> {
                 child: GridView.count(
                   physics: const BouncingScrollPhysics(),
                   crossAxisCount: 2,
-                  padding: const EdgeInsets.all(4.0),
-                  childAspectRatio: 4 / 5,
+                  mainAxisSpacing: 0.0,
+                  crossAxisSpacing: 0.0,
+                  padding: const EdgeInsets.all(2.0),
+                  childAspectRatio: kChildAspectRatio,
                   children: songProvider.albums.map((album) {
                     return OpenContainer<bool>(
                       closedElevation: 0.0,

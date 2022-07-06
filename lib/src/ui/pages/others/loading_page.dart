@@ -2,10 +2,10 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../../../locator.dart';
 import '../../../constants/constants.dart';
 import '../../../provider/song_provider.dart';
 import '../../../routes/route_constants.dart';
+import '../../../service/locator.dart';
 import '../../theme/theme.dart';
 
 class LoadingPage extends StatefulWidget {
@@ -40,7 +40,7 @@ class _LoadingPageState extends State<LoadingPage> {
     }
   }
 
-  // Load songs from user devices
+  // Load tracks from user devices
   Future<void> loadSongs() async {
     await songProvider.getSongs();
     await songProvider.getArtists();
@@ -49,7 +49,7 @@ class _LoadingPageState extends State<LoadingPage> {
     await songProvider.getGenres();
   }
 
-  // Check if actual device has one or more songs
+  // Check if actual device has one or more tracks
   void checkSongAndNavigate() {
     if (!songProvider.hasSong) {
       Navigator.pushReplacementNamed(context, notFoundSongRoute);

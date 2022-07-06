@@ -2,6 +2,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../../constants/constants.dart';
+import '../../../components/query_artwork.dart';
 
 class ArtistCard extends StatelessWidget {
   final ArtistModel artist;
@@ -15,16 +16,13 @@ class ArtistCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String album = artist.numberOfAlbums == 1
-        ? "${artist.numberOfAlbums} album"
-        : "${artist.numberOfAlbums} albums";
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Neumorphic(
-          margin: const EdgeInsets.symmetric(
-              horizontal: kAppContentPadding - 4, vertical: 4),
+          margin:
+              const EdgeInsets.symmetric(horizontal: kAppContentPadding - 4) +
+                  const EdgeInsets.only(top: 4),
           style: NeumorphicStyle(
             boxShape:
                 NeumorphicBoxShape.roundRect(BorderRadius.circular(kRadius)),
@@ -35,31 +33,18 @@ class ArtistCard extends StatelessWidget {
               aspectRatio: 16 / 15,
               child: Padding(
                 padding: const EdgeInsets.all(kImagePadding),
-                child: QueryArtworkWidget(
-                  id: artist.id,
-                  type: ArtworkType.ARTIST,
-                  artworkBorder: const BorderRadius.all(
-                    Radius.circular(kRadius),
-                  ),
-                  artworkFit: BoxFit.cover,
-                  keepOldArtwork: true,
-                  artworkRepeat: ImageRepeat.noRepeat,
-                  nullArtworkWidget: ClipRRect(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(kRadius),
-                    ),
-                    child: Image.asset(
-                      "assets/images/artist.png",
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                child: QueryArtwork(
+                  artworkId: artist.id,
+                  artworkType: ArtworkType.ARTIST,
+                  defaultPath: "assets/images/artist.png",
                 ),
               ),
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 12) +
+              const EdgeInsets.only(top: 6),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +60,9 @@ class ArtistCard extends StatelessWidget {
               Opacity(
                 opacity: 0.6,
                 child: Text(
-                  "$album",
+                  artist.numberOfAlbums == 1
+                      ? "${artist.numberOfAlbums} album"
+                      : "${artist.numberOfAlbums} albums",
                   style: Theme.of(context).textTheme.bodyLarge,
                   maxLines: 1,
                 ),

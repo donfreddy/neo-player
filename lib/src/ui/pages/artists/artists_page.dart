@@ -38,8 +38,8 @@ class _ArtistsPageState extends State<ArtistsPage> {
                 child: GridView.count(
                   physics: const BouncingScrollPhysics(),
                   crossAxisCount: 2,
-                  padding: const EdgeInsets.all(4.0),
-                  childAspectRatio: 4 / 5,
+                  padding: const EdgeInsets.all(2.0),
+                  childAspectRatio: kChildAspectRatio,
                   children: songProvider.artists.map((artist) {
                     return OpenContainer<bool>(
                       closedElevation: 0.0,
