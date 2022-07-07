@@ -23,7 +23,7 @@ import 'package:neo_player/src/provider/settings_provider.dart';
 import 'package:neo_player/src/provider/song_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../neo_manager.dart';
+import 'src/ui/pages/now_playing/neo_manager.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -36,10 +36,9 @@ Future<void> setupLocator() async {
   locator.registerSingleton(() => SettingsProvider(locator()));
 
   // service
-  // locator
-  //     .registerSingleton<JustAudioBackground>(await initJustAudioBackground());
+  locator.registerSingleton(() => initJustAudioBackground());
 
-  // page state
+  // neo state
   locator.registerLazySingleton<NeoManager>(() => NeoManager());
 
   // External library:----------------------------------------------------------

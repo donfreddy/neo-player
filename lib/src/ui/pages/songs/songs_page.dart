@@ -1,23 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:neo_player/locator.dart';
 import 'package:neo_player/src/constants/constants.dart';
+import 'package:neo_player/src/ui/pages/now_playing/neo_manager.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
+import '../../../helpers/media_item_converter.dart';
 import '../../../provider/song_provider.dart';
 import '../../components/cover_line.dart';
 import '../../components/icon_text_btn.dart';
 import '../../components/neo_app_bar.dart';
 import '../../components/song_item.dart';
 
-class TracksPage extends StatefulWidget {
-  const TracksPage({Key? key}) : super(key: key);
+class SongsPage extends StatefulWidget {
+  const SongsPage({Key? key}) : super(key: key);
 
   @override
-  State<TracksPage> createState() => _TracksPageState();
+  State<SongsPage> createState() => _SongsPageState();
 }
 
-class _TracksPageState extends State<TracksPage> {
+class _SongsPageState extends State<SongsPage> {
   final ScrollController _scrollController = ScrollController();
   final ScrollController _scrollController2 = ScrollController();
 
@@ -78,6 +81,21 @@ class _TracksPageState extends State<TracksPage> {
                                 songId: song.id,
                                 title: song.title,
                                 artist: song.artist,
+                                onPressed: () {
+                                  print(
+                                      "########################################: ${song.title}");
+                                  final mediaItem =
+                                      MediaItemConverter.mapToMediaItem(
+                                          song.getMap);
+                                  final neoManager = locator<NeoManager>();
+
+                                  print(mediaItem);
+
+                                  neoManager.addToNowPlaying(
+                                      context: context, mediaItem: mediaItem);
+
+                                  neoManager.play();
+                                },
                               );
                             },
                           ),

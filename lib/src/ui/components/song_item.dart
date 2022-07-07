@@ -11,6 +11,7 @@ class SongItem extends StatelessWidget {
   final String title;
   final ArtworkType artworkType;
   final String? artist;
+  final VoidCallback? onPressed;
 
   // final SongModel song;
 
@@ -20,12 +21,13 @@ class SongItem extends StatelessWidget {
     required this.title,
     this.artist,
     this.artworkType = ArtworkType.AUDIO,
+    this.onPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialWitchInkWell(
-      onTap: () {},
+      onTap: onPressed,
       child: Row(
         children: [
           Padding(
@@ -75,9 +77,7 @@ class SongItem extends StatelessWidget {
             child: IconBtn(
               icon: Icons.more_horiz_rounded,
               label: 'Option',
-              onPressed: () {
-                // Navigator.pop(context);
-              },
+              onPressed: () {},
             ),
           ),
         ],

@@ -2,10 +2,10 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../../../locator.dart';
 import '../../../constants/constants.dart';
 import '../../../provider/song_provider.dart';
 import '../../../routes/route_constants.dart';
-import '../../../service/locator.dart';
 import '../../theme/theme.dart';
 
 class LoadingPage extends StatefulWidget {
