@@ -1,4 +1,5 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:neo_player/src/ui/pages/pages.dart';
 
 import 'icon_btn.dart';
 
@@ -28,6 +29,10 @@ PreferredSizeWidget neoAppBar(BuildContext context, String title) {
           label: 'Menu',
           onPressed: () {
             // Navigator.pushNamed(context, settingsRoute);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SettingsPage()),
+            );
           },
         )
       ],

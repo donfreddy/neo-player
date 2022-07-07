@@ -26,7 +26,7 @@ class SettingsPage extends StatelessWidget {
             icon: Icons.arrow_back_rounded,
             label: 'Back',
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context, true);
             }),
         title: Text(
           'Settings',

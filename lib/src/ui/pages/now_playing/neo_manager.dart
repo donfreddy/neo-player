@@ -1,17 +1,7 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:just_audio_background/just_audio_background.dart';
-
-Future<void> initJustAudioBackground() async {
-  await JustAudioBackground.init(
-    androidNotificationChannelId: 'com.freddydev.neo_player',
-    androidNotificationChannelName: 'Neo Player',
-    androidNotificationOngoing: true,
-    androidShowNotificationBadge: true,
-    androidStopForegroundOnPause: true,
-  );
-}
 
 class NeoManager {
   // late AudioPlayer? _player;
@@ -52,14 +42,14 @@ class NeoManager {
 
   UriAudioSource _createAudioSource(MediaItem mediaItem) {
     return AudioSource.uri(
-      Uri.parse(mediaItem.extras!['url']),
+      Uri.parse(mediaItem.extras!['url'].toString()),
       tag: mediaItem,
     );
   }
 
   void play() async => await _player.play();
 
-  void pause() => _player.pause();
+  void pause() => _player.hasNext;
 
   void seek(Duration position) => _player.seek(position);
 

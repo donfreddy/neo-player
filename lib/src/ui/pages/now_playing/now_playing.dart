@@ -1,5 +1,5 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:just_audio_background/just_audio_background.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -228,41 +228,3 @@ class _NowPlayingState extends State<NowPlaying> {
 // https://github.com/peterscodee/miniplayer/blob/master/example/lib/widgets/player.dart
 // https://github.com/MarcusNg/flutter_youtube_ui/blob/main/lib/screens/nav_screen.dart
 
-abstract class NeoPlayerHandler {
-  Stream<QueueState> get queueState;
-
-  Future<void> moveQueueItem(int currentIndex, int newIndex);
-
-  ValueStream<double> get volume;
-
-  Future<void> setVolume(double volume);
-
-  ValueStream<double> get speed;
-}
-
-class QueueState {
-  static QueueState empty = const QueueState([], 0, [], RepeatState.off);
-
-  final List<MediaItem> queue;
-  final int? queueIndex;
-  final List<int>? shuffleIndices;
-  final RepeatState repeatState;
-
-  const QueueState(
-    this.queue,
-    this.queueIndex,
-    this.shuffleIndices,
-    this.repeatState,
-  );
-
-  bool get hasPrevious =>
-      repeatState != RepeatState.off || (queueIndex ?? 0) > 0;
-
-  bool get hasNext =>
-      repeatState != RepeatState.off || (queueIndex ?? 0) + 1 < queue.length;
-
-  List<int> get indices =>
-      shuffleIndices ?? List.generate(queue.length, (i) => i);
-}
-
-enum RepeatState { off, repeatOne, repeatAll }

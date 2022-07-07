@@ -3,6 +3,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:neo_player/locator.dart';
 import 'package:neo_player/src/constants/constants.dart';
 import 'package:neo_player/src/ui/pages/now_playing/neo_manager.dart';
+import 'package:neo_player/src/ui/pages/now_playing/now_playing.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
@@ -82,19 +83,28 @@ class _SongsPageState extends State<SongsPage> {
                                 title: song.title,
                                 artist: song.artist,
                                 onPressed: () {
-                                  print(
-                                      "########################################: ${song.title}");
-                                  final mediaItem =
-                                      MediaItemConverter.mapToMediaItem(
-                                          song.getMap);
-                                  final neoManager = locator<NeoManager>();
-
-                                  print(mediaItem);
-
-                                  neoManager.addToNowPlaying(
-                                      context: context, mediaItem: mediaItem);
-
-                                  neoManager.play();
+                                  // print(
+                                  //     "########################################: ${song.uri}");
+                                  // print("================================>");
+                                  // print(
+                                  //     "########################################: $song");
+                                  // final mediaItem =
+                                  //     MediaItemConverter.mapToMediaItem(
+                                  //         song.getMap);
+                                  // final neoManager = locator<NeoManager>();
+                                  //
+                                  // print(mediaItem);
+                                  //
+                                  // neoManager.addToNowPlaying(
+                                  //     context: context, mediaItem: mediaItem);
+                                  //
+                                  // neoManager.play();
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => const NowPlaying(),
+                                  //   ),
+                                  // );
                                 },
                               );
                             },

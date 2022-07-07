@@ -17,10 +17,12 @@
  * Copyright (c) 2022-2023, Don Freddy
  */
 
+import 'package:audio_service/audio_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:neo_player/src/local/repository/song_repository.dart';
 import 'package:neo_player/src/provider/settings_provider.dart';
 import 'package:neo_player/src/provider/song_provider.dart';
+import 'package:neo_player/src/service/audio_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'src/ui/pages/now_playing/neo_manager.dart';
@@ -36,7 +38,7 @@ Future<void> setupLocator() async {
   locator.registerSingleton(() => SettingsProvider(locator()));
 
   // service
-  locator.registerSingleton(() => initJustAudioBackground());
+  locator.registerSingleton<AudioHandler>(await initAudioService());
 
   // neo state
   locator.registerLazySingleton<NeoManager>(() => NeoManager());

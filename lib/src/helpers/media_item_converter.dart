@@ -1,4 +1,4 @@
-import 'package:just_audio_background/just_audio_background.dart';
+import 'package:audio_service/audio_service.dart';
 
 class MediaItemConverter {
   static Map mediaItemToMap(MediaItem mediaItem) {
@@ -25,7 +25,10 @@ class MediaItemConverter {
     };
   }
 
-  static MediaItem mapToMediaItem(Map song) {
+  static MediaItem mapToMediaItem(Map song,
+      {bool addedByAutoplay = false,
+      bool autoplay = true,
+     bool loadThumbnailUri = false}) {
     return MediaItem(
       id: song['_id'].toString(),
       album: song['album'].toString(),
@@ -38,13 +41,10 @@ class MediaItemConverter {
         ),
       ),
       title: song['title'].toString(),
-      artUri: Uri.parse(
-        song['_uri'].toString(),
-      ),
+      artUri: Uri.parse(song['_uri'].toString()),
       genre: song['genre'].toString(),
       extras: {
-        'url': song['url'] ?? '',
-        'data': song['_data'],
+        'url': song['_data'] ,
         'display_name': song['_display_name'],
         'display_name_wo_ext': song['_display_name_wo_ext'],
         'size': song['_size'],
@@ -64,33 +64,9 @@ class MediaItemConverter {
         'is_podcast': song['is_podcast'],
         'is_ringtone': song['is_ringtone'],
         'file_extension': song['file_extension'],
-      },
-    );
-  }
-
-  static MediaItem downMapToMediaItem(Map song) {
-    return MediaItem(
-      id: song['id'].toString(),
-      album: song['album'].toString(),
-      artist: song['artist'].toString(),
-      duration: Duration(
-        seconds: int.parse(
-          (song['duration'] == null || song['duration'] == 'null')
-              ? '180'
-              : song['duration'].toString(),
-        ),
-      ),
-      title: song['title'].toString(),
-      artUri: Uri.file(song['image'].toString()),
-      genre: song['genre'].toString(),
-      extras: {
-        'url': song['path'].toString(),
-        'year': song['year'],
-        'language': song['genre'],
-        'release_date': song['release_date'],
-        'album_id': song['album_id'],
-        'subtitle': song['subtitle'],
-        'quality': song['quality'],
+        'loadThumbnailUri': loadThumbnailUri,
+        'addedByAutoplay': addedByAutoplay,
+        'autoplay': autoplay,
       },
     );
   }

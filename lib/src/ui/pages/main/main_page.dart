@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:miniplayer/miniplayer.dart';
+import 'package:neo_player/src/ui/pages/albums/albums_page.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
@@ -77,7 +78,7 @@ class _MainPageState extends State<MainPage> {
                 key: _navigatorKey,
                 onGenerateRoute: (RouteSettings settings) => CupertinoPageRoute(
                   settings: settings,
-                  builder: (BuildContext context) => const SongsPage(),
+                  builder: (BuildContext context) => const AlbumsPage(),
                 ),
               ),
               ValueListenableBuilder(
