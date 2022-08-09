@@ -12,7 +12,6 @@ import '../../../provider/settings_provider.dart';
 import '../../../provider/song_provider.dart';
 import '../../theme/theme.dart';
 import '../now_playing/now_playing.dart';
-import '../songs/songs_page.dart';
 
 const double kBottomNavBarHeight = 58;
 const miniPlayerPercentageDeclaration = 0.1;

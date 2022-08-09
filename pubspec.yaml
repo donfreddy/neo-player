@@ -64,6 +64,9 @@ dependencies:
   # Powerful package to create beautiful custom animations in no time.
   simple_animations: ^4.2.0
 
+  # Flutter's core Dropdown Button widget with steady dropdown menu.
+  dropdown_button2: ^1.6.3
+
   ########################## DATA PERSISTENCE PACKAGES #########################
 
   # Flutter plugin for reading and writing simple key-value pairs.
@@ -120,6 +123,9 @@ dependencies:
 
   # RxDart is an implementation of the popular reactiveX api for asynchronous
   rxdart: ^0.27.4
+
+  # A Flutter implementation of React hooks
+  flutter_hooks: ^0.18.5+1
 
 dev_dependencies:
   flutter_test:
