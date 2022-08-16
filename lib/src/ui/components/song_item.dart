@@ -3,6 +3,7 @@ import 'package:neo_player/src/ui/components/query_artwork.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../constants/constants.dart';
+import '../theme/style.dart';
 import 'custom_material.dart';
 import 'icon_btn.dart';
 
@@ -60,24 +61,26 @@ class SongItem extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                     maxLines: 1,
                   ),
-                  Opacity(
-                    opacity: 0.6,
-                    child: Text(
-                      artist == '<unknown>' ? 'Artiste inconnu' : artist!,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      maxLines: 1,
-                    ),
+                  Text(
+                    artist == '<unknown>' ? 'Artiste inconnu' : artist!,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: textGrayColor,
+                        ),
+                    maxLines: 1,
                   ),
                 ],
               ),
             ),
           ),
-          SizedBox(
-            height: 60,
-            child: IconBtn(
-              icon: Icons.more_horiz_rounded,
-              label: 'Option',
-              onPressed: () {},
+          Padding(
+            padding: const EdgeInsets.only(right: kAppContentPadding / 2),
+            child: SizedBox(
+              height: 60,
+              child: IconBtn(
+                icon: Icons.more_horiz_rounded,
+                label: 'Option',
+                onPressed: () {},
+              ),
             ),
           ),
         ],

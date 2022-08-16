@@ -3,6 +3,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 class IconBtn extends StatelessWidget {
   final IconData icon;
   final EdgeInsets margin;
+  final EdgeInsets padding;
   final String? label;
   final Color? color;
   final Color? iconColor;
@@ -19,6 +20,7 @@ class IconBtn extends StatelessWidget {
     this.onPressed,
     this.boxShape = const NeumorphicBoxShape.circle(),
     this.margin = const EdgeInsets.all(8.0),
+    this.padding = const EdgeInsets.all(8.0),
     this.isActive = false,
     this.color,
     this.iconColor,
@@ -27,6 +29,7 @@ class IconBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NeumorphicButton(
+      padding: padding,
       margin: margin,
       onPressed: onPressed,
       tooltip: label,
@@ -40,7 +43,7 @@ class IconBtn extends StatelessWidget {
       ),
       child: Icon(
         icon,
-        size: 26.0,
+        size: 20.0,
         color: iconColor,
       ),
     );

@@ -30,12 +30,7 @@ class SettingsPage extends StatelessWidget {
             }),
         title: Text(
           'Settings',
-          style: TextStyle(
-            fontFamily: 'Nunito',
-            fontSize: 24.0,
-            fontWeight: FontWeight.bold,
-            color: NeumorphicTheme.defaultTextColor(context),
-          ),
+          style: appBarTextStyle,
         ),
       ),
       body: SizedBox(

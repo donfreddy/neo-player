@@ -7,6 +7,8 @@ const double kAppContentPadding = 16.0;
 
 const double kMiniPlayerHeight = 70.0;
 
+const double kAppBarHeight = 55.0;
+
 const double kChildAspectRatio = 17 / 20;
 
 class Constants {

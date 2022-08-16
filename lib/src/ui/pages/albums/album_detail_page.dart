@@ -8,6 +8,7 @@ import '../../../helpers/int_to_duration.dart';
 import '../../components/icon_btn.dart';
 import '../../components/icon_text_btn.dart';
 import '../../components/song_item.dart';
+import '../../theme/style.dart';
 import '../../theme/theme.dart';
 
 class AlbumDetailPage extends StatefulWidget {
@@ -51,31 +52,43 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     String song = widget.album.numOfSongs == 1
         ? "${widget.album.numOfSongs} morceau"
         : "${widget.album.numOfSongs} morceaux";
 
     return Scaffold(
-      appBar: NeumorphicAppBar(
-        leading: IconBtn(
-            icon: Icons.arrow_back_rounded,
-            label: 'Back',
-            onPressed: () {
-              Navigator.pop(context);
-            }),
-        title: Text(
-          "",
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        actions: [
-          IconBtn(
-            icon: Icons.more_horiz_rounded,
-            label: 'Option',
-            onPressed: () {
-              // Navigator.pop(context);
-            },
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kAppBarHeight),
+        child: AppBar(
+          backgroundColor: NeumorphicTheme.baseColor(context),
+          elevation: 0.0,
+          leading: Column(
+            children: [
+              IconBtn(
+                icon: Icons.arrow_back_rounded,
+                label: 'Back',
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
           ),
-        ],
+          title: Text(
+            "",
+            style: theme.textTheme.titleLarge,
+          ),
+          actions: [
+            IconBtn(
+              icon: Icons.more_horiz_rounded,
+              label: 'Option',
+              onPressed: () {
+                // Navigator.pop(context);
+              },
+            ),
+            const SizedBox(width: kAppContentPadding / 2),
+          ],
+        ),
       ),
       body: Stack(
         children: [
@@ -128,10 +141,9 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
                           widget.album.artist == '<unknown>'
                               ? 'Artiste inconnu'
                               : widget.album.artist!,
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: NeumorphicTheme.accentColor(context),
-                                  ),
+                          style: theme.textTheme.titleMedium!.copyWith(
+                            color: NeumorphicTheme.accentColor(context),
+                          ),
                           maxLines: 1,
                         ),
                         Text(
@@ -139,10 +151,7 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium
-                              ?.copyWith(
-                                color: NeumorphicTheme.defaultTextColor(context)
-                                    .withOpacity(0.8),
-                              ),
+                              ?.copyWith(color: textGrayColor),
                           maxLines: 1,
                         ),
                       ],

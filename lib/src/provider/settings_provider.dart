@@ -24,7 +24,7 @@ class SettingsProvider extends ChangeNotifier {
 
   // ---------------- Accent Color ----------------
   int get accentColor =>
-      prefs.getInt("accentColor") ?? 0xffdd3f5d; // return default color if null
+      prefs.getInt("accentColor") ?? 0xFFdd3f5d; // return default color if null
 
   set accentColor(int color) =>
       prefs.setInt("accentColor", color).then((_) => notifyListeners());

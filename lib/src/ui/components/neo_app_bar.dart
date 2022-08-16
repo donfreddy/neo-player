@@ -1,19 +1,21 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:neo_player/src/ui/pages/pages.dart';
 
+import '../../constants/constants.dart';
+import '../theme/style.dart';
 import 'icon_btn.dart';
 
 PreferredSizeWidget neoAppBar(BuildContext context, String title) {
   return PreferredSize(
-    preferredSize: const Size.fromHeight(90.0),
-    child: NeumorphicAppBar(
+    preferredSize: const Size.fromHeight(kAppBarHeight),
+    child: AppBar(
+      backgroundColor: NeumorphicTheme.baseColor(context),
+      elevation: 0.0,
       title: Text(
         title,
-        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-              color: NeumorphicTheme.accentColor(context),
-              fontSize: 26.0,
-              fontWeight: FontWeight.w700,
-            ),
+        style: appBarTextStyle.copyWith(
+            color: NeumorphicTheme.accentColor(context)),
       ),
       // centerTitle: true,
       actions: <Widget>[
@@ -25,16 +27,17 @@ PreferredSizeWidget neoAppBar(BuildContext context, String title) {
           },
         ),
         IconBtn(
-          icon: Icons.more_horiz_rounded,
+          icon: Icons.settings_outlined,
           label: 'Menu',
           onPressed: () {
             // Navigator.pushNamed(context, settingsRoute);
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const SettingsPage()),
+              CupertinoPageRoute(builder: (_) => const SettingsPage()),
             );
           },
-        )
+        ),
+        const SizedBox(width: kAppContentPadding / 2),
       ],
     ),
   );

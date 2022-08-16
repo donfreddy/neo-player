@@ -1,5 +1,7 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
+import '../../constants/constants.dart';
+
 //--------------------------- Colors ----------------------------------
 
 // Primary and Material color
@@ -23,9 +25,6 @@ const MaterialColor primaryColorMaterial = MaterialColor(
 // must use
 Color whiteColor = const Color(0xFFF4F6FD);
 Color darkColor = const Color(0xFF35363A);
-Color pink = const Color(0xFFD103FC);
-Color red = const Color(0xFFFF2C61);
-Color green = const Color(0xFF1BD0A4);
 
 // LightTheme color
 const Color lightTextColor = Color(0xFF35363A);
@@ -37,15 +36,22 @@ const Color lightBgColor = Color(0xFFDBDEE2);
 // const Color darkBgColor = Color(0xFF152843);
 const Color darkBgColor = Color(0xFF21272C);
 
-// Grey color for both themes
-const Color lightAndDarkColor = Color(0xFF697075);
-//const Color darkBgColor = Color(0xFF212124);
+// text color
+const Color textWhiteColor = Color(0xFFF5F5F5);
+const Color textGrayColor = Color(0xFF697075);
 
-//
-const Color white = Color(0xFFF5F5F5);
 const Color dark = Color(0xFF21272C);
 const Color dark2 = Color(0xFF24292D);
-const Color green2 = Color(0xFF1DB854);
+
+// accent color
+const Color accentColor = Color(0xffdd3f5d);
+const Color accentColor2 = Color(0xFF1DB854);
+const Color accentColor3 = Color(0xFF38a3a5);
+const Color accentColor4 = Color(0xFFe76f51);
+const Color accentColor5 = Color(0xFFfee440);
+const Color accentColor6 = Color(0xFF9b5de5);
+const Color accentColor7 = Color(0xFF4361ee);
+const Color accentColor8 = Color(0xFFff70a6);
 
 // // Theme color
 // const Color textColor = Color(0xff444444);
@@ -56,3 +62,11 @@ const Color green2 = Color(0xFF1DB854);
 // const Color textColorDark = Color(0xffcccccc);
 // const Color subTextColorDark = Color(0xff858585);
 // const Color bgColordark = Color(0xff1e1e1e);
+
+//--------------------------- Text style -------------------------------------
+
+TextStyle appBarTextStyle = TextStyle(
+  fontFamily: Constants.fontFamily,
+  fontSize: 24.0,
+  fontWeight: FontWeight.w700,
+);
