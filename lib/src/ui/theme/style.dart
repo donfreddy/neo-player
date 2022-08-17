@@ -61,7 +61,7 @@ const Color accentColor8 = Color(0xFFff70a6);
 // // DarkTheme color
 // const Color textColorDark = Color(0xffcccccc);
 // const Color subTextColorDark = Color(0xff858585);
-// const Color bgColordark = Color(0xff1e1e1e);
+// const Color bgColorDark = Color(0xff1e1e1e);
 
 //--------------------------- Text style -------------------------------------
 

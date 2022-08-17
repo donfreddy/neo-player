@@ -34,7 +34,7 @@ class _AlbumsPageState extends State<AlbumsPage> {
           return Stack(
             children: [
               Container(
-                padding: const EdgeInsets.only(bottom: kMiniPlayerHeight),
+                padding: const EdgeInsets.only(bottom: 0),
                 child: GridView.count(
                   physics: const BouncingScrollPhysics(),
                   crossAxisCount: 2,

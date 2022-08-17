@@ -28,6 +28,27 @@ class NeoPlayerApp extends StatelessWidget {
       darkTheme: darkTheme(accentColor),
       initialRoute: loadingRoute,
       onGenerateRoute: generateRoute,
+      // builder: (context, child) {
+      //   return Stack(
+      //     children: [
+      //       child!,
+      //       Padding(
+      //         padding: const EdgeInsets.only(bottom: 58),
+      //         child: Miniplayer(
+      //           minHeight: 70,
+      //           maxHeight: 370,
+      //           builder: (height, percentage) {
+      //             if (percentage > 0.2) {
+      //               return const Text('!mini');
+      //             } else {
+      //               return const Text('mini');
+      //             }
+      //           },
+      //         ),
+      //       ),
+      //     ],
+      //   );
+      // },
     );
   }
 }

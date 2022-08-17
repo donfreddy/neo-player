@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:miniplayer/miniplayer.dart';
 import 'package:neo_player/src/ui/pages/albums/albums_page.dart';
+import 'package:neo_player/src/ui/pages/artists/artists_page.dart';
+import 'package:neo_player/src/ui/pages/songs/songs_page.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
@@ -26,8 +27,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   final SongProvider songProvider = locator<SongProvider>();
 
   String currentName = 'artists';
@@ -51,6 +50,14 @@ class _MainPageState extends State<MainPage> {
     setState(() => {currentPage = index});
   }
 
+  final _screens = [
+    const ArtistsPage(),
+    const AlbumsPage(),
+    const SongsPage(),
+    const Scaffold(body: Center(child: Text('Genres'))),
+    const Scaffold(body: Center(child: Text('Playlists'))),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -61,122 +68,59 @@ class _MainPageState extends State<MainPage> {
                 ? Brightness.light
                 : Brightness.dark,
       ),
-      child: MiniplayerWillPopScope(
-        onWillPop: () async {
-          final NavigatorState navigator = _navigatorKey.currentState!;
-          if (!navigator.canPop()) return true;
-          navigator.pop();
+      child: Scaffold(
+        body: _screens[currentPage],
+        bottomNavigationBar: ValueListenableBuilder(
+          valueListenable: playerExpandProgress,
+          builder: (BuildContext context, double height, Widget? child) {
+            final value = percentageFromValueInRange(
+                min: kMiniPlayerHeight,
+                max: screenHeight(context),
+                value: height);
 
-          return false;
-        },
-        child: Scaffold(
-          key: scaffoldKey,
-          body: Stack(
-            children: <Widget>[
-              Navigator(
-                key: _navigatorKey,
-                onGenerateRoute: (RouteSettings settings) => CupertinoPageRoute(
-                  settings: settings,
-                  builder: (BuildContext context) => const AlbumsPage(),
-                ),
-              ),
-              ValueListenableBuilder(
-                valueListenable: currentlyPlaying,
-                builder: (context, SongModel? song, Widget? child) {
-                  // return song != null ? const NowPlaying() : Container();
-                  return const NowPlaying();
-                },
-              ),
-            ],
-          ),
-          bottomNavigationBar: ValueListenableBuilder(
-            valueListenable: playerExpandProgress,
-            builder: (BuildContext context, double height, Widget? child) {
-              final value = percentageFromValueInRange(
-                  min: kMiniPlayerHeight,
-                  max: screenHeight(context),
-                  value: height);
+            var opacity = 1 - value;
+            if (opacity < 0) opacity = 0;
+            if (opacity > 1) opacity = 1;
 
-              var opacity = 1 - value;
-              if (opacity < 0) opacity = 0;
-              if (opacity > 1) opacity = 1;
-
-              return SizedBox(
-                height: kBottomNavBarHeight - kBottomNavBarHeight * value,
-                child: Transform.translate(
-                  offset: Offset(0.0, kBottomNavBarHeight * value * 0.5),
-                  child: Opacity(
-                    opacity: opacity,
-                    child: OverflowBox(
-                      maxHeight: kBottomNavBarHeight,
-                      child: child,
-                    ),
+            return SizedBox(
+              height: kBottomNavBarHeight - kBottomNavBarHeight * value,
+              child: Transform.translate(
+                offset: Offset(0.0, kBottomNavBarHeight * value * 0.5),
+                child: Opacity(
+                  opacity: opacity,
+                  child: OverflowBox(
+                    maxHeight: kBottomNavBarHeight,
+                    child: child,
                   ),
                 ),
-              );
-            },
-            child: BottomAppBar(
-              notchMargin: 0,
-              color: Colors.transparent,
-              elevation: 0,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Expanded(
-                    child: Neumorphic(
-                      style: NeumorphicStyle(
-                        color: NeumorphicTheme.baseColor(context),
-                        depth: 0,
-                        boxShape: const NeumorphicBoxShape.rect(),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: kAppContentPadding,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            BottomNaveItem(
-                              icon: Icons.person_rounded,
-                              currentIndex: currentPage,
-                              index: 0,
-                              isPressed: false,
-                              isActive: true,
-                              onPressed: onChangePage(0),
-                            ),
-                            BottomNaveItem(
-                              icon: Icons.album_rounded,
-                              currentIndex: currentPage,
-                              index: 1,
-                              onPressed: () {},
-                            ),
-                            BottomNaveItem(
-                              icon: Icons.library_music_rounded,
-                              currentIndex: currentPage,
-                              index: 2,
-                              onPressed: () {},
-                            ),
-                            BottomNaveItem(
-                              icon: Icons.music_note_rounded,
-                              currentIndex: currentPage,
-                              index: 3,
-                              onPressed: () {},
-                            ),
-                            BottomNaveItem(
-                              icon: Icons.playlist_play_rounded,
-                              currentIndex: currentPage,
-                              index: 4,
-                              onPressed: () {},
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                ],
               ),
-            ),
+            );
+          },
+          child: BottomNavBar(
+            onTap: onChangePage,
+            currentIndex: currentPage,
+            items: [
+              BottomNavItem(
+                icon: Icons.person_rounded,
+                tooltip: 'Artists',
+              ),
+              BottomNavItem(
+                icon: Icons.album_rounded,
+                tooltip: 'Albums',
+              ),
+              BottomNavItem(
+                icon: Icons.library_music_rounded,
+                tooltip: 'Songs',
+              ),
+              BottomNavItem(
+                icon: Icons.music_note_rounded,
+                tooltip: 'Genre',
+              ),
+              BottomNavItem(
+                icon: Icons.playlist_play_rounded,
+                tooltip: 'Playlists',
+              ),
+            ],
           ),
         ),
       ),
@@ -184,24 +128,112 @@ class _MainPageState extends State<MainPage> {
   }
 }
 
+class BottomNavBar extends StatelessWidget {
+  final List<BottomNavItem> items;
+  final int currentIndex;
+  final Color? backgroundColor;
+  final Color? selectedItemColor;
+  final Color? unselectedItemColor;
+  final String? tooltip;
+  final bool isTapped;
+  final bool isActive;
+  final void Function(int val)? onTap;
+
+  const BottomNavBar({
+    Key? key,
+    required this.items,
+    this.tooltip,
+    this.isTapped = false,
+    this.onTap,
+    this.isActive = false,
+    required this.currentIndex,
+    this.backgroundColor,
+    this.selectedItemColor,
+    this.unselectedItemColor,
+  })  : assert(items.length >= 2),
+        assert(items.length <= 5),
+        assert(0 <= currentIndex && currentIndex < items.length),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomAppBar(
+      notchMargin: 0,
+      color: Colors.transparent,
+      elevation: 0,
+      child: Neumorphic(
+        style: NeumorphicStyle(
+          color: NeumorphicTheme.baseColor(context),
+          depth: 0,
+          boxShape: const NeumorphicBoxShape.rect(),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: kAppContentPadding,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisSize: MainAxisSize.max,
+            children: items
+                .asMap()
+                .map((i, item) {
+                  return MapEntry(
+                    i,
+                    BottomNaveItem(
+                      currentIndex: currentIndex,
+                      onTap: onTap,
+                      backgroundColor: backgroundColor,
+                      selectedItemColor: selectedItemColor,
+                      unselectedItemColor: unselectedItemColor,
+                      index: i,
+                      icon: item.icon,
+                    ),
+                  );
+                })
+                .values
+                .toList(),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class BottomNavItem {
+  final IconData icon;
+  final IconData activeIcon;
+  final String? tooltip;
+
+  BottomNavItem({
+    required this.icon,
+    IconData? activeIcon,
+    this.tooltip,
+  }) : activeIcon = activeIcon ?? icon;
+}
+
 class BottomNaveItem extends StatelessWidget {
   final IconData icon;
-  final int currentIndex;
   final int index;
-  final String? label;
-  final bool isPressed;
-  final bool isActive;
-  final void Function()? onPressed;
+  final int currentIndex;
+  final Color? backgroundColor;
+  final Color? selectedItemColor;
+  final Color? unselectedItemColor;
+
+  // final bool selected;
+  final String? tooltip;
+  final void Function(int val)? onTap;
 
   const BottomNaveItem({
     Key? key,
     required this.icon,
-    this.label,
-    this.isPressed = false,
-    this.onPressed,
-    this.isActive = false,
-    required this.currentIndex,
+    this.tooltip,
+    this.onTap,
+    // this.selected = false,
     required this.index,
+    required this.currentIndex,
+    this.backgroundColor,
+    this.selectedItemColor,
+    this.unselectedItemColor,
   }) : super(key: key);
 
   @override
@@ -211,13 +243,12 @@ class BottomNaveItem extends StatelessWidget {
       child: NeumorphicButton(
         margin: const EdgeInsets.symmetric(vertical: 6.0),
         minDistance: 0.25,
-        onPressed: () {},
-        tooltip: label,
+        onPressed: () => onTap!(index),
+        tooltip: tooltip,
         drawSurfaceAboveChild: true,
         pressed: false,
         style: NeumorphicStyle(
           depth: isActiveTab ? -2 : 2,
-
           // color: isActiveTab ? NeumorphicTheme.accentColor(context) : null,
           shape: NeumorphicShape.flat,
           boxShape: const NeumorphicBoxShape.circle(),
