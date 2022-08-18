@@ -33,29 +33,26 @@ class _ArtistsPageState extends State<ArtistsPage> {
           }
           return Stack(
             children: [
-              Container(
-                padding: const EdgeInsets.only(bottom: kMiniPlayerHeight),
-                child: GridView.count(
-                  physics: const BouncingScrollPhysics(),
-                  crossAxisCount: 2,
-                  padding: const EdgeInsets.all(2.0),
-                  childAspectRatio: kChildAspectRatio,
-                  children: songProvider.artists.map((artist) {
-                    return OpenContainer<bool>(
-                      closedElevation: 0.0,
-                      closedShape: const RoundedRectangleBorder(),
-                      openColor: NeumorphicTheme.baseColor(context),
-                      closedColor: NeumorphicTheme.baseColor(context),
-                      transitionDuration: const Duration(milliseconds: 500),
-                      openBuilder: (_, __) {
-                        return ArtistDetailPage(artist: artist, mode: 1);
-                      },
-                      closedBuilder: (_, openContainer) {
-                        return ArtistCard(artist: artist, onTap: openContainer);
-                      },
-                    );
-                  }).toList(),
-                ),
+              GridView.count(
+                physics: const BouncingScrollPhysics(),
+                crossAxisCount: 2,
+                padding: const EdgeInsets.all(2.0),
+                childAspectRatio: kChildAspectRatio,
+                children: songProvider.artists.map((artist) {
+                  return OpenContainer<bool>(
+                    closedElevation: 0.0,
+                    closedShape: const RoundedRectangleBorder(),
+                    openColor: NeumorphicTheme.baseColor(context),
+                    closedColor: NeumorphicTheme.baseColor(context),
+                    transitionDuration: const Duration(milliseconds: 500),
+                    openBuilder: (_, __) {
+                      return ArtistDetailPage(artist: artist, mode: 1);
+                    },
+                    closedBuilder: (_, openContainer) {
+                      return ArtistCard(artist: artist, onTap: openContainer);
+                    },
+                  );
+                }).toList(),
               ),
               const CoverLine(),
             ],

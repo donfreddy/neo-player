@@ -1,7 +1,5 @@
-import 'package:audio_service/audio_service.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:miniplayer/miniplayer.dart';
-import 'package:rxdart/rxdart.dart';
 
 import '../../../constants/constants.dart';
 import '../../components/icon_btn.dart';
@@ -151,7 +149,7 @@ class _NowPlayingState extends State<NowPlaying> {
                       ),
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
+                          padding: const EdgeInsets.only(left: 12.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -195,12 +193,15 @@ class _NowPlayingState extends State<NowPlaying> {
                           ),
                         ),
                       ),
-                      IconBtn(
-                        icon: Icons.play_arrow_rounded,
-                        label: 'Play',
-                        color: NeumorphicTheme.accentColor(context),
-                        iconColor: Colors.white,
-                        onPressed: () {},
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: IconBtn(
+                          icon: Icons.play_arrow_rounded,
+                          label: 'Play',
+                          color: NeumorphicTheme.accentColor(context),
+                          iconColor: Colors.white,
+                          onPressed: () {},
+                        ),
                       ),
                     ],
                   ),
@@ -227,4 +228,3 @@ class _NowPlayingState extends State<NowPlaying> {
 
 // https://github.com/peterscodee/miniplayer/blob/master/example/lib/widgets/player.dart
 // https://github.com/MarcusNg/flutter_youtube_ui/blob/main/lib/screens/nav_screen.dart
-

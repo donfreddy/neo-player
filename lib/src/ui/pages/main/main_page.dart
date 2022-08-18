@@ -69,7 +69,18 @@ class _MainPageState extends State<MainPage> {
                 : Brightness.dark,
       ),
       child: Scaffold(
-        body: _screens[currentPage],
+        body: Stack(
+          children: [
+            _screens[currentPage],
+            ValueListenableBuilder(
+              valueListenable: currentlyPlaying,
+              builder: (context, SongModel? song, Widget? child) {
+                // return song != null ? const NowPlaying() : Container();
+                return const NowPlaying();
+              },
+            ),
+          ],
+        ),
         bottomNavigationBar: ValueListenableBuilder(
           valueListenable: playerExpandProgress,
           builder: (BuildContext context, double height, Widget? child) {
@@ -167,32 +178,27 @@ class BottomNavBar extends StatelessWidget {
           depth: 0,
           boxShape: const NeumorphicBoxShape.rect(),
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: kAppContentPadding,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            mainAxisSize: MainAxisSize.max,
-            children: items
-                .asMap()
-                .map((i, item) {
-                  return MapEntry(
-                    i,
-                    BottomNaveItem(
-                      currentIndex: currentIndex,
-                      onTap: onTap,
-                      backgroundColor: backgroundColor,
-                      selectedItemColor: selectedItemColor,
-                      unselectedItemColor: unselectedItemColor,
-                      index: i,
-                      icon: item.icon,
-                    ),
-                  );
-                })
-                .values
-                .toList(),
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisSize: MainAxisSize.max,
+          children: items
+              .asMap()
+              .map((i, item) {
+                return MapEntry(
+                  i,
+                  BottomNaveItem(
+                    currentIndex: currentIndex,
+                    onTap: onTap,
+                    backgroundColor: backgroundColor,
+                    selectedItemColor: selectedItemColor,
+                    unselectedItemColor: unselectedItemColor,
+                    index: i,
+                    icon: item.icon,
+                  ),
+                );
+              })
+              .values
+              .toList(),
         ),
       ),
     );
