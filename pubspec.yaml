@@ -67,6 +67,9 @@ dependencies:
   # Flutter's core Dropdown Button widget with steady dropdown menu.
   dropdown_button2: ^1.6.3
 
+  # Automatically resizes text to fit perfectly within its bounds.
+  auto_size_text: ^3.0.0
+
   ########################## DATA PERSISTENCE PACKAGES #########################
 
   # Flutter plugin for reading and writing simple key-value pairs.

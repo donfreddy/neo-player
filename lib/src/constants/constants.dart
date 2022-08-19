@@ -16,6 +16,10 @@ const double kAppBarHeight = 55.0;
 /// Child aspect ratio 17.0 / 20.0
 const double kChildAspectRatio = 17 / 20;
 
+const double kBottomNavBarHeight = 58;
+
+const kMiniPlayerPercentageDeclaration = 0.1;
+
 class Constants {
   /// App name: `Neo Player`
   static String appName = 'Neo Player';

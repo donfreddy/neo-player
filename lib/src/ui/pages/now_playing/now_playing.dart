@@ -1,5 +1,6 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:miniplayer/miniplayer.dart';
+import 'package:neo_player/src/ui/theme/style.dart';
 
 import '../../../constants/constants.dart';
 import '../../components/icon_btn.dart';
@@ -37,7 +38,7 @@ class _NowPlayingState extends State<NowPlaying> {
       minHeight: kMiniPlayerHeight,
       maxHeight: screenHeight(context),
       controller: controller,
-      elevation: 8,
+      elevation: 5,
       // onDismissed: () => currentlyPlaying.value = null,
       curve: Curves.easeOut,
       builder: (height, percentage) {
@@ -107,7 +108,7 @@ class _NowPlayingState extends State<NowPlaying> {
 
         final percentageMiniPlayer = percentageFromValueInRange(
             min: kMiniPlayerHeight,
-            max: screenHeight(context) * miniPlayerPercentageDeclaration +
+            max: screenHeight(context) * kMiniPlayerPercentageDeclaration +
                 kMiniPlayerHeight,
             value: height);
 
@@ -124,6 +125,14 @@ class _NowPlayingState extends State<NowPlaying> {
           ),
           child: Column(
             children: [
+              SizedBox(
+                height: 2,
+                child: LinearProgressIndicator(
+                  value: 0.6,
+                  color: NeumorphicTheme.accentColor(context),
+                  backgroundColor: textWhiteColor.withOpacity(0.01),
+                ),
+              ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: kAppContentPadding),
@@ -164,33 +173,27 @@ class _NowPlayingState extends State<NowPlaying> {
                                 ),
                               ),
                               Marquee(
-                                child: Opacity(
-                                  opacity: 0.6,
-                                  child: Text(
-                                    "Young Money",
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge,
-                                    maxLines: 1,
-                                  ),
+                                child: Text(
+                                  "Young Money",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(color: textGrayColor),
+                                  maxLines: 1,
                                 ),
                               ),
                             ],
                           ),
                         ),
                       ),
-                      // IconBtn(
-                      //   icon: EvaIcons.playCircle,
-                      //   label: 'Search',
-                      //   onPressed: () {},
-                      // ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 6),
-                        child: Opacity(
-                          opacity: 0.6,
-                          child: Text(
-                            "4:45",
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(
+                          "4:45",
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(color: textGrayColor),
                         ),
                       ),
                       Padding(
@@ -200,21 +203,27 @@ class _NowPlayingState extends State<NowPlaying> {
                           label: 'Play',
                           color: NeumorphicTheme.accentColor(context),
                           iconColor: Colors.white,
+                          padding: const EdgeInsets.all(10),
                           onPressed: () {},
                         ),
                       ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(right: 8.0),
+                      //   child: IconBtn(
+                      //     icon: Icons.fast_forward_rounded,
+                      //     label: 'Play',
+                      //     color: NeumorphicTheme.accentColor(context),
+                      //     iconColor: Colors.white,
+                      //     onPressed: () {},
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
               ),
-              SizedBox(
-                height: 3,
-                child: LinearProgressIndicator(
-                  value: 0.3,
-                  color: NeumorphicTheme.accentColor(context),
-                  backgroundColor: NeumorphicTheme.defaultTextColor(context)
-                      .withOpacity(0.4),
-                ),
+              Container(
+                height: 1,
+                color: textWhiteColor.withOpacity(0.01),
               ),
             ],
           ),

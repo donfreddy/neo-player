@@ -80,3 +80,5 @@ Future<void> openHiveBox(String boxName, {bool limit = false}) async {
     },
   );
 }
+
+// Neo Player is free and open source offline music player for Android and iOS build with Flutter.

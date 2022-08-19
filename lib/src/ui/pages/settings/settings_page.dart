@@ -208,6 +208,7 @@ class SettingsPage extends StatelessWidget {
 void _modalBottom(BuildContext context) {
   showModalBottomSheet<Widget>(
       isScrollControlled: true,
+      useRootNavigator: true,
       barrierColor: Colors.black38,
       backgroundColor: NeumorphicTheme.baseColor(context),
       shape: const RoundedRectangleBorder(

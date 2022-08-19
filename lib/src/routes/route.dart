@@ -39,7 +39,11 @@ Route<dynamic> generateMainRoute(RouteSettings settings) {
     case mainRoute:
       return CupertinoPageRoute<Widget>(builder: (_) => const MainPage());
     case settingsRoute:
-      return CupertinoPageRoute<Widget>(builder: (_) => const SettingsPage());
+      // return CupertinoPageRoute<Widget>(
+      //   builder: (_) => const SettingsPage(),
+      // //   maintainState: ,
+      //   fullscreenDialog: true,
+      // );
     case storagePermissionRoute:
       return CupertinoPageRoute<Widget>(
         builder: (_) => StoragePermissionPage(isPermanent: args as bool),

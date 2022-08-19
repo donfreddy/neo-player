@@ -1,16 +1,38 @@
-# neo_player
+# Neo Player
 
-Audio player app build with flutter
+> A beautiful and simple offline music player for your android and ios devices.
+>
+> ## Table of Contents
+>
+> * [Screenshots](#screenshots)
+> * [Features](#features)
+> * [Contributing](#contributing)
+> * [Credits](#credits)
+> * [Author](#author)
+> * [License](#license)
+>
 
-## Getting Started
+## Screenshots
 
-This project is a starting point for a Flutter application.
+## Features
+>
+> * Offline playback
+>
 
-A few resources to get you started if this is your first Flutter project:
+## Contributing
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+If you want to contribute to Neo Player, please follow the [contributing guide]() and make sure to
+update the [CHANGELOG.md](CHANGELOG) file with your changes. For major changes, please open an issue first to
+discuss what you would like to change. For any questions, please open an issue on [GitHub]().
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Credits
+
+## Author
+
+- [Don Freddy](https://github.com/Donfreddy)
+
+## License
+
+Neo Player is licensed under the [MIT License](LICENSE).
+
+<!-- https://dillinger.io -->
