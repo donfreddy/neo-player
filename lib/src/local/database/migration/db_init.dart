@@ -1,6 +1,6 @@
 import '../../model/song.dart';
 
-final String createSongsTable = """
+final String createSongsTable = '''
       CREATE TABLE ${Song.tableName} (
           ${Song.columnId} INTEGER PRIMARY KEY AUTOINCREMENT,
           ${Song.columnTitle} TEXT,
@@ -14,9 +14,9 @@ final String createSongsTable = """
           ${Song.columnTimeStamp} INTEGER NOT NULL default 0,
           ${Song.columnCount} INTEGER NOT NULL default 0,
           );
-    """;
+    ''';
 
-final String createRecentSongsTable = """
+final String createRecentSongsTable = '''
       CREATE TABLE recent (
           ${Song.columnId} INTEGER PRIMARY KEY AUTOINCREMENT,
           ${Song.columnTitle} TEXT,
@@ -26,4 +26,4 @@ final String createRecentSongsTable = """
           ${Song.columnAlbumArt} TEXT,
           ${Song.columnDuration} INTEGER,
           ${Song.columnUri} TEXT,
-    """;
+    ''';

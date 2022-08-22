@@ -1,5 +1,6 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../locator.dart';
@@ -16,7 +17,8 @@ class LoadingPage extends StatefulWidget {
 }
 
 class _LoadingPageState extends State<LoadingPage> {
-  final SongProvider songProvider = locator<SongProvider>();
+  final audioQuery = locator<OnAudioQuery>();
+  final songProvider = locator<SongProvider>();
 
   @override
   void initState() {
@@ -38,6 +40,14 @@ class _LoadingPageState extends State<LoadingPage> {
       Navigator.pushReplacementNamed(context, storagePermissionRoute,
           arguments: false);
     }
+  }
+
+  void _requestPermission() async {
+    bool permissionStatus = await audioQuery.permissionsStatus();
+    if (!permissionStatus) {
+      await audioQuery.permissionsRequest();
+    }
+    setState(() {});
   }
 
   // Load tracks from user devices

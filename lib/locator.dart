@@ -23,6 +23,8 @@ import 'package:neo_player/src/local/repository/song_repository.dart';
 import 'package:neo_player/src/provider/settings_provider.dart';
 import 'package:neo_player/src/provider/song_provider.dart';
 import 'package:neo_player/src/service/audio_handler.dart';
+import 'package:neo_player/src/service/audio_query.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'src/ui/pages/now_playing/neo_manager.dart';
@@ -38,6 +40,7 @@ Future<void> setupLocator() async {
   locator.registerSingleton(() => SettingsProvider(locator()));
 
   // service
+  locator.registerSingleton(() => AudioQuery(onAudioQuery: locator()));
   locator.registerSingleton<AudioHandler>(await initAudioService());
 
   // neo state
@@ -46,4 +49,5 @@ Future<void> setupLocator() async {
   // External library:----------------------------------------------------------
   final sharedPreferences = await SharedPreferences.getInstance();
   locator.registerLazySingleton(() => sharedPreferences);
+  locator.registerLazySingleton(() => OnAudioQuery());
 }

@@ -1,4 +1,5 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:neo_player/src/helpers/extensions.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../../constants/constants.dart';
@@ -38,7 +39,7 @@ class AlbumCard extends StatelessWidget {
                   child: QueryArtwork(
                     artworkId: album.id,
                     artworkType: ArtworkType.ALBUM,
-                    defaultPath: "assets/images/album.jpg",
+                    defaultPath: 'assets/images/album.jpg',
                   ),
                 ),
               ),
@@ -61,9 +62,7 @@ class AlbumCard extends StatelessWidget {
               Opacity(
                 opacity: 0.6,
                 child: Text(
-                  album.artist == '<unknown>'
-                      ? 'Artiste inconnu'
-                      : album.artist!,
+                  album.artist!.getArtist(),
                   style: Theme.of(context).textTheme.bodyLarge,
                   maxLines: 1,
                 ),

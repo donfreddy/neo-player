@@ -1,13 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:neo_player/locator.dart';
 import 'package:neo_player/src/constants/constants.dart';
-import 'package:neo_player/src/ui/pages/now_playing/neo_manager.dart';
-import 'package:neo_player/src/ui/pages/now_playing/now_playing.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
-import '../../../helpers/media_item_converter.dart';
 import '../../../provider/song_provider.dart';
 import '../../components/cover_line.dart';
 import '../../components/icon_text_btn.dart';
@@ -28,7 +24,7 @@ class _SongsPageState extends State<SongsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: neoAppBar(context, "Morceaux"),
+      appBar: neoAppBar(context, 'Morceaux'),
       body: Consumer<SongProvider>(
         builder: (context, songProvider, child) {
           if (songProvider.songs.isEmpty) {
@@ -52,7 +48,7 @@ class _SongsPageState extends State<SongsPage> {
                               Expanded(
                                 child: IconTextBtn(
                                   icon: Icons.play_arrow_rounded,
-                                  text: "Tout lire",
+                                  text: 'Tout lire',
                                   onPressed: () {},
                                 ),
                               ),
@@ -60,7 +56,7 @@ class _SongsPageState extends State<SongsPage> {
                               Expanded(
                                 child: IconTextBtn(
                                   icon: Icons.shuffle,
-                                  text: "Aleatoire",
+                                  text: 'Aleatoire',
                                   onPressed: () {},
                                 ),
                               )

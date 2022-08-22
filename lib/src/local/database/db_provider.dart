@@ -14,7 +14,7 @@ class DbProvider {
 
   static Database? _database;
   final int _maxMigratedDbVersion = DbMigrator.migrations.keys.reduce(max);
-  final String _dbName = "NeoPlayer.db";
+  final String _dbName = 'NeoPlayer.db';
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -68,12 +68,12 @@ class DbProvider {
 
   Future<int> getCurrentDbVersion(Database db) async {
     var res = await db.rawQuery('PRAGMA user_version;', null);
-    var version = res[0]["user_version"].toString();
+    var version = res[0]['user_version'].toString();
     return int.parse(version);
   }
 
   Future<void> upgradeDbVersion(Database db, int version) async {
-    await db.rawQuery("pragma user_version = $version;");
+    await db.rawQuery('pragma user_version = $version;');
   }
 
   Future<void> dropDB() async {

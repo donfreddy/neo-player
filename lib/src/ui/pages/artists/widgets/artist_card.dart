@@ -1,8 +1,10 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:neo_player/src/helpers/extensions.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../../constants/constants.dart';
 import '../../../components/query_artwork.dart';
+import '../../../theme/style.dart';
 
 class ArtistCard extends StatelessWidget {
   final ArtistModel artist;
@@ -16,6 +18,7 @@ class ArtistCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -36,7 +39,7 @@ class ArtistCard extends StatelessWidget {
                 child: QueryArtwork(
                   artworkId: artist.id,
                   artworkType: ArtworkType.ARTIST,
-                  defaultPath: "assets/images/artist.png",
+                  defaultPath: 'assets/images/artist.png',
                 ),
               ),
             ),
@@ -50,22 +53,17 @@ class ArtistCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                artist.artist == '<unknown>'
-                    ? 'Artiste inconnu'
-                    : artist.artist,
-                style: Theme.of(context).textTheme.titleMedium,
+                artist.artist.getArtist(),
+                style: theme.textTheme.titleMedium,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              Opacity(
-                opacity: 0.6,
-                child: Text(
-                  artist.numberOfAlbums == 1
-                      ? "${artist.numberOfAlbums} album"
-                      : "${artist.numberOfAlbums} albums",
-                  style: Theme.of(context).textTheme.bodyLarge,
-                  maxLines: 1,
+              Text(
+                artist.numberOfAlbums!.getAlbumCount(),
+                style: theme.textTheme.bodyLarge!.copyWith(
+                  color: textGrayColor,
                 ),
+                maxLines: 1,
               ),
             ],
           ),

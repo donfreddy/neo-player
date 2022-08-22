@@ -11,7 +11,7 @@ class SongDao {
   Future<int> insertSongs() async {
     final db = await dbProvider.database;
 
-    db.insert("", {});
+    db.insert('', {});
     return 1;
   }
 }

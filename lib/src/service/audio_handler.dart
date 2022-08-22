@@ -20,7 +20,7 @@ Future<AudioHandler> initAudioService() async {
   );
 }
 
-abstract class NeoPlayerHandler {
+abstract class NeoPlayerHandler1 {
   Stream<QueueState> get queueState;
 
   Future<void> moveQueueItem(int currentIndex, int newIndex);
@@ -34,7 +34,7 @@ abstract class NeoPlayerHandler {
 
 class NeoPlayerHandlerImpl extends BaseAudioHandler
     with QueueHandler, SeekHandler
-    implements NeoPlayerHandler {
+    implements NeoPlayerHandler1 {
   late AudioPlayer? _player;
 
   //
@@ -85,7 +85,7 @@ class NeoPlayerHandlerImpl extends BaseAudioHandler
         queue,
         playbackState,
         _player!.shuffleIndicesStream.whereType<List<int>>(),
-        (queue, playbackState, shuffleIndices) => QueueState(
+        (queue, playbackState, shuffleIndices) => QueueState.currentValue(
           queue,
           playbackState.queueIndex,
           playbackState.shuffleMode == AudioServiceShuffleMode.all

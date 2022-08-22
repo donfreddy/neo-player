@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:neo_player/src/helpers/helpers.dart';
 import 'package:neo_player/src/ui/pages/pages.dart';
 
 import '../../constants/constants.dart';
@@ -7,6 +8,7 @@ import '../theme/style.dart';
 import 'icon_btn.dart';
 
 PreferredSizeWidget neoAppBar(BuildContext context, String title) {
+  final theme = Theme.of(context);
   return PreferredSize(
     preferredSize: const Size.fromHeight(kAppBarHeight),
     child: AppBar(
@@ -23,40 +25,15 @@ PreferredSizeWidget neoAppBar(BuildContext context, String title) {
           icon: Icons.search_rounded,
           label: 'Search',
           onPressed: () {
-            // Navigator.pushNamed(context, testRoute);
+            unImplementSnackBar(context);
           },
         ),
-        PopupMenuButton(
-            // add icon, by default "3 dot" icon
-            // icon: Icon(Icons.book)
-            itemBuilder: (context) {
-          return [
-            const PopupMenuItem<int>(
-              value: 0,
-              child: Text("My Account"),
-            ),
-            const PopupMenuItem<int>(
-              value: 1,
-              child: Text("Settings"),
-            ),
-            const PopupMenuItem<int>(
-              value: 2,
-              child: Text("Logout"),
-            ),
-          ];
-        }, onSelected: (value) {
-          if (value == 0) {
-            print("My account menu is selected.");
-          } else if (value == 1) {
-            print("Settings menu is selected.");
-          } else if (value == 2) {
-            print("Logout menu is selected.");
-          }
-        }),
         IconBtn(
           icon: Icons.sort_rounded,
           label: 'Sort',
-          onPressed: () {},
+          onPressed: () {
+            unImplementSnackBar(context);
+          },
         ),
         IconBtn(
           icon: Icons.settings_outlined,
