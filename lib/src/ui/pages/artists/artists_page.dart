@@ -16,7 +16,7 @@ class ArtistsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: neoAppBar(context, 'Artists'),
+      appBar: neoAppBar(context, title: 'Artists'),
       body: FutureBuilder<List<ArtistModel>>(
         future: locator<AudioQuery>().getArtists(),
         builder: (context, snapshot) {

@@ -111,7 +111,7 @@ TextTheme textTheme(TextTheme mode, Color color) {
         ),
       )
       .apply(
-        fontFamily: Constants.fontFamily,
+        fontFamily: kNunitoFont,
         displayColor: color,
         bodyColor: color,
         fontSizeFactor: 1.0,

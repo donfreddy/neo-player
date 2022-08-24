@@ -38,7 +38,7 @@ class HelpFeedback extends StatelessWidget {
           onTap: () {
             HapticFeedback.vibrate();
             Navigator.pop(context);
-            launchEmail(subject: '${Constants.appName} Feature Request');
+            launchEmail(subject: '$kAppName Feature Request');
           },
         ),
         InkWell(
@@ -51,7 +51,7 @@ class HelpFeedback extends StatelessWidget {
             HapticFeedback.vibrate();
             Navigator.pop(context);
             launchEmail(
-              subject: '${Constants.appName} Feature issue/Bug report',
+              subject: '$kAppName Feature issue/Bug report',
               body:
                   'Please include details like phone type, Android version, steps to reproduce the issue.',
             );
@@ -68,7 +68,7 @@ class HelpFeedback extends StatelessWidget {
           onTap: () {
             HapticFeedback.vibrate();
             Navigator.pop(context);
-            launchEmail(subject: '${Constants.appName} Translation Error');
+            launchEmail(subject: '$kAppName Translation Error');
           },
         ),
       ],

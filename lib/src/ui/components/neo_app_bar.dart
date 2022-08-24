@@ -7,7 +7,8 @@ import '../../constants/constants.dart';
 import '../theme/style.dart';
 import 'icon_btn.dart';
 
-PreferredSizeWidget neoAppBar(BuildContext context, String title) {
+PreferredSizeWidget neoAppBar(BuildContext context,
+    {required String title, VoidCallback? onTapSorting}) {
   final theme = Theme.of(context);
   return PreferredSize(
     preferredSize: const Size.fromHeight(kAppBarHeight),
@@ -31,9 +32,7 @@ PreferredSizeWidget neoAppBar(BuildContext context, String title) {
         IconBtn(
           icon: Icons.sort_rounded,
           label: 'Sort',
-          onPressed: () {
-            unImplementSnackBar(context);
-          },
+          onPressed: onTapSorting,
         ),
         IconBtn(
           icon: Icons.settings_outlined,

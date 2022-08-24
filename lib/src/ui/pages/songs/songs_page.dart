@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:neo_player/src/constants/constants.dart';
@@ -24,7 +25,11 @@ class _SongsPageState extends State<SongsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: neoAppBar(context, 'Morceaux'),
+      appBar: neoAppBar(
+        context,
+        title: 'Morceaux',
+        onTapSorting: _buildSortingModal,
+      ),
       body: Consumer<SongProvider>(
         builder: (context, songProvider, child) {
           if (songProvider.songs.isEmpty) {
@@ -115,6 +120,34 @@ class _SongsPageState extends State<SongsPage> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Future _buildSortingModal() {
+    return showModal(
+      context: context,
+      configuration: const FadeScaleTransitionConfiguration(
+        transitionDuration: kShortDuration,
+      ),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(kRadius),
+          ),
+          backgroundColor: NeumorphicTheme.baseColor(context),
+          title: Center(
+            child: Text(
+              'Sorting',
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    color: Theme.of(context).primaryColor,
+                  ),
+            ),
+          ),
+          content: Column(
+            children: [],
+          ),
+        ),
       ),
     );
   }

@@ -81,13 +81,13 @@ class _LoadingPageState extends State<LoadingPage> {
               Expanded(
                 child: Align(
                   child: NeumorphicText(
-                    Constants.appName,
+                    kAppName,
                     style: NeumorphicStyle(
                       color: Theme.of(context).primaryColor,
                     ),
                     textStyle: NeumorphicTextStyle(
                       fontSize: 50.0,
-                      fontFamily: Constants.fontFamily,
+                      fontFamily: kNunitoFont,
                       fontWeight: FontWeight.w800,
                     ),
                   ),

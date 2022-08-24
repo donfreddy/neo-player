@@ -65,8 +65,8 @@ const Color accentColor8 = Color(0xFFff70a6);
 
 //--------------------------- Text style -------------------------------------
 
-TextStyle appBarTextStyle = TextStyle(
-  fontFamily: Constants.fontFamily,
+TextStyle appBarTextStyle = const TextStyle(
+  fontFamily: kNunitoFont,
   fontSize: 24.0,
   fontWeight: FontWeight.w700,
 );

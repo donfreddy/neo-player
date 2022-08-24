@@ -1,3 +1,9 @@
+/// App name: `Neo Player`
+const String kAppName = 'Neo Player';
+
+/// Email: neoplayer@gmail.com
+const String kAppEmail = 'neoplayer@gmail.com';
+
 /// Radius size 10.0
 const double kRadius = 10.0;
 
@@ -16,19 +22,22 @@ const double kAppBarHeight = 55.0;
 /// Child aspect ratio 17.0 / 20.0
 const double kChildAspectRatio = 17 / 20;
 
+/// 58.0
 const double kBottomNavBarHeight = 58;
 
-const kMiniPlayerPercentageDeclaration = 0.1;
+/// Value: 0.1
+const double kMiniPlayerPercentageDeclaration = 0.1;
 
-class Constants {
-  /// App name: `Neo Player`
-  static String appName = 'Neo Player';
+/// 100 milliseconds
+const Duration kShortDuration = Duration(milliseconds: 100);
 
-  /// Email: neoplayer@gmail.com
-  static String appEmail = 'neoplayer@gmail.com';
+/// 300 milliseconds
+const Duration kMediumDuration = Duration(milliseconds: 300);
 
-  /// Font Family
-  static String fontFamily = 'Nunito';
-}
+/// 500 milliseconds
+const Duration kLongDuration = Duration(milliseconds: 500);
+
+/// Nunito Font Family
+const String kNunitoFont = 'Nunito';
 
 // •

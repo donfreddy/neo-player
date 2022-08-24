@@ -24,7 +24,7 @@ Future<void> launchEmail({String? subject, String? body}) async {
 
   final uri = Uri(
     scheme: 'mailto',
-    path: Constants.appEmail,
+    path: kAppEmail,
     query: 'subject=$sub&body=$content',
   );
 

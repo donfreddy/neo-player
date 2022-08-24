@@ -200,7 +200,7 @@ class SettingsPage extends StatelessWidget {
 
   void _shareApp() {
     Share.share(
-        'Hey, I am using ${Constants.appName}. It\'s a free and simple audio player app. Try it out at https://exemple.com/',
+        'Hey, I am using $kAppName. It\'s a free and simple audio player app. Try it out at https://exemple.com/',
         subject: 'Invite a friend');
   }
 }
