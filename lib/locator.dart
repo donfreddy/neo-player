@@ -40,7 +40,7 @@ Future<void> setupLocator() async {
   locator.registerSingleton(() => SettingsProvider(locator()));
 
   // service
-  locator.registerSingleton(() => AudioQuery(onAudioQuery: locator()));
+  locator.registerFactory(() => AudioQuery(onAudioQuery: locator()));
   locator.registerSingleton<AudioHandler>(await initAudioService());
 
   // neo state

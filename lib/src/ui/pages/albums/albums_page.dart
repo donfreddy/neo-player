@@ -25,7 +25,7 @@ class _AlbumsPageState extends State<AlbumsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: neoAppBar(context, "Albums"),
+      appBar: neoAppBar(context, 'Albums'),
       body: Consumer<SongProvider>(
         builder: (context, songProvider, child) {
           if (songProvider.artists.isEmpty) {

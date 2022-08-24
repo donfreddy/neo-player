@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:neo_player/src/ui/theme/style.dart';
 
+double valueFromPercentageInRange(
+    {required final double min, max, percentage}) {
+  return percentage * (max - min) + min;
+}
+
+double percentageFromValueInRange({required final double min, max, value}) {
+  return (value - min) / (max - min);
+}
+
 void showSnackBar(BuildContext context, String message) {
   final theme = Theme.of(context);
   ScaffoldMessenger.of(context).showSnackBar(

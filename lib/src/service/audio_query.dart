@@ -70,4 +70,12 @@ class AudioQuery {
       orderType: orderType,
     );
   }
+
+  Future<List<dynamic>> getAlbumsFromArtist(String artist) {
+    return onAudioQuery.queryWithFilters(
+      artist,
+      WithFiltersType.ALBUMS,
+      args: AlbumsArgs.ALBUM,
+    );
+  }
 }

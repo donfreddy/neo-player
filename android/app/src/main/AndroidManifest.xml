@@ -10,6 +10,7 @@
   <application
       android:name="${applicationName}"
       android:icon="@mipmap/ic_launcher"
+      android:requestLegacyExternalStorage="true"
       android:label="Neo Player">
     <activity
         android:name="com.ryanheise.audioservice.AudioServiceActivity"

@@ -10,7 +10,6 @@ import '../../components/icon_btn.dart';
 import '../../components/icon_text_btn.dart';
 import '../../components/song_item.dart';
 import '../../theme/style.dart';
-import '../../theme/theme.dart';
 
 class AlbumDetailPage extends StatefulWidget {
   final AlbumModel album;
@@ -31,7 +30,7 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
   final ScrollController _scrollController = ScrollController();
   double _scrollPosition = 0;
   List<SongModel> songs = [];
-  String durations = "";
+  String durations = '';
 
   @override
   void initState() {
@@ -41,7 +40,7 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
   }
 
   void _scrollListener() {
-    print("### Scroll Position ${_scrollController.position.pixels.floor()}");
+    print('### Scroll Position ${_scrollController.position.pixels.floor()}');
     setState(() {
       _scrollPosition = _scrollController.position.pixels;
     });
@@ -64,8 +63,8 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     String song = widget.album.numOfSongs == 1
-        ? "${widget.album.numOfSongs} morceau"
-        : "${widget.album.numOfSongs} morceaux";
+        ? '${widget.album.numOfSongs} morceau'
+        : '${widget.album.numOfSongs} morceaux';
 
     return Scaffold(
       appBar: PreferredSize(
@@ -130,7 +129,7 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
                             child: QueryArtwork(
                               artworkId: widget.album.id,
                               artworkType: ArtworkType.ALBUM,
-                              defaultPath: "assets/images/album.jpg",
+                              defaultPath: 'assets/images/album.jpg',
                             ),
                           ),
                         ),
@@ -166,7 +165,7 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
                           ),
                         ),
                         Text(
-                          "$song • $durations",
+                          '$song • $durations',
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium
@@ -188,7 +187,7 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
                         Expanded(
                           child: IconTextBtn(
                             icon: Icons.play_arrow_rounded,
-                            text: "Play All",
+                            text: 'Play All',
                             onPressed: () {},
                           ),
                         ),
@@ -196,7 +195,7 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
                         Expanded(
                           child: IconTextBtn(
                             icon: Icons.shuffle,
-                            text: "Shuffle",
+                            text: 'Shuffle',
                             onPressed: () {},
                           ),
                         )

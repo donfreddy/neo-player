@@ -6,6 +6,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants/constants.dart';
+import '../../../../helpers/helpers.dart';
 import '../../../../provider/settings_provider.dart';
 import '../../../theme/theme.dart';
 import '../../now_playing/now_playing.dart';
@@ -280,15 +281,6 @@ class BottomNaveItem extends StatelessWidget {
       ),
     );
   }
-}
-
-double valueFromPercentageInRange(
-    {required final double min, max, percentage}) {
-  return percentage * (max - min) + min;
-}
-
-double percentageFromValueInRange({required final double min, max, value}) {
-  return (value - min) / (max - min);
 }
 
 // https://github.com/right7ctrl/flutter_floating_bottom_navigation_bar/blob/master/lib/src/floating_navbar.dart

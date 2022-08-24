@@ -3,10 +3,10 @@ import 'package:miniplayer/miniplayer.dart';
 import 'package:neo_player/src/ui/theme/style.dart';
 
 import '../../../constants/constants.dart';
+import '../../../helpers/helpers.dart';
 import '../../components/icon_btn.dart';
 import '../../components/marquee.dart';
 import '../../theme/theme.dart';
-import '../main/main_page.dart';
 
 final ValueNotifier<double> playerExpandProgress =
     ValueNotifier(kMiniPlayerHeight);

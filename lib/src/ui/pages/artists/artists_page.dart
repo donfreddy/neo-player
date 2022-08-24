@@ -6,6 +6,7 @@ import 'package:neo_player/src/ui/pages/artists/widgets/artist_card.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../../locator.dart';
+import '../../../service/audio_query.dart';
 import '../../components/cover_line.dart';
 import 'artist_detail_page.dart';
 
@@ -17,7 +18,7 @@ class ArtistsPage extends StatelessWidget {
     return Scaffold(
       appBar: neoAppBar(context, 'Artists'),
       body: FutureBuilder<List<ArtistModel>>(
-        future: locator<OnAudioQuery>().queryArtists(),
+        future: locator<AudioQuery>().getArtists(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
