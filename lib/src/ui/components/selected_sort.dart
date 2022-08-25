@@ -1,4 +1,5 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:neo_player/src/constants/constants.dart';
 
 class SelectedSort extends StatelessWidget {
   final String title;
@@ -9,17 +10,17 @@ class SelectedSort extends StatelessWidget {
     Key? key,
     required this.title,
     required this.icon,
-    this.isSelected = false,
+    this.isSelected = false, required onSortSelect,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Neumorphic(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 2.0),
       style: NeumorphicStyle(
         boxShape: NeumorphicBoxShape.roundRect(
-          const BorderRadius.all(Radius.circular(12)),
+          const BorderRadius.all(Radius.circular(kRadius)),
         ),
         // disableDepth: true,
       ),
@@ -27,7 +28,7 @@ class SelectedSort extends StatelessWidget {
         children: [
           Icon(
             icon,
-            size: 20,
+            size: 18,
             color: theme.primaryColor,
           ),
           const SizedBox(width: 4),
@@ -35,15 +36,9 @@ class SelectedSort extends StatelessWidget {
             title,
             style: Theme.of(context)
                 .textTheme
-                .bodyLarge!
+                .bodyMedium!
                 .copyWith(color: theme.primaryColor),
           ),
-          // const Spacer(),
-          // Icon(
-          //   Icons.check,
-          //   size: 20,
-          //   color: theme.primaryColor,
-          // ),
         ],
       ),
     );

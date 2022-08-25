@@ -56,14 +56,14 @@ class _MainPageState extends State<MainPage> {
         items: [
           PersistentTabItem(
             tab: const SongsPage(),
-            icon: Icons.library_music_outlined,
-            activeIcon: Icons.library_music_rounded,
+            icon: Icons.music_note_outlined,
+            activeIcon: Icons.music_note_rounded,
             navigatorKey: _tab3navigatorKey,
           ),
           PersistentTabItem(
             tab: const ArtistsPage(),
-            icon: Icons.person_outline_rounded,
-            activeIcon: Icons.person_rounded,
+            icon: Icons.mic_none_outlined,
+            activeIcon: Icons.mic,
             navigatorKey: _tab1navigatorKey,
             tooltip: 'Artists',
           ),
@@ -74,9 +74,9 @@ class _MainPageState extends State<MainPage> {
             navigatorKey: _tab2navigatorKey,
           ),
           PersistentTabItem(
-            tab: const Scaffold(body: Center(child: Text('Genres'))),
-            icon: Icons.music_note_outlined,
-            activeIcon: Icons.music_note_rounded,
+            tab: const Scaffold(body: Center(child: Text('Folders'))),
+            icon: Icons.folder_outlined,
+            activeIcon: Icons.folder_rounded,
             navigatorKey: _tab4navigatorKey,
           ),
           PersistentTabItem(

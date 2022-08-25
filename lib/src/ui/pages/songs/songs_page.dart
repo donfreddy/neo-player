@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:neo_player/src/constants/constants.dart';
 import 'package:neo_player/src/ui/components/custom_material.dart';
-import 'package:neo_player/src/ui/components/unselected_sort.dart';
+import 'package:neo_player/src/ui/components/sort_type_item.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
@@ -24,8 +24,8 @@ class SongsPage extends StatefulWidget {
 }
 
 class _SongsPageState extends State<SongsPage> {
+  late bool isSelected = false;
   final ScrollController _scrollController = ScrollController();
-  final ScrollController _scrollController2 = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +40,16 @@ class _SongsPageState extends State<SongsPage> {
           if (songProvider.songs.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
-          return Scrollbar(
+          return RawScrollbar(
+            thumbColor: Theme.of(context).primaryColor,
+            radius: const Radius.circular(kRadius * 2),
+            thickness: 4,
+            minThumbLength: 40,
+            controller: _scrollController,
             child: Stack(
               children: [
                 SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
-                  controller: _scrollController,
                   child: Center(
                     child: Column(
                       children: [
@@ -141,99 +145,165 @@ class _SongsPageState extends State<SongsPage> {
             borderRadius: BorderRadius.circular(kRadius),
           ),
           backgroundColor: NeumorphicTheme.baseColor(context),
-          title: Center(
-            child: Text(
-              'Sorting',
-              style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    color: Theme.of(context).primaryColor,
+          title: Stack(
+            children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Text(
+                    'Sorting',
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: Theme.of(context).primaryColor,
+                        ),
                   ),
-            ),
+                ),
+              ),
+              Positioned(
+                right: 10.0,
+                top: 10.0,
+                child: GestureDetector(
+                  child: const Icon(Icons.cancel, size: 20.0),
+                  onTap: () => Navigator.pop(context),
+                ),
+              ),
+            ],
           ),
-          titlePadding: const EdgeInsets.all(kAppContentPadding),
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: kAppContentPadding) +
-                  const EdgeInsets.only(bottom: kAppContentPadding - 2),
+          titlePadding: const EdgeInsets.all(0),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16.0) +
+              const EdgeInsets.only(bottom: 10.0),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const UnSelectSort(title: 'Title', icon: Icons.title),
-              const SizedBox(height: 6),
-              const UnSelectSort(title: 'Artist', icon: Icons.person_rounded),
-              const SizedBox(height: 6),
-              const UnSelectSort(title: 'Album', icon: Icons.album_rounded),
-              const SizedBox(height: 6),
-              const UnSelectSort(
-                  title: 'Duration', icon: Icons.schedule_rounded),
-              const SizedBox(height: 6),
-              const UnSelectSort(title: 'Date Added', icon: Icons.playlist_add),
-              const SizedBox(height: 6),
-              const SelectedSort(
-                  title: 'Display Name', icon: Icons.text_fields),
-              const SizedBox(height: 6),
-              const UnSelectSort(title: 'Size', icon: Icons.memory_rounded),
-              const SizedBox(height: 6),
-              Container(
-                width: screenWidth(context),
-                color: textGrayColor.withOpacity(0.4),
-                height: 0.4,
+              SortTypeItem(
+                title: 'Title',
+                icon: Icons.title,
+                isSelected: false,
+                onSortSelect: () {},
               ),
-              const SizedBox(height: 10),
+              SortTypeItem(
+                title: 'Artist',
+                icon: Icons.mic,
+                isSelected: false,
+                onSortSelect: () {},
+              ),
+              SortTypeItem(
+                title: 'Album',
+                icon: Icons.album_rounded,
+                isSelected: false,
+                onSortSelect: () {},
+              ),
+              SortTypeItem(
+                title: 'Duration',
+                icon: Icons.schedule_rounded,
+                isSelected: true,
+                onSortSelect: () {},
+              ),
+              SortTypeItem(
+                title: 'Date Added',
+                icon: Icons.playlist_add,
+                isSelected: false,
+                onSortSelect: () {},
+              ),
+              SortTypeItem(
+                title: 'Display Name',
+                icon: Icons.text_fields_rounded,
+                isSelected: false,
+                onSortSelect: () {},
+              ),
+              SortTypeItem(
+                title: 'Size',
+                icon: Icons.memory_rounded,
+                isSelected: false,
+                onSortSelect: () {},
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 6.0, bottom: 10.0),
+                child: Container(
+                  width: screenWidth(context),
+                  color: textGrayColor.withOpacity(0.4),
+                  height: 0.4,
+                ),
+              ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Neumorphic(
-                      margin: const EdgeInsets.all(5.0),
-                      style: NeumorphicStyle(
-                        boxShape: NeumorphicBoxShape.roundRect(
-                          const BorderRadius.all(Radius.circular(kRadius)),
-                        ),
-                        disableDepth: true,
-                      ),
-                      child: MaterialWitchInkWell(
-                        onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Column(
-                            children: [
-                              const Icon(
-                                Icons.expand_less_rounded,
-                                color: Colors.red,
-                              ),
-                              Text(
-                                'Ascending',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(color: Colors.red),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                    child: OrderTypeItem(
+                      title: 'Ascending',
+                      icon: Icons.expand_less_rounded,
+                      isSelected: isSelected,
+                      onOrderSelect: () {
+                        setState(() {
+                          isSelected = true;
+                        });
+                      },
                     ),
                   ),
                   Expanded(
-                    child: Column(
-                      children: [
-                        const Icon(
-                          Icons.expand_more_rounded,
-                          color: Colors.red,
-                        ),
-                        Text(
-                          'Descending',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.red),
-                        ),
-                      ],
+                    child: OrderTypeItem(
+                      title: 'Descending',
+                      icon: Icons.expand_more_rounded,
+                      isSelected: !isSelected,
+                      onOrderSelect: () {
+                        setState(() {
+                          isSelected = false;
+                        });
+                      },
                     ),
                   ),
                 ],
               )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class OrderTypeItem extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final bool isSelected;
+  final void Function()? onOrderSelect;
+
+  const OrderTypeItem({
+    Key? key,
+    required this.title,
+    required this.icon,
+    required this.isSelected,
+    this.onOrderSelect,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Neumorphic(
+      margin: const EdgeInsets.all(5.0),
+      style: NeumorphicStyle(
+        boxShape: NeumorphicBoxShape.roundRect(
+          const BorderRadius.all(Radius.circular(kRadius)),
+        ),
+        disableDepth: !isSelected,
+      ),
+      child: MaterialWitchInkWell(
+        onTap: onOrderSelect,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Column(
+            children: [
+              Icon(
+                icon,
+                color: isSelected ? theme.primaryColor : null,
+              ),
+              Text(
+                title,
+                style: theme.textTheme.bodyMedium!.copyWith(
+                  color: isSelected ? theme.primaryColor : null,
+                ),
+              ),
             ],
           ),
         ),

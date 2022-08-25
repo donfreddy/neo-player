@@ -23,6 +23,7 @@ class IconTextBtn extends StatelessWidget {
             Radius.circular(08.0),
           ),
         ),
+        depth: 2
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
