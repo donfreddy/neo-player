@@ -55,6 +55,12 @@ class _MainPageState extends State<MainPage> {
       child: PersistentBottomBarScaffold(
         items: [
           PersistentTabItem(
+            tab: const SongsPage(),
+            icon: Icons.library_music_outlined,
+            activeIcon: Icons.library_music_rounded,
+            navigatorKey: _tab3navigatorKey,
+          ),
+          PersistentTabItem(
             tab: const ArtistsPage(),
             icon: Icons.person_outline_rounded,
             activeIcon: Icons.person_rounded,
@@ -66,12 +72,6 @@ class _MainPageState extends State<MainPage> {
             icon: Icons.album_outlined,
             activeIcon: Icons.album_rounded,
             navigatorKey: _tab2navigatorKey,
-          ),
-          PersistentTabItem(
-            tab: const SongsPage(),
-            icon: Icons.library_music_outlined,
-            activeIcon: Icons.library_music_rounded,
-            navigatorKey: _tab3navigatorKey,
           ),
           PersistentTabItem(
             tab: const Scaffold(body: Center(child: Text('Genres'))),

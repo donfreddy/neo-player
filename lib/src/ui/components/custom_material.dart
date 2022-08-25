@@ -15,16 +15,16 @@ class SimpleMaterial extends StatelessWidget {
 }
 
 class MaterialWitchInkWell extends StatelessWidget {
-  const MaterialWitchInkWell({
-    required this.child,
-    required this.onTap,
-    this.onLongPress,
-    Key? key,
-  }) : super(key: key);
-
+  final Widget child;
   final void Function()? onTap;
   final void Function()? onLongPress;
-  final Widget child;
+
+  const MaterialWitchInkWell({
+    Key? key,
+    required this.child,
+    this.onTap,
+    this.onLongPress,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +35,8 @@ class MaterialWitchInkWell extends StatelessWidget {
         focusColor: Colors.transparent,
         //highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
-        highlightColor: Colors.black.withOpacity(0.01),
-        splashColor: Colors.black.withOpacity(0.1),
+        highlightColor: Colors.white.withOpacity(0.01),
+        splashColor: Colors.white.withOpacity(0.1),
         onTap: onTap,
         onLongPress: onLongPress,
         child: child,

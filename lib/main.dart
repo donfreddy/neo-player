@@ -21,10 +21,10 @@ Future<void> main() async {
   final prefs = await SharedPreferences.getInstance();
 
   // Init Hive
-  // await Hive.initFlutter();
+  await Hive.initFlutter();
 
   // Open box
-  // await Hive.openBox('settings');
+  await Hive.openBox('settings');
 
   // Only portrait
   await SystemChrome.setPreferredOrientations(

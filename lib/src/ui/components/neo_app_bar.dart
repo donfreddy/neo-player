@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:neo_player/src/helpers/helpers.dart';
 import 'package:neo_player/src/ui/pages/pages.dart';
 
 import '../../constants/constants.dart';
@@ -20,19 +19,21 @@ PreferredSizeWidget neoAppBar(BuildContext context,
         style: appBarTextStyle.copyWith(
             color: NeumorphicTheme.accentColor(context)),
       ),
-      // centerTitle: true,
       actions: <Widget>[
-        IconBtn(
-          icon: Icons.search_rounded,
-          label: 'Search',
-          onPressed: () {
-            unImplementSnackBar(context);
-          },
-        ),
-        IconBtn(
-          icon: Icons.sort_rounded,
-          label: 'Sort',
-          onPressed: onTapSorting,
+        // IconBtn(
+        //   icon: Icons.search_rounded,
+        //   label: 'Search',
+        //   onPressed: () {
+        //     unImplementSnackBar(context);
+        //   },
+        // ),
+        Visibility(
+          visible: onTapSorting != null ? true : false,
+          child: IconBtn(
+            icon: Icons.sort_rounded,
+            label: 'Sort',
+            onPressed: onTapSorting,
+          ),
         ),
         IconBtn(
           icon: Icons.settings_outlined,

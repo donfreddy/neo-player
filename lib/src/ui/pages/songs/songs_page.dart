@@ -2,6 +2,8 @@ import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:neo_player/src/constants/constants.dart';
+import 'package:neo_player/src/ui/components/custom_material.dart';
+import 'package:neo_player/src/ui/components/unselected_sort.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +11,10 @@ import '../../../provider/song_provider.dart';
 import '../../components/cover_line.dart';
 import '../../components/icon_text_btn.dart';
 import '../../components/neo_app_bar.dart';
+import '../../components/selected_sort.dart';
 import '../../components/song_item.dart';
+import '../../theme/style.dart';
+import '../../theme/theme.dart';
 
 class SongsPage extends StatefulWidget {
   const SongsPage({Key? key}) : super(key: key);
@@ -144,8 +149,92 @@ class _SongsPageState extends State<SongsPage> {
                   ),
             ),
           ),
+          titlePadding: const EdgeInsets.all(kAppContentPadding),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: kAppContentPadding) +
+                  const EdgeInsets.only(bottom: kAppContentPadding - 2),
           content: Column(
-            children: [],
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const UnSelectSort(title: 'Title', icon: Icons.title),
+              const SizedBox(height: 6),
+              const UnSelectSort(title: 'Artist', icon: Icons.person_rounded),
+              const SizedBox(height: 6),
+              const UnSelectSort(title: 'Album', icon: Icons.album_rounded),
+              const SizedBox(height: 6),
+              const UnSelectSort(
+                  title: 'Duration', icon: Icons.schedule_rounded),
+              const SizedBox(height: 6),
+              const UnSelectSort(title: 'Date Added', icon: Icons.playlist_add),
+              const SizedBox(height: 6),
+              const SelectedSort(
+                  title: 'Display Name', icon: Icons.text_fields),
+              const SizedBox(height: 6),
+              const UnSelectSort(title: 'Size', icon: Icons.memory_rounded),
+              const SizedBox(height: 6),
+              Container(
+                width: screenWidth(context),
+                color: textGrayColor.withOpacity(0.4),
+                height: 0.4,
+              ),
+              const SizedBox(height: 10),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Neumorphic(
+                      margin: const EdgeInsets.all(5.0),
+                      style: NeumorphicStyle(
+                        boxShape: NeumorphicBoxShape.roundRect(
+                          const BorderRadius.all(Radius.circular(kRadius)),
+                        ),
+                        disableDepth: true,
+                      ),
+                      child: MaterialWitchInkWell(
+                        onTap: () {},
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Column(
+                            children: [
+                              const Icon(
+                                Icons.expand_less_rounded,
+                                color: Colors.red,
+                              ),
+                              Text(
+                                'Ascending',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(color: Colors.red),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        const Icon(
+                          Icons.expand_more_rounded,
+                          color: Colors.red,
+                        ),
+                        Text(
+                          'Descending',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(color: Colors.red),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
         ),
       ),
