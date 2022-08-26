@@ -27,7 +27,7 @@ import 'package:neo_player/src/service/audio_query.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'src/ui/pages/now_playing/neo_manager.dart';
+import 'src/pages/now_playing/neo_manager.dart';
 
 GetIt locator = GetIt.instance;
 

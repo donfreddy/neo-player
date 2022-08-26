@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:neo_player/src/ui/theme/style.dart';
+import 'package:neo_player/src/theme/style.dart';
 
-double valueFromPercentageInRange(
-    {required final double min, max, percentage}) {
-  return percentage * (max - min) + min;
-}
+// double valueFromPercentageInRange(
+//     {required final double min, max, percentage}) {
+//   return percentage * (max - min) + min;
+// }
 
+///Calculates the percentage of a value within a given range of values
 double percentageFromValueInRange({required final double min, max, value}) {
   return (value - min) / (max - min);
 }

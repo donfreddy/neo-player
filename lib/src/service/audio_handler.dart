@@ -3,7 +3,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../ui/pages/now_playing/queue.dart';
+import '../pages/now_playing/queue.dart';
 
 Future<AudioHandler> initAudioService() async {
   return await AudioService.init(

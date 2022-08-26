@@ -3,7 +3,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:neo_player/src/provider/settings_provider.dart';
 import 'package:neo_player/src/routes/route.dart';
 import 'package:neo_player/src/routes/route_constants.dart';
-import 'package:neo_player/src/ui/theme/theme.dart';
+import 'package:neo_player/src/theme/theme.dart';
 import 'package:provider/provider.dart';
 
 import 'constants/constants.dart';

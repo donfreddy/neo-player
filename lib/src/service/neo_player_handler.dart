@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../ui/pages/now_playing/queue.dart';
+import '../pages/now_playing/queue.dart';
 
 abstract class NeoPlayerHandler {
   Stream<QueueState> get queueState;

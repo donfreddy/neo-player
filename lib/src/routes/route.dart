@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:neo_player/src/pages/pages.dart';
 import 'package:neo_player/src/player2.dart';
-import 'package:neo_player/src/ui/pages/pages.dart';
 
 import 'route_constants.dart';
 
@@ -39,11 +39,11 @@ Route<dynamic> generateMainRoute(RouteSettings settings) {
     case mainRoute:
       return CupertinoPageRoute<Widget>(builder: (_) => const MainPage());
     case settingsRoute:
-      // return CupertinoPageRoute<Widget>(
-      //   builder: (_) => const SettingsPage(),
-      // //   maintainState: ,
-      //   fullscreenDialog: true,
-      // );
+    // return CupertinoPageRoute<Widget>(
+    //   builder: (_) => const SettingsPage(),
+    // //   maintainState: ,
+    //   fullscreenDialog: true,
+    // );
     case storagePermissionRoute:
       return CupertinoPageRoute<Widget>(
         builder: (_) => StoragePermissionPage(isPermanent: args as bool),
