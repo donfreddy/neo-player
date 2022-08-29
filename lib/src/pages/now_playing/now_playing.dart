@@ -3,6 +3,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:neo_player/src/theme/style.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../../locator.dart';
 import '../../common_widgets/common_widgets.dart';
@@ -310,7 +311,7 @@ class _NowPlayingState extends State<NowPlaying> {
             value: height);
 
         final elementOpacity = 1 - 1 * percentageMiniPlayer;
-        final progressIndicatorHeight = 2.5 - 2.5 * percentageMiniPlayer;
+        final progressIndicatorHeight = 3                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            - 2.5 * percentageMiniPlayer;
 
         return Neumorphic(
           style: const NeumorphicStyle(
@@ -327,13 +328,22 @@ class _NowPlayingState extends State<NowPlaying> {
                   child: ValueListenableBuilder<ProgressBarState>(
                       valueListenable: neoManager.progressNotifier,
                       builder: (_, value, __) {
-                        final progressValue =
-                            value.current.inMicroseconds.toDouble() /
-                                value.total.inMicroseconds.toDouble();
-                        return LinearProgressIndicator(
-                          value: progressValue,
-                          color: NeumorphicTheme.accentColor(context),
-                          backgroundColor: textWhiteColor.withOpacity(0.01),
+                        double progressValue;
+                        if (value.current == Duration.zero ||
+                            value.total == Duration.zero) {
+                          progressValue = 0.0;
+                        } else {
+                          progressValue =
+                              value.current.inMicroseconds.toDouble() /
+                                  value.total.inMicroseconds.toDouble();
+                        }
+
+                        return LinearPercentIndicator(
+                          padding: EdgeInsets.zero,
+                          percent: progressValue,
+                          barRadius: const Radius.circular(kRadius),
+                          progressColor:Theme.of(context).primaryColor,
+                          backgroundColor: textGrayColor.withOpacity(0.2),
                         );
                       }),
                 ),
