@@ -1,8 +1,11 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:neo_player/src/common_widgets/query_artwork.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+import '../../locator.dart';
 import '../constants/constants.dart';
+import '../pages/now_playing/neo_manager.dart';
 import '../theme/style.dart';
 import 'custom_material.dart';
 import 'icon_btn.dart';
@@ -56,11 +59,22 @@ class SongItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleMedium,
-                    maxLines: 1,
-                  ),
+                  ValueListenableBuilder<MediaItem?>(
+                      valueListenable:
+                          locator<NeoManager>().currentSongNotifier,
+                      builder: (_, song, __) {
+                        return Text(
+                          title,
+                          style:
+                              Theme.of(context).textTheme.titleMedium!.copyWith(
+                                  color: song != null
+                                      ? song.id == songId.toString()
+                                          ? Theme.of(context).primaryColor
+                                          : null
+                                      : null),
+                          maxLines: 1,
+                        );
+                      }),
                   Text(
                     artist == '<unknown>' ? 'Artiste inconnu' : artist!,
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(

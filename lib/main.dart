@@ -6,9 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:just_audio_background/just_audio_background.dart';
+import 'package:neo_player/src/constants/constants.dart';
 import 'package:neo_player/src/neo_player_app.dart';
 import 'package:neo_player/src/provider/settings_provider.dart';
 import 'package:neo_player/src/provider/song_provider.dart';
+import 'package:neo_player/src/theme/style.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,6 +22,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
+
+  await initJustAudioBg();
 
   // Init Hive
   await Hive.initFlutter();
@@ -78,6 +83,16 @@ Future<void> openHiveBox(String boxName, {bool limit = false}) async {
       await Hive.openBox(boxName);
       throw 'Failed to open $boxName Box\nError: $error';
     },
+  );
+}
+
+Future<void> initJustAudioBg() async {
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.freddydev.neo_player.channel.audio',
+    androidNotificationChannelName: kAppName,
+    androidNotificationOngoing: true,
+    androidShowNotificationBadge: true,
+    notificationColor: primaryColor,
   );
 }
 

@@ -17,8 +17,8 @@ class AudioQuery {
     String? path,
   }) async {
     return onAudioQuery.querySongs(
-      sortType: sortType ?? SongSortType.DATE_ADDED,
-      orderType: orderType ?? OrderType.DESC_OR_GREATER,
+      sortType: sortType,
+      orderType: orderType,
       uriType: UriType.EXTERNAL,
       path: path,
     );

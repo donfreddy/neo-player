@@ -91,13 +91,4 @@ class _MainPageState extends State<MainPage> {
   }
 }
 
-double valueFromPercentageInRange(
-    {required final double min, max, percentage}) {
-  return percentage * (max - min) + min;
-}
-
-double percentageFromValueInRange({required final double min, max, value}) {
-  return (value - min) / (max - min);
-}
-
 // https://github.com/right7ctrl/flutter_floating_bottom_navigation_bar/blob/master/lib/src/floating_navbar.dart

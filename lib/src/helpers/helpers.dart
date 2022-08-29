@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:neo_player/src/theme/style.dart';
 
-// double valueFromPercentageInRange(
-//     {required final double min, max, percentage}) {
-//   return percentage * (max - min) + min;
-// }
+double valueFromPercentageInRange(
+    {required final double min, max, percentage}) {
+  return percentage * (max - min) + min;
+}
 
 ///Calculates the percentage of a value within a given range of values
 double percentageFromValueInRange({required final double min, max, value}) {
   return (value - min) / (max - min);
+}
+
+UriAudioSource createAudioSource(MediaItem mediaItem) {
+  return AudioSource.uri(
+    Uri.parse(mediaItem.extras!['url'].toString()),
+    tag: mediaItem,
+  );
 }
 
 void showSnackBar(BuildContext context, String message) {

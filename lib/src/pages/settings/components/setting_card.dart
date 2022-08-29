@@ -27,6 +27,7 @@ class SettingCard extends StatelessWidget {
           boxShape: NeumorphicBoxShape.roundRect(
             const BorderRadius.all(Radius.circular(10)),
           ),
+          depth: 2,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

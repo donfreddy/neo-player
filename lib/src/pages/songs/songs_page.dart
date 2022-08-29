@@ -1,13 +1,21 @@
-import 'package:animations/animations.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:neo_player/src/constants/constants.dart';
-import 'package:on_audio_query/on_audio_query.dart';
-import 'package:provider/provider.dart';
+import 'dart:io';
 
+import 'package:animations/animations.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:hive/hive.dart';
+import 'package:neo_player/src/constants/constants.dart';
+import 'package:neo_player/src/pages/songs/songs_notifier.dart';
+import 'package:on_audio_query/on_audio_query.dart';
+import 'package:path_provider/path_provider.dart';
+
+import '../../../locator.dart';
 import '../../common_widgets/common_widgets.dart';
-import '../../provider/song_provider.dart';
+import '../../helpers/media_item_converter.dart';
 import '../../theme/style.dart';
 import '../../theme/theme.dart';
+import '../now_playing/neo_manager.dart';
 
 class SongsPage extends StatefulWidget {
   const SongsPage({Key? key}) : super(key: key);
@@ -17,113 +25,134 @@ class SongsPage extends StatefulWidget {
 }
 
 class _SongsPageState extends State<SongsPage> {
-  late bool isSelected = false;
-  final ScrollController _scrollController = ScrollController();
+  final _songsNotifier = SongsNotifier();
+  final neoManager = locator<NeoManager>();
+  final _scrollController = ScrollController();
+  int songSortValue =
+      Hive.box('settings').get('songSortValue', defaultValue: 0) as int;
+  int songOrderValue =
+      Hive.box('settings').get('songOrderValue', defaultValue: 0) as int;
+
+  @override
+  void initState() {
+    _songsNotifier.loadSongs(songSortValue, songOrderValue);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: neoAppBar(
-        context,
-        title: 'Morceaux',
-        onTapSorting: _buildSortingModal,
-      ),
-      body: Consumer<SongProvider>(
-        builder: (context, songProvider, child) {
-          if (songProvider.songs.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          return RawScrollbar(
-            thumbColor: Theme.of(context).primaryColor,
-            radius: const Radius.circular(kRadius * 2),
-            thickness: 4,
-            minThumbLength: 40,
-            controller: _scrollController,
-            child: Stack(
-              children: [
-                SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 12.0),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: kAppContentPadding),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: IconTextBtn(
-                                  icon: Icons.play_arrow_rounded,
-                                  text: 'Tout lire',
-                                  onPressed: () {},
-                                ),
-                              ),
-                              const SizedBox(width: 30.0),
-                              Expanded(
-                                child: IconTextBtn(
-                                  icon: Icons.shuffle,
-                                  text: 'Aleatoire',
-                                  onPressed: () {},
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 20.0),
-                        Container(
-                          padding:
-                              const EdgeInsets.only(bottom: kMiniPlayerHeight),
-                          child: ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            controller: _scrollController,
-                            shrinkWrap: true,
-                            itemCount: songProvider.songs.length,
-                            itemBuilder: (context, int index) {
-                              SongModel song = songProvider.songs[index];
-                              return SongItem(
-                                songId: song.id,
-                                title: song.title,
-                                artist: song.artist,
+        appBar: neoAppBar(
+          context,
+          title: 'Morceaux',
+          onTapSorting: _buildSortingModal,
+        ),
+        body: RawScrollbar(
+          thumbColor: Theme.of(context).primaryColor,
+          radius: const Radius.circular(kRadius * 2),
+          thickness: 4,
+          minThumbLength: 40,
+          controller: _scrollController,
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Center(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 12.0),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: kAppContentPadding),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: IconTextBtn(
+                                icon: Icons.play_arrow_rounded,
+                                text: 'Tout lire',
                                 onPressed: () {
-                                  // print(
-                                  //     "########################################: ${song.uri}");
-                                  // print("================================>");
-                                  // print(
-                                  //     "########################################: $song");
-                                  // final mediaItem =
-                                  //     MediaItemConverter.mapToMediaItem(
-                                  //         song.getMap);
-                                  // final neoManager = locator<NeoManager>();
                                   //
-                                  // print(mediaItem);
-                                  //
-                                  // neoManager.addToNowPlaying(
-                                  //     context: context, mediaItem: mediaItem);
-                                  //
-                                  // neoManager.play();
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => const NowPlaying(),
-                                  //   ),
-                                  // );
                                 },
-                              );
-                            },
-                          ),
-                        )
-                      ],
-                    ),
+                              ),
+                            ),
+                            const SizedBox(width: 30.0),
+                            Expanded(
+                              child: IconTextBtn(
+                                icon: Icons.shuffle,
+                                text: 'Aleatoire',
+                                onPressed: () {},
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20.0),
+                      Container(
+                        padding:
+                            const EdgeInsets.only(bottom: kPlayerMinHeight),
+                        child: ValueListenableBuilder<List<SongModel>>(
+                          valueListenable: _songsNotifier,
+                          builder: (_, songs, __) {
+                            return ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              controller: _scrollController,
+                              shrinkWrap: true,
+                              itemCount: songs.length,
+                              itemBuilder: (_, index) {
+                                SongModel song = songs[index];
+                                return SongItem(
+                                  songId: song.id,
+                                  title: song.title,
+                                  artist: song.artist,
+                                  onPressed: () {
+                                    getTemporaryDirectory()
+                                        .then((tempDir) async {
+                                      print(tempDir.path);
+                                      final File file =
+                                          File('${tempDir.path}/artist.png');
+                                      if (!await file.exists()) {
+                                        final byteData = await rootBundle
+                                            .load('assets/images/artist.png');
+                                        await file.writeAsBytes(
+                                          byteData.buffer.asUint8List(
+                                              byteData.offsetInBytes,
+                                              byteData.lengthInBytes),
+                                        );
+                                      }
+                                      final mediaItem =
+                                          MediaItemConverter.mapToMediaItem(
+                                              song.getMap, tempDir);
+
+                                      neoManager.addQueueItem(mediaItem);
+                                      if (kDebugMode) {
+                                        print(song.getMap);
+                                        print('============> MediaItem');
+                                        print(mediaItem);
+                                      }
+                                    });
+
+                                    neoManager.play();
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) => const NowPlaying(),
+                                    //   ),
+                                    // );
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      )
+                    ],
                   ),
                 ),
-                const CoverLine()
-              ],
-            ),
-          );
-        },
-      ),
-    );
+              ),
+              const CoverLine()
+            ],
+          ),
+        ));
   }
 
   Future _buildSortingModal() {
@@ -168,47 +197,28 @@ class _SongsPageState extends State<SongsPage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SortTypeItem(
-                title: 'Title',
-                icon: Icons.title,
-                isSelected: false,
-                onSortSelect: () {},
-              ),
-              SortTypeItem(
-                title: 'Artist',
-                icon: Icons.mic,
-                isSelected: false,
-                onSortSelect: () {},
-              ),
-              SortTypeItem(
-                title: 'Album',
-                icon: Icons.album_rounded,
-                isSelected: false,
-                onSortSelect: () {},
-              ),
-              SortTypeItem(
-                title: 'Duration',
-                icon: Icons.schedule_rounded,
-                isSelected: true,
-                onSortSelect: () {},
-              ),
-              SortTypeItem(
-                title: 'Date Added',
-                icon: Icons.playlist_add,
-                isSelected: false,
-                onSortSelect: () {},
-              ),
-              SortTypeItem(
-                title: 'Display Name',
-                icon: Icons.text_fields_rounded,
-                isSelected: false,
-                onSortSelect: () {},
-              ),
-              SortTypeItem(
-                title: 'Size',
-                icon: Icons.memory_rounded,
-                isSelected: false,
-                onSortSelect: () {},
+              Column(
+                children: songSortItems
+                    .map(
+                      (item) => SortTypeItem(
+                        title: item.title,
+                        icon: item.icon,
+                        value: songSortItems.indexOf(item),
+                        isSelected:
+                            songSortValue == songSortItems.indexOf(item),
+                        onSortSelect: (int value) async {
+                          if (songSortValue == value) return;
+                          await Hive.box('settings')
+                              .put('songSortValue', value);
+                          setState(() {
+                            songSortValue = value;
+                          });
+                          _songsNotifier.loadSongs(
+                              songSortValue, songOrderValue);
+                        },
+                      ),
+                    )
+                    .toList(),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 6.0, bottom: 10.0),
@@ -221,32 +231,29 @@ class _SongsPageState extends State<SongsPage> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: OrderTypeItem(
-                      title: 'Ascending',
-                      icon: Icons.expand_less_rounded,
-                      isSelected: isSelected,
-                      onOrderSelect: () {
-                        setState(() {
-                          isSelected = true;
-                        });
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: OrderTypeItem(
-                      title: 'Descending',
-                      icon: Icons.expand_more_rounded,
-                      isSelected: !isSelected,
-                      onOrderSelect: () {
-                        setState(() {
-                          isSelected = false;
-                        });
-                      },
-                    ),
-                  ),
-                ],
+                children: orderItems
+                    .map(
+                      (item) => Expanded(
+                        child: OrderTypeItem(
+                          title: item.title,
+                          icon: item.icon,
+                          value: orderItems.indexOf(item),
+                          isSelected:
+                              songOrderValue == orderItems.indexOf(item),
+                          onOrderSelect: (int value) async {
+                            if (songOrderValue == value) return;
+                            await Hive.box('settings')
+                                .put('songOrderValue', songOrderValue);
+                            setState(() {
+                              songOrderValue = value;
+                            });
+                            _songsNotifier.loadSongs(
+                                songSortValue, songOrderValue);
+                          },
+                        ),
+                      ),
+                    )
+                    .toList(),
               )
             ],
           ),
@@ -255,3 +262,25 @@ class _SongsPageState extends State<SongsPage> {
     );
   }
 }
+
+class SortItem {
+  final IconData icon;
+  final String title;
+
+  SortItem({required this.icon, required this.title});
+}
+
+final List<SortItem> songSortItems = [
+  SortItem(icon: Icons.title, title: 'Title'),
+  SortItem(icon: Icons.mic, title: 'Artist'),
+  SortItem(icon: Icons.album_rounded, title: 'Album'),
+  SortItem(icon: Icons.schedule_rounded, title: 'Duration'),
+  SortItem(icon: Icons.title, title: 'Date Added'),
+  SortItem(icon: Icons.sd_storage_rounded, title: 'Size'),
+  SortItem(icon: Icons.text_fields_rounded, title: 'Display Name'),
+];
+
+final List<SortItem> orderItems = [
+  SortItem(icon: Icons.expand_less_rounded, title: 'Ascending'),
+  SortItem(icon: Icons.expand_more_rounded, title: 'Descending'),
+];

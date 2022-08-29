@@ -13,8 +13,8 @@ const double kImagePadding = 4.0;
 /// App content padding size 16.0
 const double kAppContentPadding = 16.0;
 
-/// Mini player height size 70.0
-const double kMiniPlayerHeight = 70.0;
+/// Player min height size 70.0
+const double kPlayerMinHeight = 70.0;
 
 /// App bar height size 55.0
 const double kAppBarHeight = 55.0;
@@ -26,7 +26,7 @@ const double kChildAspectRatio = 17 / 20;
 const double kBottomNavBarHeight = 58;
 
 /// Value: 0.1
-const double kMiniPlayerPercentageDeclaration = 0.1;
+const double kMiniPlayerPercentageDeclaration = 0.2;
 
 /// 100 milliseconds
 const Duration kShortDuration = Duration(milliseconds: 100);

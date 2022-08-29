@@ -10,34 +10,65 @@ import '../../common_widgets/common_widgets.dart';
 import '../../constants/constants.dart';
 import '../../provider/settings_provider.dart';
 import '../../theme/style.dart';
-import '../../theme/theme.dart';
 import 'components/language_item.dart';
 import 'components/setting_card.dart';
 import 'help_feedback.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  int _scrollPosition = 0;
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      setState(() {
+        _scrollPosition = _scrollController.position.pixels.floor();
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      appBar: NeumorphicAppBar(
-        leading: IconBtn(
-            icon: Icons.arrow_back_rounded,
-            label: 'Back',
-            onPressed: () {
-              Navigator.pop(context, true);
-            }),
-        title: Text(
-          'Settings',
-          style: appBarTextStyle,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kAppBarHeight),
+        child: AppBar(
+          backgroundColor: NeumorphicTheme.baseColor(context),
+          elevation: [0, 1, 2].contains(_scrollPosition) ? 0 : 2,
+          leading: Column(
+            children: [
+              IconBtn(
+                icon: Icons.arrow_back_rounded,
+                label: 'Back',
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+          title: Text(
+            'Settings',
+            style: theme.textTheme.headlineSmall!
+                .copyWith(fontWeight: FontWeight.w700),
+          ),
         ),
       ),
-      body: SizedBox(
-        height: screenHeight(context),
+      body: SingleChildScrollView(
+        controller: _scrollController,
+        physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 20),
             Container(
               width: double.infinity,
               margin: const EdgeInsets.symmetric(horizontal: 16) +
@@ -70,7 +101,7 @@ class SettingsPage extends StatelessWidget {
                           }
                         },
                         title: Text(
-                          "Dark Mode",
+                          'Dark Mode',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ),
@@ -104,7 +135,7 @@ class SettingsPage extends StatelessWidget {
                 Expanded(
                   child: SettingCard(
                     icon: Icons.question_mark_rounded,
-                    text: "Help &\nfeedback",
+                    text: 'Help &\nfeedback',
                     onPressed: () {
                       _modalBottom(context);
                     },
@@ -113,7 +144,7 @@ class SettingsPage extends StatelessWidget {
                 Expanded(
                   child: SettingCard(
                     icon: Icons.person_add_alt_1_rounded,
-                    text: "Invite a friend",
+                    text: 'Invite a friend',
                     isLeft: false,
                     onPressed: _shareApp,
                   ),
@@ -128,7 +159,7 @@ class SettingsPage extends StatelessWidget {
                 builder: (_, snapshot) {
                   if (snapshot.hasData && !snapshot.hasError) {
                     return Text(
-                      "Version ${snapshot.data?.version} (${snapshot.data?.buildNumber})",
+                      'Version ${snapshot.data?.version}',
                       style: Theme.of(context).textTheme.bodyLarge,
                     );
                   } else {
@@ -136,7 +167,7 @@ class SettingsPage extends StatelessWidget {
                   }
                 },
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -154,7 +185,7 @@ class SettingsPage extends StatelessWidget {
           ),
           title: Center(
             child: Text(
-              "Pick a language",
+              'Pick a language',
               style: Theme.of(context)
                   .textTheme
                   .subtitle1
@@ -183,7 +214,7 @@ class SettingsPage extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   child: Text(
-                    "Cancel",
+                    'Cancel',
                     style: Theme.of(context)
                         .textTheme
                         .subtitle1
@@ -203,6 +234,12 @@ class SettingsPage extends StatelessWidget {
         'Hey, I am using $kAppName. It\'s a free and simple audio player app. Try it out at https://exemple.com/',
         subject: 'Invite a friend');
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
 }
 
 void _modalBottom(BuildContext context) {
@@ -213,8 +250,8 @@ void _modalBottom(BuildContext context) {
       backgroundColor: NeumorphicTheme.baseColor(context),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(12.0),
-          topRight: Radius.circular(12.0),
+          topLeft: Radius.circular(20.0),
+          topRight: Radius.circular(20.0),
         ),
       ),
       context: context,

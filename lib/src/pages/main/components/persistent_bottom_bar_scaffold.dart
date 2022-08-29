@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:miniplayer/miniplayer.dart';
@@ -90,7 +89,7 @@ class _PersistentBottomBarScaffoldState
             valueListenable: playerExpandProgress,
             builder: (BuildContext context, double height, Widget? child) {
               final value = percentageFromValueInRange(
-                  min: kMiniPlayerHeight,
+                  min: kPlayerMinHeight,
                   max: screenHeight(context),
                   value: height);
 

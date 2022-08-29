@@ -7,7 +7,7 @@ class IconBtn extends StatelessWidget {
   final String? label;
   final Color? color;
   final Color? iconColor;
-  final NeumorphicBoxShape boxShape;
+  final double iconSize;
   final bool isPressed;
   final bool isActive;
   final void Function()? onPressed;
@@ -18,9 +18,9 @@ class IconBtn extends StatelessWidget {
     this.label,
     this.isPressed = false,
     this.onPressed,
-    this.boxShape = const NeumorphicBoxShape.circle(),
     this.margin = const EdgeInsets.all(8.0),
     this.padding = const EdgeInsets.all(8.0),
+    this.iconSize = 20.0,
     this.isActive = false,
     this.color,
     this.iconColor,
@@ -39,13 +39,11 @@ class IconBtn extends StatelessWidget {
         color: color,
         depth: isActive ? -2 : 2,
         shape: NeumorphicShape.flat,
-        boxShape: boxShape,
+        boxShape: const NeumorphicBoxShape.circle(),
       ),
-      child: Icon(
-        icon,
-        size: 20.0,
-        color: iconColor,
-      ),
+      child: Icon(icon,
+          size: iconSize,
+          color: iconColor ?? Theme.of(context).iconTheme.color),
     );
   }
 }

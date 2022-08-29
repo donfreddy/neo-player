@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audio_service/audio_service.dart';
 
 class MediaItemConverter {
@@ -25,48 +27,24 @@ class MediaItemConverter {
     };
   }
 
-  static MediaItem mapToMediaItem(Map song,
-      {bool addedByAutoplay = false,
-      bool autoplay = true,
-     bool loadThumbnailUri = false}) {
+  static MediaItem mapToMediaItem(Map song, Directory tempDir) {
+    final imagePath = '${tempDir.path}/${song['_display_name_wo_ext']}.jpg';
     return MediaItem(
       id: song['_id'].toString(),
-      album: song['album'].toString(),
-      artist: song['artist'].toString(),
-      duration: Duration(
-        seconds: int.parse(
-          (song['duration'] == null || song['duration'] == 'null')
-              ? '180'
-              : song['duration'].toString(),
-        ),
-      ),
-      title: song['title'].toString(),
-      artUri: Uri.parse(song['_uri'].toString()),
-      genre: song['genre'].toString(),
+      title: song['title'] == '' ? song['_display_name_wo_ext'] : song['title'],
+      artist: song['artist'] == '<unknown>' ? 'Unknown' : song['artist'],
+      duration: Duration(milliseconds: song['duration'] ?? 180000),
+      album: song['album'],
+      artUri: Uri.file(imagePath),
+      genre: song['genre'],
       extras: {
-        'url': song['_data'] ,
+        'url': song['_data'],
         'display_name': song['_display_name'],
-        'display_name_wo_ext': song['_display_name_wo_ext'],
         'size': song['_size'],
         'year': song['year'],
         'date_added': song['date_added'],
         'date_modified': song['date_modified'],
-        'track': song['track'],
-        'album_id': song['album_id'],
-        'artist_id': song['artist_id'],
-        'genre_id': song['genre_id'] ?? '',
-        'bookmark': song['bookmark'],
-        'composer': song['composer'] ?? '',
-        'is_alarm': song['is_alarm'],
-        'is_audiobook': song['is_audiobook'],
-        'is_music': song['is_music'],
-        'is_notification': song['is_notification'],
-        'is_podcast': song['is_podcast'],
-        'is_ringtone': song['is_ringtone'],
-        'file_extension': song['file_extension'],
-        'loadThumbnailUri': loadThumbnailUri,
-        'addedByAutoplay': addedByAutoplay,
-        'autoplay': autoplay,
+        'file_extension': song['file_extension']
       },
     );
   }

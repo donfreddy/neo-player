@@ -6,13 +6,15 @@ import 'common_widgets.dart';
 class OrderTypeItem extends StatelessWidget {
   final String title;
   final IconData icon;
+  final int value;
   final bool isSelected;
-  final void Function()? onOrderSelect;
+  final void Function(int value)? onOrderSelect;
 
   const OrderTypeItem({
     Key? key,
     required this.title,
     required this.icon,
+    required this.value,
     required this.isSelected,
     this.onOrderSelect,
   }) : super(key: key);
@@ -29,7 +31,7 @@ class OrderTypeItem extends StatelessWidget {
         disableDepth: !isSelected,
       ),
       child: MaterialWitchInkWell(
-        onTap: onOrderSelect,
+        onTap: () => onOrderSelect!(value),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Column(

@@ -3,7 +3,6 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 import '../constants/constants.dart';
 import '../pages/pages.dart';
-import '../theme/style.dart';
 import 'icon_btn.dart';
 
 PreferredSizeWidget neoAppBar(BuildContext context,
@@ -16,8 +15,9 @@ PreferredSizeWidget neoAppBar(BuildContext context,
       elevation: 0.0,
       title: Text(
         title,
-        style: appBarTextStyle.copyWith(
-            color: NeumorphicTheme.accentColor(context)),
+        style: theme.textTheme.headlineSmall!.copyWith(
+            color: NeumorphicTheme.accentColor(context),
+            fontWeight: FontWeight.w700),
       ),
       actions: <Widget>[
         // IconBtn(

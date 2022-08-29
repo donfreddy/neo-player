@@ -6,13 +6,15 @@ import '../constants/constants.dart';
 class SortTypeItem extends StatelessWidget {
   final String title;
   final IconData icon;
+  final int value;
   final bool isSelected;
-  final void Function()? onSortSelect;
+  final void Function(int value)? onSortSelect;
 
   const SortTypeItem({
     Key? key,
     required this.title,
     required this.icon,
+    required this.value,
     required this.isSelected,
     this.onSortSelect,
   }) : super(key: key);
@@ -29,7 +31,7 @@ class SortTypeItem extends StatelessWidget {
         disableDepth: !isSelected,
       ),
       child: MaterialWitchInkWell(
-        onTap: onSortSelect,
+        onTap: () => onSortSelect!(value),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(

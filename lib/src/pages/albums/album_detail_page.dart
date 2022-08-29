@@ -31,15 +31,12 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_scrollListener);
-    initSongs();
-  }
-
-  void _scrollListener() {
-    print('### Scroll Position ${_scrollController.position.pixels.floor()}');
-    setState(() {
-      _scrollPosition = _scrollController.position.pixels;
+    _scrollController.addListener(() {
+      setState(() {
+        _scrollPosition = _scrollController.position.pixels;
+      });
     });
+    initSongs();
   }
 
   void initSongs() async {
