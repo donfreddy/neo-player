@@ -6,24 +6,19 @@ import 'package:on_audio_query/on_audio_query.dart';
 import '../../locator.dart';
 import '../constants/constants.dart';
 import '../pages/now_playing/neo_manager.dart';
+import '../pages/songs/widgets/song_options.dart';
 import '../theme/style.dart';
 import 'custom_material.dart';
 import 'icon_btn.dart';
 
 class SongItem extends StatelessWidget {
-  final int songId;
-  final String title;
+  final SongModel song;
   final ArtworkType artworkType;
-  final String? artist;
   final VoidCallback? onPressed;
-
-  // final SongModel song;
 
   const SongItem({
     Key? key,
-    required this.songId,
-    required this.title,
-    this.artist,
+    required this.song,
     this.artworkType = ArtworkType.AUDIO,
     this.onPressed,
   }) : super(key: key);
@@ -43,7 +38,7 @@ class SongItem extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(kImagePadding / 2),
                   child: QueryArtwork(
-                    artworkId: songId,
+                    artworkId: song.id,
                     artworkType: artworkType,
                     defaultPath: 'assets/images/artist.png',
                   ),
@@ -62,13 +57,13 @@ class SongItem extends StatelessWidget {
                   ValueListenableBuilder<MediaItem?>(
                       valueListenable:
                           locator<NeoManager>().currentSongNotifier,
-                      builder: (_, song, __) {
+                      builder: (_, currentSong, __) {
                         return Text(
-                          title,
+                          song.title,
                           style:
                               Theme.of(context).textTheme.titleMedium!.copyWith(
-                                  color: song != null
-                                      ? song.id == songId.toString()
+                                  color: currentSong != null
+                                      ? currentSong.id == song.id.toString()
                                           ? Theme.of(context).primaryColor
                                           : null
                                       : null),
@@ -76,7 +71,9 @@ class SongItem extends StatelessWidget {
                         );
                       }),
                   Text(
-                    artist == '<unknown>' ? 'Artiste inconnu' : artist!,
+                    song.artist == '<unknown>'
+                        ? 'Artiste inconnu'
+                        : song.artist!,
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: textGrayColor,
                         ),
@@ -93,7 +90,9 @@ class SongItem extends StatelessWidget {
               child: IconBtn(
                 icon: Icons.more_horiz_rounded,
                 label: 'Option',
-                onPressed: () {},
+                onPressed: () {
+                  _showSongOptionsModalBottom(context, song);
+                },
               ),
             ),
           ),
@@ -103,20 +102,21 @@ class SongItem extends StatelessWidget {
   }
 }
 
-// ListTile(
-// onTap: () {},
-// dense: true,
-// title: Text(
-// title,
-// style: Theme.of(context).textTheme.titleMedium,
-// maxLines: 1,
-// ),
-// subtitle: Opacity(
-// opacity: 0.6,
-// child: Text(
-// artist == '<unknown>' ? 'Artiste inconnu' : artist!,
-// style: Theme.of(context).textTheme.bodyLarge,
-// maxLines: 1,
-// ),
-// ),
-// ),
+void _showSongOptionsModalBottom(BuildContext context, SongModel song) {
+  showModalBottomSheet<Widget>(
+    isScrollControlled: true,
+    useRootNavigator: true,
+    barrierColor: Colors.black38,
+    backgroundColor: NeumorphicTheme.baseColor(context),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(kBottomSheetRadius),
+        topRight: Radius.circular(kBottomSheetRadius),
+      ),
+    ),
+    context: context,
+    builder: (_) {
+      return SongOptions(song: song);
+    },
+  );
+}

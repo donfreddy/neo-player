@@ -311,7 +311,7 @@ class _NowPlayingState extends State<NowPlaying> {
             value: height);
 
         final elementOpacity = 1 - 1 * percentageMiniPlayer;
-        final progressIndicatorHeight = 3                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            - 2.5 * percentageMiniPlayer;
+        final progressIndicatorHeight = 3 - 2.5 * percentageMiniPlayer;
 
         return Neumorphic(
           style: const NeumorphicStyle(
@@ -342,7 +342,7 @@ class _NowPlayingState extends State<NowPlaying> {
                           padding: EdgeInsets.zero,
                           percent: progressValue,
                           barRadius: const Radius.circular(kRadius),
-                          progressColor:Theme.of(context).primaryColor,
+                          progressColor: Theme.of(context).primaryColor,
                           backgroundColor: textGrayColor.withOpacity(0.2),
                         );
                       }),
@@ -438,7 +438,7 @@ class _NowPlayingState extends State<NowPlaying> {
                               valueListenable: neoManager.isLastSongNotifier,
                               builder: (_, isLast, __) {
                                 return IconBtn(
-                                  icon: Icons.skip_next_rounded,
+                                  icon: Icons.fast_forward,
                                   label: 'Next',
                                   iconColor: Colors.white,
                                   onPressed: (isLast) ? null : neoManager.next,

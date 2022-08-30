@@ -101,9 +101,7 @@ class _SongsPageState extends State<SongsPage> {
                               itemBuilder: (_, index) {
                                 SongModel song = songs[index];
                                 return SongItem(
-                                  songId: song.id,
-                                  title: song.title,
-                                  artist: song.artist,
+                                  song: song,
                                   onPressed: () {
                                     getTemporaryDirectory()
                                         .then((tempDir) async {
@@ -174,9 +172,7 @@ class _SongsPageState extends State<SongsPage> {
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: Text(
                     'Sorting',
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          color: Theme.of(context).primaryColor,
-                        ),
+                    style: dialogTitleStyle(context),
                   ),
                 ),
               ),
@@ -191,8 +187,9 @@ class _SongsPageState extends State<SongsPage> {
             ],
           ),
           titlePadding: const EdgeInsets.all(0),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16.0) +
-              const EdgeInsets.only(bottom: 10.0),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: kAppContentPadding) +
+                  const EdgeInsets.only(bottom: 10.0),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -276,7 +273,7 @@ final List<SortItem> songSortItems = [
   SortItem(icon: Icons.album_rounded, title: 'Album'),
   SortItem(icon: Icons.schedule_rounded, title: 'Duration'),
   SortItem(icon: Icons.title, title: 'Date Added'),
-  SortItem(icon: Icons.sd_storage_rounded, title: 'Size'),
+  SortItem(icon: Icons.dns_rounded, title: 'Size'),
   SortItem(icon: Icons.text_fields_rounded, title: 'Display Name'),
 ];
 

@@ -16,6 +16,14 @@ extension DateTimeExtension on int {
     return this == 1 ? '${this} track' : '${this} tracks';
   }
 
+  // get date time e.g: 5/27/22, 13:16
+  String toDateTime() {
+    const millisecondsSinceEpoch = 4;
+
+    return DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch)
+        .toString();
+  }
+
   String formatMSToHHMMSS() {
     if (this != 0) {
       final int hours = ((this / (1000 * 60 * 60)) % 24).floor();

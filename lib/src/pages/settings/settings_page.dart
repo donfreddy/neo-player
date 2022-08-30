@@ -250,8 +250,8 @@ void _modalBottom(BuildContext context) {
       backgroundColor: NeumorphicTheme.baseColor(context),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20.0),
-          topRight: Radius.circular(20.0),
+          topLeft: Radius.circular(kBottomSheetRadius),
+          topRight: Radius.circular(kBottomSheetRadius),
         ),
       ),
       context: context,

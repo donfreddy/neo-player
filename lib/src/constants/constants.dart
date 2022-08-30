@@ -7,6 +7,9 @@ const String kAppEmail = 'neoplayer@gmail.com';
 /// Radius size 10.0
 const double kRadius = 10.0;
 
+/// Bottom sheet radius size 20.0
+const double kBottomSheetRadius = 20.0;
+
 /// Image padding 4.0
 const double kImagePadding = 4.0;
 

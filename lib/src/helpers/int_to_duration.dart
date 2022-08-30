@@ -7,8 +7,8 @@ String getDuration(int? duration) {
   final double minutes = time % 60;
   // return '${hour.toString().padLeft(2, "0")}:${minutes.toString().padLeft(
   //     2, "0")}'
-  if (hour == 0) return "$minutes minutes";
-  return "$hour heures $minutes minutes";
+  if (hour == 0) return '$minutes minutes';
+  return '$hour heures $minutes minutes';
 }
 
 String durationToString(int minutes) {

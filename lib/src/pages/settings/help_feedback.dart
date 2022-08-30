@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
+import '../../common_widgets/common_widgets.dart';
 import '../../constants/constants.dart';
 import '../../helpers/url_launcher.dart';
 
@@ -13,7 +14,7 @@ class HelpFeedback extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         const SizedBox(height: 10),
-        InkWell(
+        MaterialWitchInkWell(
           onTap: () {
             HapticFeedback.vibrate();
             Navigator.pop(context);

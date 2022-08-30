@@ -199,11 +199,7 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
                 SliverList(
                     delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    return SongItem(
-                      songId: songs[index].id,
-                      title: songs[index].title,
-                      artist: songs[index].artist,
-                    );
+                    return SongItem(song: songs[index]);
                   },
                   childCount: songs.length,
                 )),

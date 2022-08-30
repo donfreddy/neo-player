@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -18,6 +21,16 @@ UriAudioSource createAudioSource(MediaItem mediaItem) {
     Uri.parse(mediaItem.extras!['url'].toString()),
     tag: mediaItem,
   );
+}
+
+Future<String> getFileSize(String filepath, {int decimals = 2}) async {
+  int bytes = await File(filepath).length();
+  if (bytes <= 0) return '0 B';
+  const k = 1024;
+  const suffixes = ['B', 'KB', 'MB'];
+
+  var i = (log(bytes) / log(k)).floor();
+  return '${(bytes / pow(k, i)).toStringAsFixed(decimals)} ${suffixes[i]}';
 }
 
 void showSnackBar(BuildContext context, String message) {

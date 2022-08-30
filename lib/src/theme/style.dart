@@ -65,8 +65,22 @@ const Color accentColor8 = Color(0xFFff70a6);
 
 //--------------------------- Text style -------------------------------------
 
-TextStyle appBarTextStyle = const TextStyle(
+/// `AppBar Title` text style
+TextStyle appBarTitleStyle = const TextStyle(
   fontFamily: kNunitoFont,
   fontSize: 24.0,
   fontWeight: FontWeight.w700,
 );
+
+/// `Dialog Title` text style
+TextStyle dialogTitleStyle(context) {
+  return Theme.of(context)
+      .textTheme
+      .titleSmall!
+      .copyWith(color: Theme.of(context).primaryColor);
+}
+
+/// `Dialog Content` text style
+TextStyle? dialogContentStyle(context) {
+  return Theme.of(context).textTheme.bodyMedium;
+}
