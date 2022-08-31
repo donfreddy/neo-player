@@ -6,10 +6,10 @@ import 'package:on_audio_query/on_audio_query.dart';
 import '../../locator.dart';
 import '../constants/constants.dart';
 import '../pages/now_playing/neo_manager.dart';
-import '../pages/songs/widgets/song_options.dart';
 import '../theme/style.dart';
 import 'custom_material.dart';
 import 'icon_btn.dart';
+import 'modal_bottom_sheet.dart';
 
 class SongItem extends StatelessWidget {
   final SongModel song;
@@ -91,7 +91,7 @@ class SongItem extends StatelessWidget {
                 icon: Icons.more_horiz_rounded,
                 label: 'Option',
                 onPressed: () {
-                  _showSongOptionsModalBottom(context, song);
+                  showSongOptionsModalBottom(context, song);
                 },
               ),
             ),
@@ -100,23 +100,4 @@ class SongItem extends StatelessWidget {
       ),
     );
   }
-}
-
-void _showSongOptionsModalBottom(BuildContext context, SongModel song) {
-  showModalBottomSheet<Widget>(
-    isScrollControlled: true,
-    useRootNavigator: true,
-    barrierColor: Colors.black38,
-    backgroundColor: NeumorphicTheme.baseColor(context),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(kBottomSheetRadius),
-        topRight: Radius.circular(kBottomSheetRadius),
-      ),
-    ),
-    context: context,
-    builder: (_) {
-      return SongOptions(song: song);
-    },
-  );
 }

@@ -29,7 +29,7 @@ const double kChildAspectRatio = 17 / 20;
 const double kBottomNavBarHeight = 58;
 
 /// Value: 0.1
-const double kMiniPlayerPercentageDeclaration = 0.2;
+const double kMiniPlayerPercentageDeclaration = 0.1;
 
 /// 100 milliseconds
 const Duration kShortDuration = Duration(milliseconds: 100);

@@ -70,9 +70,6 @@ dependencies:
   # Automatically resizes text to fit perfectly within its bounds.
   auto_size_text: ^3.0.0
 
-  # progress widgets based on percentage
-  percent_indicator: ^4.2.2
-
   ########################## DATA PERSISTENCE PACKAGES #########################
 
   # Flutter plugin for reading and writing simple key-value pairs.

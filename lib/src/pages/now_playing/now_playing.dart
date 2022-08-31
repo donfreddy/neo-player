@@ -1,9 +1,10 @@
+import 'dart:developer';
+
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:neo_player/src/theme/style.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../../locator.dart';
 import '../../common_widgets/common_widgets.dart';
@@ -49,7 +50,7 @@ class _NowPlayingState extends State<NowPlaying> {
       maxHeight: kPlayerMaxHeight,
       controller: controller,
       elevation: 5,
-      // onDismissed: () => currentlyPlaying.value = null,
+      onDismissed: () => log('Mini player dismissed'),
       curve: Curves.easeOut,
       builder: (height, percentage) {
         final bool miniPlayer = percentage < kMiniPlayerPercentageDeclaration;
@@ -95,210 +96,215 @@ class _NowPlayingState extends State<NowPlaying> {
           );
 
           // =============== Full Page =================
-          return Neumorphic(
-            style: const NeumorphicStyle(
-              boxShape: NeumorphicBoxShape.rect(),
-              depth: 2,
-            ),
-            child: Column(
-              children: [
-                const SizedBox(height: 25.0),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: Opacity(
-                      opacity: percentageExpandedPlayer,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconBtn(
-                            icon: Icons.expand_more_rounded,
-                            label: 'Settings',
-                            onPressed: () {
-                              controller.animateToHeight(state: PanelState.MIN);
-                            },
-                          ),
-                          Text(
-                            'Now Playing',
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          IconBtn(
-                            icon: Icons.more_horiz_rounded,
-                            label: 'Menu',
-                            onPressed: () {
-                              unImplementSnackBar(context);
-                            },
-                          )
-                        ],
+          return GestureDetector(
+            onTap: () {},
+            child: Neumorphic(
+              style: const NeumorphicStyle(
+                boxShape: NeumorphicBoxShape.rect(),
+                depth: 2,
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(height: 25.0),
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                      child: Opacity(
+                        opacity: percentageExpandedPlayer,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconBtn(
+                              icon: Icons.expand_more_rounded,
+                              label: 'Settings',
+                              onPressed: () {
+                                controller.animateToHeight(
+                                    state: PanelState.MIN);
+                              },
+                            ),
+                            Text(
+                              'Now Playing',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            IconBtn(
+                              icon: Icons.more_horiz_rounded,
+                              label: 'Menu',
+                              onPressed: () {
+                                unImplementSnackBar(context);
+                              },
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20.0),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: paddingLeft,
-                      top: paddingVertical,
-                      bottom: paddingVertical,
-                    ),
-                    child: SizedBox(
-                      height: imageSize,
-                      child: _buildImage(),
+                  const SizedBox(height: 20.0),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: paddingLeft,
+                        top: paddingVertical,
+                        bottom: paddingVertical,
+                      ),
+                      child: SizedBox(
+                        height: imageSize,
+                        child: _buildImage(),
+                      ),
                     ),
                   ),
-                ),
-                //const SizedBox(height: 10.0),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: kAppContentPadding),
-                    child: Opacity(
-                      opacity: percentageExpandedPlayer,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Flexible(
-                              child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: kAppContentPadding),
-                            child: Column(
-                              children: [
-                                AnimatedText(
-                                  text:
-                                      'All My Love Ft. Arianna Grande and Marvin',
-                                  pauseAfterRound: const Duration(seconds: 3),
-                                  fadingEdgeEndFraction: 0.1,
-                                  fadingEdgeStartFraction: 0.1,
-                                  startAfter: const Duration(seconds: 2),
-                                  style: theme.textTheme.titleLarge!
-                                      .copyWith(fontWeight: FontWeight.bold),
-                                ),
-                                AnimatedText(
-                                  text: 'Major Lazer',
-                                  pauseAfterRound: const Duration(seconds: 3),
-                                  fadingEdgeEndFraction: 0.1,
-                                  fadingEdgeStartFraction: 0.1,
-                                  startAfter: const Duration(seconds: 2),
-                                  style: theme.textTheme.titleMedium!
-                                      .copyWith(color: textGrayColor),
-                                  startPadding: 0.0,
-                                ),
-                              ],
-                            ),
-                          )),
-                          const SizedBox(height: 20.0),
-                          Flexible(
+                  //const SizedBox(height: 10.0),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: kAppContentPadding),
+                      child: Opacity(
+                        opacity: percentageExpandedPlayer,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Flexible(
+                                child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: kAppContentPadding),
                               child: Column(
-                            children: [
-                              Row(
+                                children: [
+                                  AnimatedText(
+                                    text:
+                                        'All My Love Ft. Arianna Grande and Marvin',
+                                    pauseAfterRound: const Duration(seconds: 3),
+                                    fadingEdgeEndFraction: 0.1,
+                                    fadingEdgeStartFraction: 0.1,
+                                    startAfter: const Duration(seconds: 2),
+                                    style: theme.textTheme.titleLarge!
+                                        .copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                  AnimatedText(
+                                    text: 'Major Lazer',
+                                    pauseAfterRound: const Duration(seconds: 3),
+                                    fadingEdgeEndFraction: 0.1,
+                                    fadingEdgeStartFraction: 0.1,
+                                    startAfter: const Duration(seconds: 2),
+                                    style: theme.textTheme.titleMedium!
+                                        .copyWith(color: textGrayColor),
+                                    startPadding: 0.0,
+                                  ),
+                                ],
+                              ),
+                            )),
+                            const SizedBox(height: 20.0),
+                            Flexible(
+                                child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    IconBtn(
+                                      icon: Icons.playlist_add,
+                                      onPressed: () {},
+                                      margin: EdgeInsets.zero,
+                                      padding: const EdgeInsets.all(4.0),
+                                      // iconColor: NeumorphicTheme.defaultTextColor(
+                                      //     context),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    IconBtn(
+                                      icon: isMuted
+                                          ? Icons.headset
+                                          : Icons.headset_off,
+                                      onPressed: () {},
+                                      margin: EdgeInsets.zero,
+                                      padding: const EdgeInsets.all(4.0),
+                                      //depth: isMuted ? -3.0 : 3.0,
+                                      // iconColor: isMuted
+                                      //     ? primaryColor
+                                      //     : NeumorphicTheme.defaultTextColor(
+                                      //         context),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            )),
+                            Flexible(
+                              child: ProgressBar(
+                                progress: const Duration(seconds: 100),
+                                // buffered: value.buffered,
+                                total: const Duration(seconds: 600) -
+                                    const Duration(seconds: 200),
+                                progressBarColor: theme.primaryColor,
+                                baseBarColor:
+                                    theme.primaryColor.withOpacity(0.2),
+                                thumbGlowColor: theme.primaryColor,
+                                thumbColor: theme.primaryColor,
+                                timeLabelTextStyle: theme.textTheme.bodyMedium!
+                                    .copyWith(color: textGrayColor),
+                                timeLabelType: TimeLabelType.remainingTime,
+                                barHeight: 4.0,
+                                // onSeek: _pageManager.seek,
+                              ),
+                            ),
+                            const SizedBox(height: 20.0),
+                            Flexible(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   IconBtn(
-                                    icon: Icons.playlist_add,
+                                    icon: Icons.shuffle,
                                     onPressed: () {},
                                     margin: EdgeInsets.zero,
                                     padding: const EdgeInsets.all(4.0),
                                     // iconColor: NeumorphicTheme.defaultTextColor(
                                     //     context),
                                   ),
-                                  const SizedBox(width: 16),
+                                  const SizedBox(width: 24),
                                   IconBtn(
-                                    icon: isMuted
-                                        ? Icons.headset
-                                        : Icons.headset_off,
+                                    icon: Icons.skip_previous,
+                                    onPressed: () {},
+                                    iconSize: 24.0,
+                                    margin: EdgeInsets.zero,
+                                    padding: const EdgeInsets.all(14.0),
+                                    // iconColor: NeumorphicTheme.defaultTextColor(
+                                    //     context),
+                                  ),
+                                  const SizedBox(width: 20),
+                                  IconBtn(
+                                    icon: Icons.play_arrow_rounded,
+                                    onPressed: () {},
+                                    margin: EdgeInsets.zero,
+                                    color: theme.primaryColor,
+                                    iconSize: 24.0,
+                                    padding: const EdgeInsets.all(20.0),
+                                    // iconColor: NeumorphicTheme.defaultTextColor(
+                                    //     context),
+                                  ),
+                                  const SizedBox(width: 20),
+                                  IconBtn(
+                                    icon: Icons.skip_next,
+                                    onPressed: () {},
+                                    iconSize: 24.0,
+                                    margin: EdgeInsets.zero,
+                                    padding: const EdgeInsets.all(14.0),
+                                    // iconColor: NeumorphicTheme.defaultTextColor(
+                                    //     context),
+                                  ),
+                                  const SizedBox(width: 24),
+                                  IconBtn(
+                                    icon: Icons.repeat,
                                     onPressed: () {},
                                     margin: EdgeInsets.zero,
                                     padding: const EdgeInsets.all(4.0),
-                                    //depth: isMuted ? -3.0 : 3.0,
-                                    // iconColor: isMuted
-                                    //     ? primaryColor
-                                    //     : NeumorphicTheme.defaultTextColor(
-                                    //         context),
+                                    // iconColor: NeumorphicTheme.defaultTextColor(
+                                    //     context),
                                   ),
                                 ],
-                              )
-                            ],
-                          )),
-                          Flexible(
-                            child: ProgressBar(
-                              progress: const Duration(seconds: 100),
-                              // buffered: value.buffered,
-                              total: const Duration(seconds: 600) -
-                                  const Duration(seconds: 200),
-                              progressBarColor: theme.primaryColor,
-                              baseBarColor: theme.primaryColor.withOpacity(0.2),
-                              thumbGlowColor: theme.primaryColor,
-                              thumbColor: theme.primaryColor,
-                              timeLabelTextStyle: theme.textTheme.bodyMedium!
-                                  .copyWith(color: textGrayColor),
-                              timeLabelType: TimeLabelType.remainingTime,
-                              barHeight: 4.0,
-                              // onSeek: _pageManager.seek,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 20.0),
-                          Flexible(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                IconBtn(
-                                  icon: Icons.shuffle,
-                                  onPressed: () {},
-                                  margin: EdgeInsets.zero,
-                                  padding: const EdgeInsets.all(4.0),
-                                  // iconColor: NeumorphicTheme.defaultTextColor(
-                                  //     context),
-                                ),
-                                const SizedBox(width: 24),
-                                IconBtn(
-                                  icon: Icons.skip_previous,
-                                  onPressed: () {},
-                                  iconSize: 24.0,
-                                  margin: EdgeInsets.zero,
-                                  padding: const EdgeInsets.all(14.0),
-                                  // iconColor: NeumorphicTheme.defaultTextColor(
-                                  //     context),
-                                ),
-                                const SizedBox(width: 20),
-                                IconBtn(
-                                  icon: Icons.play_arrow_rounded,
-                                  onPressed: () {},
-                                  margin: EdgeInsets.zero,
-                                  color: theme.primaryColor,
-                                  iconSize: 24.0,
-                                  padding: const EdgeInsets.all(20.0),
-                                  // iconColor: NeumorphicTheme.defaultTextColor(
-                                  //     context),
-                                ),
-                                const SizedBox(width: 20),
-                                IconBtn(
-                                  icon: Icons.skip_next,
-                                  onPressed: () {},
-                                  iconSize: 24.0,
-                                  margin: EdgeInsets.zero,
-                                  padding: const EdgeInsets.all(14.0),
-                                  // iconColor: NeumorphicTheme.defaultTextColor(
-                                  //     context),
-                                ),
-                                const SizedBox(width: 24),
-                                IconBtn(
-                                  icon: Icons.repeat,
-                                  onPressed: () {},
-                                  margin: EdgeInsets.zero,
-                                  padding: const EdgeInsets.all(4.0),
-                                  // iconColor: NeumorphicTheme.defaultTextColor(
-                                  //     context),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         }
@@ -338,11 +344,9 @@ class _NowPlayingState extends State<NowPlaying> {
                                   value.total.inMicroseconds.toDouble();
                         }
 
-                        return LinearPercentIndicator(
-                          padding: EdgeInsets.zero,
-                          percent: progressValue,
-                          barRadius: const Radius.circular(kRadius),
-                          progressColor: Theme.of(context).primaryColor,
+                        return LinearProgressIndicator(
+                          value: progressValue,
+                          color: Theme.of(context).primaryColor,
                           backgroundColor: textGrayColor.withOpacity(0.2),
                         );
                       }),
@@ -440,7 +444,6 @@ class _NowPlayingState extends State<NowPlaying> {
                                 return IconBtn(
                                   icon: Icons.fast_forward,
                                   label: 'Next',
-                                  iconColor: Colors.white,
                                   onPressed: (isLast) ? null : neoManager.next,
                                 );
                               }),

@@ -7,12 +7,12 @@ import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../common_widgets/common_widgets.dart';
+import '../../common_widgets/modal_bottom_sheet.dart';
 import '../../constants/constants.dart';
 import '../../provider/settings_provider.dart';
 import '../../theme/style.dart';
 import 'components/language_item.dart';
 import 'components/setting_card.dart';
-import 'help_feedback.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -137,7 +137,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     icon: Icons.question_mark_rounded,
                     text: 'Help &\nfeedback',
                     onPressed: () {
-                      _modalBottom(context);
+                      showHelpFeedBackModalBottom(context);
                     },
                   ),
                 ),
@@ -240,22 +240,4 @@ class _SettingsPageState extends State<SettingsPage> {
     super.dispose();
     _scrollController.dispose();
   }
-}
-
-void _modalBottom(BuildContext context) {
-  showModalBottomSheet<Widget>(
-      isScrollControlled: true,
-      useRootNavigator: true,
-      barrierColor: Colors.black38,
-      backgroundColor: NeumorphicTheme.baseColor(context),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(kBottomSheetRadius),
-          topRight: Radius.circular(kBottomSheetRadius),
-        ),
-      ),
-      context: context,
-      builder: (_) {
-        return const HelpFeedback();
-      });
 }

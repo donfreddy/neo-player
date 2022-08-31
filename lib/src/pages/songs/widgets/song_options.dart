@@ -1,16 +1,15 @@
 import 'package:animations/animations.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:neo_player/src/common_widgets/common_widgets.dart';
+import 'package:neo_player/src/common_widgets/top_bottm_sheet_bar.dart';
 import 'package:neo_player/src/constants/constants.dart';
 import 'package:neo_player/src/helpers/extensions.dart';
 import 'package:neo_player/src/theme/style.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../common_widgets/modal_bottom_item.dart';
 import '../../../helpers/helpers.dart';
 import '../../../helpers/int_to_duration.dart';
-import '../../../theme/theme.dart';
 
 class SongOptions extends StatelessWidget {
   final SongModel song;
@@ -24,17 +23,7 @@ class SongOptions extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Center(
-          child: Container(
-            height: 5,
-            margin: const EdgeInsets.symmetric(vertical: 10.0),
-            decoration: BoxDecoration(
-              color: textGrayColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            width: screenWidth(context) / 8,
-          ),
-        ),
+        const TopBottomSheetBar(),
         Container(
           padding: const EdgeInsets.symmetric(
               vertical: 10, horizontal: kAppContentPadding),
@@ -52,40 +41,36 @@ class SongOptions extends StatelessWidget {
         ),
         Column(
           children: [
-            SongOptionsItem(
+            ModalBottomItem(
               icon: Icons.skip_next_rounded,
               title: 'Add to next play',
               onTap: () {},
             ),
-            SongOptionsItem(
+            ModalBottomItem(
               icon: Icons.add_to_queue_rounded,
               title: 'Add to Queue',
               onTap: () {},
             ),
-            SongOptionsItem(
+            ModalBottomItem(
               icon: Icons.favorite_rounded,
               title: 'Add to favorite',
               onTap: () {},
             ),
-            SongOptionsItem(
+            ModalBottomItem(
               icon: Icons.playlist_add_rounded,
               title: 'Add to playlist',
               onTap: () {
-                HapticFeedback.vibrate();
-                Navigator.pop(context);
                 unImplementSnackBar(context);
               },
             ),
-            SongOptionsItem(
+            ModalBottomItem(
               icon: Icons.share_rounded,
               title: 'Share',
               onTap: () {
-                HapticFeedback.vibrate();
-                Navigator.pop(context);
                 Share.shareFiles([song.data]);
               },
             ),
-            SongOptionsItem(
+            ModalBottomItem(
               icon: Icons.info_rounded,
               title: 'information',
               onTap: () {
@@ -93,8 +78,6 @@ class SongOptions extends StatelessWidget {
                 print(song.getMap);
                 print('########################## Song model');
                 print(song);
-                HapticFeedback.vibrate();
-                Navigator.pop(context);
                 _buildSongInfoModal(context);
               },
             ),
@@ -166,7 +149,9 @@ class SongOptions extends StatelessWidget {
                   },
                   child: Text(
                     'Close',
-                    style: theme.textTheme.button,
+                    style: theme.textTheme.button!.copyWith(
+                      color: primaryColor,
+                    ),
                   ),
                 ),
               ],
@@ -191,7 +176,7 @@ class SongInfoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5.0),
+      padding: const EdgeInsets.only(bottom: 4.0),
       child: RichText(
         text: TextSpan(
           text: '$name: ',
@@ -201,43 +186,8 @@ class SongInfoItem extends StatelessWidget {
               text: value ?? 'Unknown',
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: textGrayColor,
-                    fontStyle: FontStyle.italic,
                   ),
             )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class SongOptionsItem extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final void Function()? onTap;
-
-  const SongOptionsItem({
-    Key? key,
-    required this.icon,
-    required this.title,
-    this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialWitchInkWell(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.symmetric(
-            vertical: 10, horizontal: kAppContentPadding),
-        child: Row(
-          children: [
-            Icon(icon),
-            const SizedBox(width: 10),
-            Text(
-              title,
-              style: Theme.of(context).textTheme.titleSmall,
-            ),
           ],
         ),
       ),
