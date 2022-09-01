@@ -1,6 +1,7 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:neo_player/src/common_widgets/query_artwork.dart';
+import 'package:neo_player/src/helpers/extensions.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../locator.dart';
@@ -70,15 +71,15 @@ class SongItem extends StatelessWidget {
                           maxLines: 1,
                         );
                       }),
+
                   Text(
-                    song.artist == '<unknown>'
-                        ? 'Artiste inconnu'
-                        : song.artist!,
+                    song.artist!.getArtist(),
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: textGrayColor,
                         ),
                     maxLines: 1,
                   ),
+
                 ],
               ),
             ),

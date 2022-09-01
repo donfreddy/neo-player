@@ -2,9 +2,13 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:neo_player/locator.dart';
 import 'package:neo_player/src/theme/style.dart';
+import 'package:on_audio_query/on_audio_query.dart';
+import 'package:path_provider/path_provider.dart';
 
 double valueFromPercentageInRange(
     {required final double min, max, percentage}) {
@@ -31,6 +35,37 @@ Future<String> getFileSize(String filepath, {int decimals = 2}) async {
 
   var i = (log(bytes) / log(k)).floor();
   return '${(bytes / pow(k, i)).toStringAsFixed(decimals)} ${suffixes[i]}';
+}
+
+int getTotalSongDuration(List<SongModel> songs) {
+  int total = 0;
+  for (var s in songs) {
+    if (s.duration != null) {
+      total += s.duration!;
+    }
+  }
+  return total;
+}
+
+Future<File> getFileFromArtwork(int songId, String path) async {
+  final imageInUnit8List = await locator<OnAudioQuery>().queryArtwork(
+    songId,
+    ArtworkType.AUDIO,
+    format: ArtworkFormat.PNG,
+  );
+  final file = File('${(await getTemporaryDirectory()).path}/$path.png');
+  if (!await file.exists()) {
+    if (imageInUnit8List != null) {
+      file.writeAsBytesSync(imageInUnit8List);
+    } else {
+      final byteData = await rootBundle.load('assets/images/artist.png');
+      await file.writeAsBytes(byteData.buffer.asUint8List(
+        byteData.offsetInBytes,
+        byteData.lengthInBytes,
+      ));
+    }
+  }
+  return file;
 }
 
 void showSnackBar(BuildContext context, String message) {

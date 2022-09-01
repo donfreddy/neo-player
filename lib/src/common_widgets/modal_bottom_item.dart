@@ -27,7 +27,7 @@ class ModalBottomItem extends StatelessWidget {
             vertical: 12, horizontal: kAppContentPadding),
         child: Row(
           children: [
-            Icon(icon, color: Theme.of(context).primaryColor),
+            Icon(icon),
             const SizedBox(width: 15),
             Text(
               title,

@@ -79,6 +79,10 @@ class NeoManager {
     await _playlist.insert(index, createAudioSource(mediaItem));
   }
 
+  Future<void> clear() async {
+    await _playlist.clear();
+  }
+
   void _listenForChangesInPlayerState() {
     _player.playerStateStream.listen((playerState) {
       final isPlaying = playerState.playing;
@@ -163,6 +167,8 @@ class NeoManager {
   void play() async => _player.play();
 
   void pause() => _player.pause();
+
+  void stop() => _player.stop();
 
   void seek(Duration position) => _player.seek(position);
 

@@ -1,6 +1,7 @@
 import 'dart:io';
+import 'dart:typed_data';
 
-import 'package:audio_service/audio_service.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 
 class MediaItemConverter {
   static Map mediaItemToMap(MediaItem mediaItem) {
@@ -27,15 +28,16 @@ class MediaItemConverter {
     };
   }
 
-  static MediaItem mapToMediaItem(Map song, Directory tempDir) {
-    final imagePath = '${tempDir.path}/${song['_display_name_wo_ext']}.jpg';
+  static MediaItem mapToMediaItem(Map song, File file) {
+    //   final imagePath = '${tempDir?.path}/${song['_display_name_wo_ext']}.jpg';
+
     return MediaItem(
       id: song['_id'].toString(),
       title: song['title'] == '' ? song['_display_name_wo_ext'] : song['title'],
       artist: song['artist'] == '<unknown>' ? 'Unknown' : song['artist'],
       duration: Duration(milliseconds: song['duration'] ?? 180000),
       album: song['album'],
-      artUri: Uri.file(imagePath),
+      artUri: Uri.file(file.path),
       genre: song['genre'],
       extras: {
         'url': song['_data'],

@@ -1,10 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:neo_player/src/helpers/extensions.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../common_widgets/common_widgets.dart';
 import '../../constants/constants.dart';
-import '../../helpers/int_to_duration.dart';
+import '../../helpers/helpers.dart';
 import '../../theme/style.dart';
 
 class AlbumDetailPage extends StatefulWidget {
@@ -46,9 +47,9 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
     );
 
     if (songs.length == 1) {
-      durations = intToDuration(songs[0].duration ?? 0);
+      durations = songs[0].duration!.toDuration();
     } else {
-      durations = intToDuration(getTotalInt(songs));
+      durations = getTotalSongDuration(songs).toDuration();
     }
   }
 

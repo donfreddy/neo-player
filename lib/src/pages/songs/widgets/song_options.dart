@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:neo_player/src/common_widgets/top_bottm_sheet_bar.dart';
+import 'package:neo_player/src/common_widgets/top_bottom_sheet_bar.dart';
 import 'package:neo_player/src/constants/constants.dart';
 import 'package:neo_player/src/helpers/extensions.dart';
 import 'package:neo_player/src/theme/style.dart';
@@ -9,7 +10,6 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../common_widgets/modal_bottom_item.dart';
 import '../../../helpers/helpers.dart';
-import '../../../helpers/int_to_duration.dart';
 
 class SongOptions extends StatelessWidget {
   final SongModel song;
@@ -28,7 +28,7 @@ class SongOptions extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
               vertical: 10, horizontal: kAppContentPadding),
           child: Text(
-            song.displayName,
+            song.displayNameWOExt,
             style: theme.textTheme.titleSmall,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -43,18 +43,24 @@ class SongOptions extends StatelessWidget {
           children: [
             ModalBottomItem(
               icon: Icons.skip_next_rounded,
-              title: 'Add to next play',
-              onTap: () {},
+              title: 'Play next',
+              onTap: () {
+                unImplementSnackBar(context);
+              },
             ),
             ModalBottomItem(
               icon: Icons.add_to_queue_rounded,
-              title: 'Add to Queue',
-              onTap: () {},
+              title: 'Add to Playing Queue',
+              onTap: () {
+                unImplementSnackBar(context);
+              },
             ),
             ModalBottomItem(
               icon: Icons.favorite_rounded,
               title: 'Add to favorite',
-              onTap: () {},
+              onTap: () {
+                unImplementSnackBar(context);
+              },
             ),
             ModalBottomItem(
               icon: Icons.playlist_add_rounded,
@@ -64,6 +70,11 @@ class SongOptions extends StatelessWidget {
               },
             ),
             ModalBottomItem(
+              icon: Icons.info_rounded,
+              title: 'Information',
+              onTap: () => _buildSongInfoModal(context),
+            ),
+            ModalBottomItem(
               icon: Icons.share_rounded,
               title: 'Share',
               onTap: () {
@@ -71,14 +82,17 @@ class SongOptions extends StatelessWidget {
               },
             ),
             ModalBottomItem(
-              icon: Icons.info_rounded,
-              title: 'information',
+              icon: Icons.phone_rounded,
+              title: 'Set as Ringtone',
               onTap: () {
-                print('########################## Song Map');
-                print(song.getMap);
-                print('########################## Song model');
-                print(song);
-                _buildSongInfoModal(context);
+                unImplementSnackBar(context);
+              },
+            ),
+            ModalBottomItem(
+              icon: Icons.delete_rounded,
+              title: 'Delete from Device',
+              onTap: () {
+                unImplementSnackBar(context);
               },
             ),
           ],
@@ -104,7 +118,7 @@ class SongOptions extends StatelessWidget {
         backgroundColor: NeumorphicTheme.baseColor(context),
         title: Center(
           child: Text(
-            'Song Information',
+            'Information',
             style: dialogTitleStyle(context),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -122,18 +136,13 @@ class SongOptions extends StatelessWidget {
             SongInfoItem(name: 'Artist', value: song.artist!.getArtist()),
             SongInfoItem(name: 'Location', value: song.data),
             SongInfoItem(
-              name: 'Duration',
-              value: intToDuration2(song.duration ?? 0),
-            ),
+                name: 'Duration', value: song.duration?.formatMSToHHMMSS()),
             SongInfoItem(name: 'File size', value: fileSize),
-            SongInfoItem(name: 'Type', value: song.title),
-            SongInfoItem(name: 'Year', value: song.getMap['year']),
-            SongInfoItem(name: 'Extension', value: song.fileExtension),
+            SongInfoItem(name: 'File extension', value: song.fileExtension),
             SongInfoItem(
-              name: 'Date added',
-              value: song.dateAdded?.formatMSToHHMMSS(),
-            ),
-            SongInfoItem(name: 'Date modified', value: song.artist),
+                name: 'Date modified',
+                value: song.dateModified?.toDateAndTime(context.locale)),
+            SongInfoItem(name: 'Year', value: song.getMap['year']),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -148,7 +157,7 @@ class SongOptions extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   child: Text(
-                    'Close',
+                    'Okay',
                     style: theme.textTheme.button!.copyWith(
                       color: primaryColor,
                     ),

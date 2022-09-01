@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hive/hive.dart';
 import 'package:neo_player/src/constants/constants.dart';
+import 'package:neo_player/src/helpers/helpers.dart';
 import 'package:neo_player/src/pages/songs/songs_notifier.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:path_provider/path_provider.dart';
@@ -64,27 +65,42 @@ class _SongsPageState extends State<SongsPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: kAppContentPadding),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: IconTextBtn(
-                                icon: Icons.play_arrow_rounded,
-                                text: 'Tout lire',
-                                onPressed: () {
-                                  //
-                                },
-                              ),
-                            ),
-                            const SizedBox(width: 30.0),
-                            Expanded(
-                              child: IconTextBtn(
-                                icon: Icons.shuffle,
-                                text: 'Aleatoire',
-                                onPressed: () {},
-                              ),
-                            )
-                          ],
-                        ),
+                        child: ValueListenableBuilder<List<SongModel>>(
+                            valueListenable: _songsNotifier,
+                            builder: (_, songs, __) {
+                              return Row(
+                                children: [
+                                  Expanded(
+                                    child: IconTextBtn(
+                                      icon: Icons.play_arrow_rounded,
+                                      text: 'Tout lire',
+                                      onPressed: () async {
+                                        for (int i = 0; i < songs.length; i++) {
+                                          final file = await getFileFromArtwork(
+                                            songs[i].id,
+                                            songs[i].displayNameWOExt,
+                                          );
+                                          await neoManager.addQueueItem(
+                                              MediaItemConverter.mapToMediaItem(
+                                                  songs[i].getMap, file));
+                                        }
+                                        // neoManager.stop();
+                                        // neoManager.clear();
+                                        neoManager.play();
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 30.0),
+                                  Expanded(
+                                    child: IconTextBtn(
+                                      icon: Icons.shuffle,
+                                      text: 'Aleatoire',
+                                      onPressed: () {},
+                                    ),
+                                  )
+                                ],
+                              );
+                            }),
                       ),
                       const SizedBox(height: 20.0),
                       Container(
@@ -102,40 +118,18 @@ class _SongsPageState extends State<SongsPage> {
                                 SongModel song = songs[index];
                                 return SongItem(
                                   song: song,
-                                  onPressed: () {
-                                    getTemporaryDirectory()
-                                        .then((tempDir) async {
-                                      print(tempDir.path);
-                                      final File file =
-                                          File('${tempDir.path}/artist.png');
-                                      if (!await file.exists()) {
-                                        final byteData = await rootBundle
-                                            .load('assets/images/artist.png');
-                                        await file.writeAsBytes(
-                                          byteData.buffer.asUint8List(
-                                              byteData.offsetInBytes,
-                                              byteData.lengthInBytes),
-                                        );
-                                      }
-                                      final mediaItem =
-                                          MediaItemConverter.mapToMediaItem(
-                                              song.getMap, tempDir);
+                                  onPressed: () async {
+                                    final file = await getFileFromArtwork(
+                                        song.id, song.displayNameWOExt);
 
-                                      neoManager.addQueueItem(mediaItem);
-                                      if (kDebugMode) {
-                                        print(song.getMap);
-                                        print('============> MediaItem');
-                                        print(mediaItem);
-                                      }
-                                    });
+                                    final mediaItem =
+                                        MediaItemConverter.mapToMediaItem(
+                                            song.getMap, file);
 
+                                    // neoManager.stop();
+                                    // neoManager.clear();
+                                    neoManager.addQueueItem(mediaItem);
                                     neoManager.play();
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) => const NowPlaying(),
-                                    //   ),
-                                    // );
                                   },
                                 );
                               },

@@ -1,10 +1,12 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:neo_player/src/theme/style.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../locator.dart';
 import '../../common_widgets/common_widgets.dart';
@@ -466,21 +468,26 @@ class _NowPlayingState extends State<NowPlaying> {
 
   Widget _buildImage({double? maxImgSize}) {
     return Neumorphic(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: maxImgSize ?? double.infinity),
-        child: Padding(
-          padding: const EdgeInsets.all(kImagePadding),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(kRadius),
-            ),
-            child: Image.asset(
-              'assets/images/freddy.jpg',
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ),
+      child: ValueListenableBuilder<MediaItem?>(
+          valueListenable: locator<NeoManager>().currentSongNotifier,
+          builder: (_, currentSong, __) {
+            return ConstrainedBox(
+                constraints:
+                    BoxConstraints(maxHeight: maxImgSize ?? double.infinity),
+                child: Padding(
+                  padding: const EdgeInsets.all(kImagePadding/ 2),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(kRadius),
+                    ),
+                    child: QueryArtwork(
+                      artworkId: int.parse(currentSong?.id ?? '0'),
+                      artworkType: ArtworkType.AUDIO,
+                      defaultPath: 'assets/images/artist.png',
+                    ),
+                  ),
+                ));
+          }),
     );
   }
 }
