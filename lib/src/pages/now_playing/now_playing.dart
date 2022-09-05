@@ -1,103 +1,80 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:miniplayer/miniplayer.dart';
+import 'package:neo_player/src/pages/now_playing/widgets/play_button.dart';
+import 'package:neo_player/src/pages/now_playing/widgets/playing_image_card.dart';
 import 'package:neo_player/src/theme/style.dart';
-import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../locator.dart';
 import '../../common_widgets/common_widgets.dart';
 import '../../constants/constants.dart';
 import '../../helpers/helpers.dart';
 import '../../theme/theme.dart';
+import 'expanded_player.dart';
 import 'neo_manager.dart';
 
-final ValueNotifier<double> playerExpandProgress =
-    ValueNotifier(kPlayerMinHeight);
-
-class NowPlaying extends StatefulWidget {
-  // final List<SongModel> tracks;
-  // final int index;
-  // final int mode;
-
-  const NowPlaying({
-    Key? key,
-    // required this.tracks,
-    // required this.index,
-    // required this.mode,
-  }) : super(key: key);
-
-  @override
-  State<NowPlaying> createState() => _NowPlayingState();
-}
-
+final playerExpandProgressNotifier = ValueNotifier(kPlayerMinHeight);
 final neoManager = locator<NeoManager>();
 
-class _NowPlayingState extends State<NowPlaying> {
-  final MiniplayerController controller = MiniplayerController();
-  bool isMuted = false;
+class NowPlaying extends HookWidget {
+  const NowPlaying({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final kPlayerMaxHeight = screenHeight(context);
 
+    final controller = useMemoized(() => MiniplayerController());
+    final animationController =
+        useAnimationController(duration: kMediumDuration);
+
+    useEffect(() {
+      animationController.addListener(() {});
+      return;
+    }, [animationController]);
+
     return Miniplayer(
-      valueNotifier: playerExpandProgress,
+      valueNotifier: playerExpandProgressNotifier,
       backgroundColor: NeumorphicTheme.baseColor(context),
       minHeight: kPlayerMinHeight,
-      maxHeight: kPlayerMaxHeight,
+      maxHeight: screenHeight(context),
       controller: controller,
       elevation: 5,
-      onDismissed: () => log('Mini player dismissed'),
-      curve: Curves.easeOut,
-      builder: (height, percentage) {
-        final bool miniPlayer = percentage < kMiniPlayerPercentageDeclaration;
-        final double width = screenWidth(context);
-        final maxImgSize = width * 0.8;
+      builder: (double height, double percentage) {
+        final miniPlayer = percentage < kMiniPlayerPercentageDeclaration;
+        final maxImgSize = screenWidth(context) * 0.8;
 
-        // Declare additional widgets (eg. SkipButton) and variables
+        // ========================== Expanded Player ==========================
         if (!miniPlayer) {
           var percentageExpandedPlayer = percentageFromValueInRange(
-              min: kPlayerMaxHeight * kMiniPlayerPercentageDeclaration +
-                  kPlayerMinHeight,
-              max: kPlayerMaxHeight,
-              value: height);
+            min: kPlayerMaxHeight * kMiniPlayerPercentageDeclaration +
+                kPlayerMinHeight,
+            max: kPlayerMaxHeight,
+            value: height,
+          );
           if (percentageExpandedPlayer < 0) percentageExpandedPlayer = 0;
           final paddingVertical = valueFromPercentageInRange(
               min: 0, max: 10, percentage: percentageExpandedPlayer);
-          final double heightWithoutPadding = height - paddingVertical * 2;
-          final double imageSize = heightWithoutPadding > maxImgSize
+          final heightWithoutPadding = height - paddingVertical * 2;
+          final imageSize = heightWithoutPadding > maxImgSize
               ? maxImgSize
               : heightWithoutPadding;
           final paddingLeft = valueFromPercentageInRange(
                 min: 0,
-                max: width - imageSize,
+                max: screenWidth(context) - imageSize,
                 percentage: percentageExpandedPlayer,
               ) /
               2;
-          const progressIndicator = LinearProgressIndicator(value: 0.3);
 
-          const buttonSkipForward = IconButton(
-            icon: Icon(Icons.forward_30),
-            iconSize: 33,
-            onPressed: onTap,
+          return ExpandedPlayer(
+            miniplayerController: controller,
+            animationController: animationController,
+            miniPlayerHeight: height,
+            maxImageSize: maxImgSize,
           );
-          const buttonSkipBackwards = IconButton(
-            icon: Icon(Icons.replay_10),
-            iconSize: 33,
-            onPressed: onTap,
-          );
-          const buttonPlayExpanded = IconButton(
-            icon: Icon(Icons.pause_circle_filled),
-            iconSize: 50,
-            onPressed: onTap,
-          );
-
-          // =============== Full Page =================
           return GestureDetector(
             onTap: () {},
             child: Neumorphic(
@@ -125,7 +102,7 @@ class _NowPlayingState extends State<NowPlaying> {
                               },
                             ),
                             Text(
-                              'Now Playing',
+                              'now_playing'.tr(),
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                             IconBtn(
@@ -151,7 +128,9 @@ class _NowPlayingState extends State<NowPlaying> {
                       ),
                       child: SizedBox(
                         height: imageSize,
-                        child: _buildImage(),
+                        child: PlayingImageCard(
+                          maxImgSize: maxImgSize,
+                        ),
                       ),
                     ),
                   ),
@@ -210,7 +189,7 @@ class _NowPlayingState extends State<NowPlaying> {
                                     ),
                                     const SizedBox(width: 16),
                                     IconBtn(
-                                      icon: isMuted
+                                      icon: true
                                           ? Icons.headset
                                           : Icons.headset_off,
                                       onPressed: () {},
@@ -311,19 +290,18 @@ class _NowPlayingState extends State<NowPlaying> {
           );
         }
 
-        // =============== Mini player =================
+        // ========================== Mini player ==============================
         final percentageMiniPlayer = percentageFromValueInRange(
-            min: kPlayerMinHeight,
-            max: kPlayerMaxHeight * kMiniPlayerPercentageDeclaration +
-                kPlayerMinHeight,
-            value: height);
-
+          min: kPlayerMinHeight,
+          max: kPlayerMaxHeight * kMiniPlayerPercentageDeclaration +
+              kPlayerMinHeight,
+          value: height,
+        );
         final elementOpacity = 1 - 1 * percentageMiniPlayer;
-        final progressIndicatorHeight = 3 - 2.5 * percentageMiniPlayer;
+        final progressIndicatorHeight = 3 - 3 * percentageMiniPlayer;
 
         return Neumorphic(
           style: const NeumorphicStyle(
-            // color: NeumorphicTheme.baseColor(context),
             boxShape: NeumorphicBoxShape.rect(),
             depth: 0,
           ),
@@ -361,7 +339,7 @@ class _NowPlayingState extends State<NowPlaying> {
                     children: [
                       SizedBox(
                         height: 50.0,
-                        child: _buildImage(maxImgSize: maxImgSize),
+                        child: PlayingImageCard(maxImgSize: maxImgSize),
                       ),
                       Expanded(
                         child: Padding(
@@ -369,41 +347,40 @@ class _NowPlayingState extends State<NowPlaying> {
                           child: Opacity(
                             opacity: elementOpacity,
                             child: ValueListenableBuilder<MediaItem?>(
-                                valueListenable: neoManager.currentSongNotifier,
-                                builder: (_, song, __) {
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      AnimatedText(
-                                        text: song != null ? song.title : '',
-                                        pauseAfterRound:
-                                            const Duration(seconds: 3),
-                                        fadingEdgeEndFraction: 0.1,
-                                        fadingEdgeStartFraction: 0.1,
-                                        startAfter: const Duration(seconds: 2),
-                                        style: theme.textTheme.titleMedium,
-                                        defaultAlignment: TextAlign.start,
-                                      ),
-                                      AnimatedText(
-                                        text: song != null ? song.artist! : '',
-                                        pauseAfterRound:
-                                            const Duration(seconds: 3),
-                                        fadingEdgeEndFraction: 0.1,
-                                        fadingEdgeStartFraction: 0.1,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        startAfter: const Duration(seconds: 2),
-                                        style: theme.textTheme.bodyLarge!
-                                            .copyWith(color: textGrayColor),
-                                        defaultAlignment: TextAlign.start,
-                                        startPadding: 0.0,
-                                      ),
-                                    ],
-                                  );
-                                }),
+                              valueListenable: neoManager.currentSongNotifier,
+                              builder: (_, song, __) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    AnimatedText(
+                                      text: song != null ? song.title : '',
+                                      pauseAfterRound:
+                                          const Duration(seconds: 3),
+                                      fadingEdgeEndFraction: 0.1,
+                                      fadingEdgeStartFraction: 0.1,
+                                      startAfter: const Duration(seconds: 2),
+                                      style: theme.textTheme.titleMedium,
+                                      defaultAlignment: TextAlign.start,
+                                    ),
+                                    AnimatedText(
+                                      text: song != null ? song.artist! : '',
+                                      pauseAfterRound:
+                                          const Duration(seconds: 3),
+                                      fadingEdgeEndFraction: 0.1,
+                                      fadingEdgeStartFraction: 0.1,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      startAfter: const Duration(seconds: 2),
+                                      style: theme.textTheme.bodyLarge!
+                                          .copyWith(color: textGrayColor),
+                                      defaultAlignment: TextAlign.start,
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ),
@@ -411,29 +388,18 @@ class _NowPlayingState extends State<NowPlaying> {
                         padding: const EdgeInsets.only(left: 6.0),
                         child: Opacity(
                           opacity: elementOpacity,
-                          child: ValueListenableBuilder<ButtonState>(
-                              valueListenable: neoManager.playButtonNotifier,
-                              builder: (_, value, __) {
-                                if (value == ButtonState.paused) {
-                                  return IconBtn(
-                                    icon: Icons.play_arrow_rounded,
-                                    label: 'Play',
-                                    color: NeumorphicTheme.accentColor(context),
-                                    iconColor: Colors.white,
-                                    padding: const EdgeInsets.all(10),
-                                    onPressed: neoManager.play,
-                                  );
-                                } else {
-                                  return IconBtn(
-                                    icon: Icons.pause_rounded,
-                                    label: 'Play',
-                                    color: NeumorphicTheme.accentColor(context),
-                                    iconColor: Colors.white,
-                                    padding: const EdgeInsets.all(10),
-                                    onPressed: neoManager.pause,
-                                  );
-                                }
-                              }),
+                          child: PlayButton(
+                            animationController: animationController,
+                            // onPressed: (value) {
+                            //   if (value == ButtonState.playing) {
+                            //     neoManager.pause();
+                            //     animationController.forward();
+                            //   } else {
+                            //     neoManager.play();
+                            //     animationController.reverse();
+                            //   }
+                            // },
+                          ),
                         ),
                       ),
                       Padding(
@@ -441,14 +407,16 @@ class _NowPlayingState extends State<NowPlaying> {
                         child: Opacity(
                           opacity: elementOpacity,
                           child: ValueListenableBuilder<bool>(
-                              valueListenable: neoManager.isLastSongNotifier,
-                              builder: (_, isLast, __) {
-                                return IconBtn(
-                                  icon: Icons.fast_forward,
-                                  label: 'Next',
-                                  onPressed: (isLast) ? null : neoManager.next,
-                                );
-                              }),
+                            valueListenable: neoManager.isLastSongNotifier,
+                            builder: (_, isLast, __) {
+                              return IconBtn(
+                                icon: Icons.fast_forward,
+                                label: 'next'.tr(),
+                                onPressed:
+                                    (isLast) ? null : neoManager.skipToNext,
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -465,34 +433,7 @@ class _NowPlayingState extends State<NowPlaying> {
       },
     );
   }
-
-  Widget _buildImage({double? maxImgSize}) {
-    return Neumorphic(
-      child: ValueListenableBuilder<MediaItem?>(
-          valueListenable: locator<NeoManager>().currentSongNotifier,
-          builder: (_, currentSong, __) {
-            return ConstrainedBox(
-                constraints:
-                    BoxConstraints(maxHeight: maxImgSize ?? double.infinity),
-                child: Padding(
-                  padding: const EdgeInsets.all(kImagePadding/ 2),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(kRadius),
-                    ),
-                    child: QueryArtwork(
-                      artworkId: int.parse(currentSong?.id ?? '0'),
-                      artworkType: ArtworkType.AUDIO,
-                      defaultPath: 'assets/images/artist.png',
-                    ),
-                  ),
-                ));
-          }),
-    );
-  }
 }
-
-void onTap() {}
 
 // •
 

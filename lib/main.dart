@@ -36,10 +36,6 @@ Future<void> main() async {
     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
   );
 
-  SystemChrome.setPreferredOrientations(
-    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
-  );
-
   //fonts license
   LicenseRegistry.addLicense(() async* {
     final license = await rootBundle.loadString('assets/google_fonts/OFL.txt');
@@ -53,7 +49,10 @@ Future<void> main() async {
 
   runApp(
     EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale('fr')],
+      supportedLocales: const [
+        Locale('en'), // English
+        Locale('fr'), // French
+      ],
       path: 'assets/locales',
       fallbackLocale: const Locale('en'),
       useOnlyLangCode: true,
@@ -84,6 +83,10 @@ Future<void> openHiveBox(String boxName, {bool limit = false}) async {
       throw 'Failed to open $boxName Box\nError: $error';
     },
   );
+  // clear box if it grows large
+  if (limit && box.length > 500) {
+    box.clear();
+  }
 }
 
 Future<void> initJustAudioBg() async {

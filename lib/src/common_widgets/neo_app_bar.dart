@@ -5,8 +5,11 @@ import '../constants/constants.dart';
 import '../pages/pages.dart';
 import 'icon_btn.dart';
 
-PreferredSizeWidget neoAppBar(BuildContext context,
-    {required String title, VoidCallback? onTapSorting}) {
+PreferredSizeWidget neoAppBar(
+  BuildContext context, {
+  required String title,
+  VoidCallback? onTapSorting,
+}) {
   final theme = Theme.of(context);
   return PreferredSize(
     preferredSize: const Size.fromHeight(kAppBarHeight),

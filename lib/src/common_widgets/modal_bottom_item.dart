@@ -5,6 +5,7 @@ import 'package:neo_player/src/constants/constants.dart';
 class ModalBottomItem extends StatelessWidget {
   final IconData icon;
   final String title;
+  final Color? iconColor;
   final VoidCallback? onTap;
 
   const ModalBottomItem({
@@ -12,6 +13,7 @@ class ModalBottomItem extends StatelessWidget {
     required this.icon,
     required this.title,
     this.onTap,
+    this.iconColor,
   }) : super(key: key);
 
   @override
@@ -24,10 +26,12 @@ class ModalBottomItem extends StatelessWidget {
       },
       child: Container(
         margin: const EdgeInsets.symmetric(
-            vertical: 12, horizontal: kAppContentPadding),
+          vertical: 12,
+          horizontal: kAppContentPadding,
+        ),
         child: Row(
           children: [
-            Icon(icon),
+            Icon(icon, color: iconColor),
             const SizedBox(width: 15),
             Text(
               title,

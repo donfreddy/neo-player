@@ -8,6 +8,8 @@ import 'package:neo_player/src/theme/style.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../common_widgets/audio_artwork.dart';
+import '../../../common_widgets/common_widgets.dart';
 import '../../../common_widgets/modal_bottom_item.dart';
 import '../../../helpers/helpers.dart';
 
@@ -24,16 +26,53 @@ class SongOptions extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const TopBottomSheetBar(),
-        Container(
-          padding: const EdgeInsets.symmetric(
-              vertical: 10, horizontal: kAppContentPadding),
-          child: Text(
-            song.displayNameWOExt,
-            style: theme.textTheme.titleSmall,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: kAppContentPadding),
+              child: AudioArtwork(audioId: song.id),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      song.title,
+                      style: theme.textTheme.titleMedium,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      song.artist!.getArtist(),
+                      style: theme.textTheme.titleSmall!.copyWith(
+                        color: theme.primaryColor,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: SizedBox(
+                height: 60,
+                child: IconBtn(
+                  icon: Icons.favorite_rounded,
+                  label: 'like'.tr(),
+                  onPressed: () {
+                    //
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
+        const SizedBox(height: 5),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 15),
           color: textGrayColor.withOpacity(0.2),
@@ -42,55 +81,55 @@ class SongOptions extends StatelessWidget {
         Column(
           children: [
             ModalBottomItem(
-              icon: Icons.skip_next_rounded,
-              title: 'Play next',
+              icon: Icons.first_page_rounded,
+              title: 'play_next'.tr(),
+              iconColor: theme.primaryColor,
               onTap: () {
                 unImplementSnackBar(context);
               },
             ),
             ModalBottomItem(
-              icon: Icons.add_to_queue_rounded,
-              title: 'Add to Playing Queue',
-              onTap: () {
-                unImplementSnackBar(context);
-              },
-            ),
-            ModalBottomItem(
-              icon: Icons.favorite_rounded,
-              title: 'Add to favorite',
+              icon: Icons.last_page_rounded,
+              title: 'play_last'.tr(),
+              iconColor: theme.primaryColor,
               onTap: () {
                 unImplementSnackBar(context);
               },
             ),
             ModalBottomItem(
               icon: Icons.playlist_add_rounded,
-              title: 'Add to playlist',
+              title: 'add_playlist'.tr(),
+              iconColor: theme.primaryColor,
               onTap: () {
                 unImplementSnackBar(context);
               },
             ),
             ModalBottomItem(
-              icon: Icons.info_rounded,
+              icon: Icons.info_outline_rounded,
               title: 'Information',
+              iconColor: theme.primaryColor,
               onTap: () => _buildSongInfoModal(context),
             ),
             ModalBottomItem(
               icon: Icons.share_rounded,
-              title: 'Share',
+              title: 'share'.tr(),
+              iconColor: theme.primaryColor,
               onTap: () {
                 Share.shareFiles([song.data]);
               },
             ),
             ModalBottomItem(
               icon: Icons.phone_rounded,
-              title: 'Set as Ringtone',
+              title: 'set_ringtone'.tr(),
+              iconColor: theme.primaryColor,
               onTap: () {
                 unImplementSnackBar(context);
               },
             ),
             ModalBottomItem(
               icon: Icons.delete_rounded,
-              title: 'Delete from Device',
+              title: 'delete_from_device'.tr(),
+              iconColor: theme.primaryColor,
               onTap: () {
                 unImplementSnackBar(context);
               },
@@ -117,12 +156,7 @@ class SongOptions extends StatelessWidget {
         ),
         backgroundColor: NeumorphicTheme.baseColor(context),
         title: Center(
-          child: Text(
-            'Information',
-            style: dialogTitleStyle(context),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
+          child: Text('Information', style: dialogTitleStyle(context)),
         ),
         titlePadding: const EdgeInsets.all(kAppContentPadding),
         contentPadding:
@@ -131,18 +165,20 @@ class SongOptions extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SongInfoItem(name: 'Title', value: song.title),
+            SongInfoItem(name: 'title'.tr(), value: song.title),
             SongInfoItem(name: 'Album', value: song.album),
-            SongInfoItem(name: 'Artist', value: song.artist!.getArtist()),
-            SongInfoItem(name: 'Location', value: song.data),
+            SongInfoItem(name: 'artist'.tr(), value: song.artist!.getArtist()),
+            SongInfoItem(name: 'location'.tr(), value: song.data),
             SongInfoItem(
-                name: 'Duration', value: song.duration?.formatMSToHHMMSS()),
-            SongInfoItem(name: 'File size', value: fileSize),
-            SongInfoItem(name: 'File extension', value: song.fileExtension),
+                name: 'duration'.tr(),
+                value: song.duration?.formatMSToHHMMSS()),
+            SongInfoItem(name: 'size'.tr(), value: fileSize),
             SongInfoItem(
-                name: 'Date modified',
+                name: 'file_extension'.tr(), value: song.fileExtension),
+            SongInfoItem(
+                name: 'date_modified'.tr(),
                 value: song.dateModified?.toDateAndTime(context.locale)),
-            SongInfoItem(name: 'Year', value: song.getMap['year']),
+            SongInfoItem(name: 'year'.tr(), value: song.getMap['year']),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -157,9 +193,9 @@ class SongOptions extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   child: Text(
-                    'Okay',
+                    'ok'.tr(),
                     style: theme.textTheme.button!.copyWith(
-                      color: primaryColor,
+                      color: theme.primaryColor,
                     ),
                   ),
                 ),
@@ -189,13 +225,13 @@ class SongInfoItem extends StatelessWidget {
       child: RichText(
         text: TextSpan(
           text: '$name: ',
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: dialogContentStyle(context),
           children: [
             TextSpan(
-              text: value ?? 'Unknown',
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: textGrayColor,
-                  ),
+              text: value ?? 'unknown'.tr(),
+              style: dialogContentStyle(context)!.copyWith(
+                color: textGrayColor,
+              ),
             )
           ],
         ),

@@ -2,8 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 extension StringExtensions on String {
-  String capitalize() => '${this[0].toUpperCase()}${substring(1)}';
-
   // get artist name
   String getArtist() => this == '<unknown>' ? 'Artiste Inconnu' : this;
 }

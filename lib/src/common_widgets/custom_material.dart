@@ -1,4 +1,7 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/settings_provider.dart';
 
 class SimpleMaterial extends StatelessWidget {
   const SimpleMaterial({required this.child, Key? key}) : super(key: key);
@@ -28,15 +31,21 @@ class MaterialWitchInkWell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark =
+        context.watch<SettingsProvider>().themeMode == ThemeMode.dark;
     return Material(
       color: NeumorphicTheme.baseColor(context),
       child: InkWell(
         // borderRadius: BorderRadius.circular(kRadius),
         focusColor: Colors.transparent,
-        //highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
-        highlightColor: Colors.white.withOpacity(0.01),
-        splashColor: Colors.white.withOpacity(0.1),
+        highlightColor: isDark
+            ? Colors.white.withOpacity(0.01)
+            : theme.primaryColor.withOpacity(0.2),
+        splashColor: isDark
+            ? Colors.white.withOpacity(0.1)
+            : theme.primaryColor.withOpacity(0.1),
         onTap: onTap,
         onLongPress: onLongPress,
         child: child,

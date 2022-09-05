@@ -1,6 +1,6 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:just_audio_background/just_audio_background.dart';
-import 'package:neo_player/src/common_widgets/query_artwork.dart';
+import 'package:neo_player/src/common_widgets/audio_artwork.dart';
 import 'package:neo_player/src/helpers/extensions.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -12,12 +12,12 @@ import 'custom_material.dart';
 import 'icon_btn.dart';
 import 'modal_bottom_sheet.dart';
 
-class SongItem extends StatelessWidget {
+class SongCard extends StatelessWidget {
   final SongModel song;
   final ArtworkType artworkType;
   final VoidCallback? onPressed;
 
-  const SongItem({
+  const SongCard({
     Key? key,
     required this.song,
     this.artworkType = ArtworkType.AUDIO,
@@ -26,26 +26,17 @@ class SongItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return MaterialWitchInkWell(
       onTap: onPressed,
+      onLongPress: () {
+        showSongOptionsModalBottom(context, song);
+      },
       child: Row(
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 16),
-            child: Neumorphic(
-              child: ConstrainedBox(
-                constraints:
-                    const BoxConstraints(maxHeight: 50.0, maxWidth: 50.0),
-                child: Padding(
-                  padding: const EdgeInsets.all(kImagePadding / 2),
-                  child: QueryArtwork(
-                    artworkId: song.id,
-                    artworkType: artworkType,
-                    defaultPath: 'assets/images/artist.png',
-                  ),
-                ),
-              ),
-            ),
+            child: AudioArtwork(audioId: song.id),
           ),
           Expanded(
             child: Padding(
@@ -56,30 +47,30 @@ class SongItem extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ValueListenableBuilder<MediaItem?>(
-                      valueListenable:
-                          locator<NeoManager>().currentSongNotifier,
-                      builder: (_, currentSong, __) {
-                        return Text(
-                          song.title,
-                          style:
-                              Theme.of(context).textTheme.titleMedium!.copyWith(
-                                  color: currentSong != null
-                                      ? currentSong.id == song.id.toString()
-                                          ? Theme.of(context).primaryColor
-                                          : null
-                                      : null),
-                          maxLines: 1,
-                        );
-                      }),
-
+                    valueListenable: locator<NeoManager>().currentSongNotifier,
+                    builder: (_, currentSong, __) {
+                      return Text(
+                        song.title,
+                        style: theme.textTheme.titleMedium!.copyWith(
+                          color: currentSong != null
+                              ? currentSong.id == song.id.toString()
+                                  ? theme.primaryColor
+                                  : null
+                              : null,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      );
+                    },
+                  ),
                   Text(
                     song.artist!.getArtist(),
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: textGrayColor,
-                        ),
+                    style: theme.textTheme.titleSmall!.copyWith(
+                      color: textGrayColor,
+                    ),
                     maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-
                 ],
               ),
             ),

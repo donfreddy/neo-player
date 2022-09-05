@@ -9,5 +9,5 @@ export 'order_type_item.dart';
 export 'query_artwork.dart';
 export 'selected_sort.dart';
 export 'snack_bar.dart';
-export 'song_item.dart';
+export 'song_card.dart';
 export 'sort_type_item.dart';

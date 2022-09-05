@@ -1,7 +1,9 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:miniplayer/miniplayer.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+import 'package:neo_player/locator.dart';
+import 'package:neo_player/src/pages/now_playing/neo_manager.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/constants.dart';
@@ -9,8 +11,6 @@ import '../../../helpers/helpers.dart';
 import '../../../provider/settings_provider.dart';
 import '../../../theme/theme.dart';
 import '../../now_playing/now_playing.dart';
-
-ValueNotifier<SongModel?> currentlyPlaying = ValueNotifier(null);
 
 class PersistentBottomBarScaffold extends StatefulWidget {
   /// pass the required items for the tabs and BottomNavBar
@@ -76,18 +76,17 @@ class _PersistentBottomBarScaffoldState
                         ))
                     .toList(),
               ),
-              ValueListenableBuilder(
-                valueListenable: currentlyPlaying,
-                builder: (context, SongModel? song, Widget? child) {
-                  // return song != null ? const NowPlaying() : Container();
-                  return const NowPlaying();
+              ValueListenableBuilder<MediaItem?>(
+                valueListenable: locator<NeoManager>().currentSongNotifier,
+                builder: (_, song, __) {
+                  return song != null ? const NowPlaying() : Container();
                 },
               ),
             ],
           ),
-          bottomNavigationBar: ValueListenableBuilder(
-            valueListenable: playerExpandProgress,
-            builder: (BuildContext context, double height, Widget? child) {
+          bottomNavigationBar: ValueListenableBuilder<double>(
+            valueListenable: playerExpandProgressNotifier,
+            builder: (_, height, child) {
               final value = percentageFromValueInRange(
                   min: kPlayerMinHeight,
                   max: screenHeight(context),
@@ -162,7 +161,7 @@ class BottomNavBar extends StatelessWidget {
     return BottomAppBar(
       notchMargin: 0,
       color: Colors.transparent,
-      elevation: 0,
+      elevation: 2,
       child: Neumorphic(
         style: NeumorphicStyle(
           color: NeumorphicTheme.baseColor(context),

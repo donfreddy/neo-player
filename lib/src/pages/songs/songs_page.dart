@@ -1,19 +1,16 @@
-import 'dart:io';
-
 import 'package:animations/animations.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hive/hive.dart';
 import 'package:neo_player/src/constants/constants.dart';
 import 'package:neo_player/src/helpers/helpers.dart';
 import 'package:neo_player/src/pages/songs/songs_notifier.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../../../locator.dart';
 import '../../common_widgets/common_widgets.dart';
 import '../../helpers/media_item_converter.dart';
+import '../../models/sort_item.dart';
 import '../../theme/style.dart';
 import '../../theme/theme.dart';
 import '../now_playing/neo_manager.dart';
@@ -45,7 +42,7 @@ class _SongsPageState extends State<SongsPage> {
     return Scaffold(
         appBar: neoAppBar(
           context,
-          title: 'Morceaux',
+          title: 'songs'.tr(),
           onTapSorting: _buildSortingModal,
         ),
         body: RawScrollbar(
@@ -73,7 +70,7 @@ class _SongsPageState extends State<SongsPage> {
                                   Expanded(
                                     child: IconTextBtn(
                                       icon: Icons.play_arrow_rounded,
-                                      text: 'Tout lire',
+                                      text: 'play_all'.tr(),
                                       onPressed: () async {
                                         for (int i = 0; i < songs.length; i++) {
                                           final file = await getFileFromArtwork(
@@ -94,7 +91,7 @@ class _SongsPageState extends State<SongsPage> {
                                   Expanded(
                                     child: IconTextBtn(
                                       icon: Icons.shuffle,
-                                      text: 'Aleatoire',
+                                      text: 'shuffle'.tr(),
                                       onPressed: () {},
                                     ),
                                   )
@@ -116,7 +113,7 @@ class _SongsPageState extends State<SongsPage> {
                               itemCount: songs.length,
                               itemBuilder: (_, index) {
                                 SongModel song = songs[index];
-                                return SongItem(
+                                return SongCard(
                                   song: song,
                                   onPressed: () async {
                                     final file = await getFileFromArtwork(
@@ -165,7 +162,7 @@ class _SongsPageState extends State<SongsPage> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: Text(
-                    'Sorting',
+                    'sorting'.tr(),
                     style: dialogTitleStyle(context),
                   ),
                 ),
@@ -253,25 +250,3 @@ class _SongsPageState extends State<SongsPage> {
     );
   }
 }
-
-class SortItem {
-  final IconData icon;
-  final String title;
-
-  SortItem({required this.icon, required this.title});
-}
-
-final List<SortItem> songSortItems = [
-  SortItem(icon: Icons.title, title: 'Title'),
-  SortItem(icon: Icons.mic, title: 'Artist'),
-  SortItem(icon: Icons.album_rounded, title: 'Album'),
-  SortItem(icon: Icons.schedule_rounded, title: 'Duration'),
-  SortItem(icon: Icons.title, title: 'Date Added'),
-  SortItem(icon: Icons.dns_rounded, title: 'Size'),
-  SortItem(icon: Icons.text_fields_rounded, title: 'Display Name'),
-];
-
-final List<SortItem> orderItems = [
-  SortItem(icon: Icons.expand_less_rounded, title: 'Ascending'),
-  SortItem(icon: Icons.expand_more_rounded, title: 'Descending'),
-];

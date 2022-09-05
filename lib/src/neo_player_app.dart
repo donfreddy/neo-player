@@ -28,6 +28,9 @@ class NeoPlayerApp extends StatelessWidget {
       darkTheme: darkTheme(accentColor),
       initialRoute: loadingRoute,
       onGenerateRoute: generateRoute,
+      // routes: {
+      //   '/': (context) => HomePage(),
+      // },
     );
   }
 }

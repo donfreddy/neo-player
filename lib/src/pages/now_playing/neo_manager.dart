@@ -8,22 +8,22 @@ import 'package:neo_player/locator.dart';
 import '../../helpers/helpers.dart';
 
 class NeoManager {
+  late AudioPlayer _player;
+  late ConcatenatingAudioSource _playlist;
+
   final queueNotifier = ValueNotifier<List<MediaItem>>([]);
   final currentSongNotifier = ValueNotifier<MediaItem?>(null);
 
   //
   final queueIndexNotifier = ValueNotifier<int?>(0);
   final volumeNotifier = ValueNotifier<double>(1.0);
+  final speedNotifier = ValueNotifier<double>(1.0);
   final repeatButtonNotifier = RepeatButtonNotifier();
   final playButtonNotifier = PlayButtonNotifier();
   final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
-  final speedNotifier = ValueNotifier<double>(1.0);
   final progressNotifier = ProgressNotifier();
   final isFirstSongNotifier = ValueNotifier<bool>(true);
   final isLastSongNotifier = ValueNotifier<bool>(true);
-
-  late AudioPlayer _player;
-  late ConcatenatingAudioSource _playlist;
 
   NeoManager() {
     _init();
@@ -51,36 +51,6 @@ class NeoManager {
     });
 
     await _player.setAudioSource(_playlist, preload: false);
-  }
-
-  // void _setInitialPlaylist() async {
-  //   const prefix = 'https://wvv.33rapfr.com/wp-content/uploads';
-  //   final song1 = Uri.parse('$prefix/2021/12/Ninho-OG.mp3');
-  //   final song2 = Uri.parse('$prefix/2021/12/06-La-zone.mp3');
-  //   final song3 = Uri.parse('$prefix/2022/04/09-LA-OU-LE-VENT-NOUS-MENE.mp3');
-  //   _playlist = ConcatenatingAudioSource(children: [
-  //     AudioSource.uri(song1, tag: 'Ninho OG'),
-  //     AudioSource.uri(song2, tag: 'La zone'),
-  //     AudioSource.uri(song3, tag: 'LA OU LE VENT NOUS MEME'),
-  //   ]);
-  //   await _player.setAudioSource(_playlist);
-  // }
-
-  Future<void> addQueueItem(MediaItem mediaItem) async {
-    await _playlist.add(createAudioSource(mediaItem));
-  }
-
-  Future<void> addQueueItems(List<MediaItem> mediaItems) async {
-    final audioSource = mediaItems.map(createAudioSource);
-    await _playlist.addAll(audioSource.toList());
-  }
-
-  Future<void> insertQueueItem(int index, MediaItem mediaItem) async {
-    await _playlist.insert(index, createAudioSource(mediaItem));
-  }
-
-  Future<void> clear() async {
-    await _playlist.clear();
   }
 
   void _listenForChangesInPlayerState() {
@@ -131,6 +101,12 @@ class NeoManager {
     });
   }
 
+  void _listenForChangesInCurrentIndex() {
+    _player.currentIndexStream.listen((queueIndex) {
+      queueIndexNotifier.value = queueIndex;
+    });
+  }
+
   void _listenForChangesInSequenceState() {
     print('############## Start listen for change in sequence state');
     _player.sequenceStateStream.listen((sequenceState) {
@@ -164,17 +140,55 @@ class NeoManager {
     });
   }
 
+  Future<void> addQueueItem(MediaItem mediaItem) async {
+    await _playlist.add(createAudioSource(mediaItem));
+  }
+
+  Future<void> addQueueItems(List<MediaItem> mediaItems) async {
+    final audioSource = mediaItems.map(createAudioSource);
+    await _playlist.addAll(audioSource.toList());
+  }
+
+  Future<void> insertQueueItem(int index, MediaItem mediaItem) async {
+    await _playlist.insert(index, createAudioSource(mediaItem));
+  }
+
+  Future<void> updateQueue(List<MediaItem> newQueue) async {
+    final audioSource = newQueue.map(createAudioSource);
+    await _playlist.clear();
+    await _playlist.addAll(audioSource.toList());
+  }
+
+  Future<void> updateMediaItem(MediaItem mediaItem) async {
+    // final index = queue.value.indexWhere((item) => item.id == mediaItem.id);
+    // _mediaItemExpando[_player.sequenceState?.effectiveSequence= mediaItem;
+  }
+
   void play() async => _player.play();
 
   void pause() => _player.pause();
 
-  void stop() => _player.stop();
+  void stop() async {
+    await _player.stop();
+  }
 
   void seek(Duration position) => _player.seek(position);
 
-  void previous() => _player.seekToPrevious();
+  void skipToNext() => _player.seekToNext();
 
-  void next() => _player.seekToNext();
+  void skipToPrevious() async {
+    _player.seekToPrevious();
+  }
+
+  void skipToQueueItem(int index) async {
+    if (index < 0 || index >= _playlist.children.length) return;
+
+    _player.seek(
+      Duration.zero,
+      index:
+          _player.shuffleModeEnabled ? _player.shuffleIndices![index] : index,
+    );
+  }
 
   void repeat() {}
 
