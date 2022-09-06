@@ -4,8 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:miniplayer/miniplayer.dart';
+import 'package:neo_player/src/pages/now_playing/now_playing.dart';
 import 'package:neo_player/src/pages/now_playing/widgets/play_button.dart';
 import 'package:neo_player/src/pages/now_playing/widgets/playing_image_card.dart';
+import 'package:neo_player/src/pages/now_playing/widgets/volume_slider.dart';
 
 import '../../../locator.dart';
 import '../../common_widgets/common_widgets.dart';
@@ -57,50 +59,14 @@ class ExpandedPlayer extends StatelessWidget {
 
     //
     final height = playerMaxHeight - (screenWidth(context) * 0.85);
-    final double titleBoxHeight = height * 0.2;
+    final titleBoxHeight = height * 0.16;
+    final progressBarBoxHeight = height * 0.1;
+    final volumeSliderBoxHeight = height * 0.1;
 
     return GestureDetector(
       onTap: () {},
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        // appBar: PreferredSize(
-        //   preferredSize: const Size.fromHeight(kAppBarHeight),
-        //   child: Opacity(
-        //     opacity: percentageExpandedPlayer,
-        //     child: AppBar(
-        //       backgroundColor: NeumorphicTheme.baseColor(context),
-        //       elevation: 0,
-        //       leading: Column(
-        //         children: [
-        //           IconBtn(
-        //             icon: Icons.expand_more_rounded,
-        //             label: '',
-        //             onPressed: () {
-        //               miniplayerController.animateToHeight(
-        //                 state: PanelState.MIN,
-        //               );
-        //             },
-        //           ),
-        //         ],
-        //       ),
-        //       title: Text(
-        //         'now_playing'.tr(),
-        //         style: Theme.of(context).textTheme.titleMedium,
-        //       ),
-        //       centerTitle: true,
-        //       actions: [
-        //         IconBtn(
-        //           icon: Icons.more_horiz_rounded,
-        //           label: 'Menu',
-        //           onPressed: () {
-        //             unImplementSnackBar(context);
-        //           },
-        //         ),
-        //         const SizedBox(width: 8.0),
-        //       ],
-        //     ),
-        //   ),
-        // ),
         body: Column(
           children: [
             SizedBox(height: height * 0.1),
@@ -126,13 +92,13 @@ class ExpandedPlayer extends StatelessWidget {
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(height: titleBoxHeight / 10),
-                  // Title and subtitle
+                  SizedBox(height: height * 0.02),
+                  // Title, subtitle and button
                   SizedBox(
                     height: titleBoxHeight,
                     child: Center(
                       child: Container(
-                        //   color: Colors.yellow,
+                        // color: Colors.yellow,
                         child: ValueListenableBuilder<MediaItem?>(
                           valueListenable: neoManager.currentSongNotifier,
                           builder: (_, song, __) {
@@ -160,7 +126,7 @@ class ExpandedPlayer extends StatelessWidget {
                                               const Duration(seconds: 2),
                                           style: theme.textTheme.titleMedium!
                                               .copyWith(
-                                            fontSize: titleBoxHeight / 3.2,
+                                            fontSize: titleBoxHeight / 2.8,
                                             fontWeight: FontWeight.bold,
                                           ),
                                           defaultAlignment: TextAlign.start),
@@ -187,20 +153,20 @@ class ExpandedPlayer extends StatelessWidget {
                                 const SizedBox(width: 10.0),
                                 IconBtn(
                                   icon: Icons.favorite_rounded,
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    unImplementSnackBar(context);
+                                  },
                                   margin: EdgeInsets.zero,
                                   padding: const EdgeInsets.all(4.0),
-                                  // iconColor: NeumorphicTheme.defaultTextColor(
-                                  //     context),
                                 ),
                                 const SizedBox(width: 14.0),
                                 IconBtn(
                                   icon: Icons.more_horiz_rounded,
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    unImplementSnackBar(context);
+                                  },
                                   margin: EdgeInsets.zero,
                                   padding: const EdgeInsets.all(4.0),
-                                  // iconColor: NeumorphicTheme.defaultTextColor(
-                                  //     context),
                                 ),
                               ],
                             );
@@ -213,13 +179,102 @@ class ExpandedPlayer extends StatelessWidget {
 
                   // Progress Bar
                   SizedBox(
-                    height: height * 0.14,
+                    height: progressBarBoxHeight,
                     child: Container(
-                      //   color: Colors.red,
+                      // color: Colors.green,
                       child: const AudioProgressBar(),
                     ),
                   ),
 
+                  // SizedBox(
+                  //   height: height * 0.09,
+                  //   child: Container(
+                  //     // color: Colors.deepOrange,
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //       children: [
+                  //         IconBtn(
+                  //           icon: Icons.replay_10_rounded,
+                  //           onPressed: () {},
+                  //           margin: EdgeInsets.zero,
+                  //           padding: const EdgeInsets.all(4.0),
+                  //         ),
+                  //         IconBtn(
+                  //           icon: Icons.forward_10_rounded,
+                  //           onPressed: () {},
+                  //           margin: EdgeInsets.zero,
+                  //           padding: const EdgeInsets.all(4.0),
+                  //           // iconColor: NeumorphicTheme.defaultTextColor(
+                  //           //     context),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  SizedBox(height: height * 0.07),
+                  // Control
+                  SizedBox(
+                    height: height * 0.18,
+                    child: Container(
+                      // color: Colors.deepOrange,
+                      child: Row(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconBtn(
+                                icon: Icons.replay_10_rounded,
+                                onPressed: () {},
+                                margin: EdgeInsets.zero,
+                                padding: const EdgeInsets.all(4.0),
+                              ),
+                              const ShuffleButton()
+                            ],
+                          ),
+                          const Spacer(),
+                          const PreviousSongButton(
+                            margin: EdgeInsets.zero,
+                            padding: EdgeInsets.all(12.0),
+                          ),
+                          const SizedBox(width: 10),
+                          PlayButton(
+                            animationController: animationController,
+                            padding: const EdgeInsets.all(20.0),
+                            margin: EdgeInsets.zero,
+                          ),
+                          const SizedBox(width: 10),
+                          const NextSongButton(
+                            margin: EdgeInsets.zero,
+                            padding: EdgeInsets.all(12.0),
+                          ),
+                          const Spacer(),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconBtn(
+                                icon: Icons.forward_10_rounded,
+                                onPressed: () {},
+                                margin: EdgeInsets.zero,
+                                padding: const EdgeInsets.all(4.0),
+                              ),
+                              const RepeatButton()
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // Volume
+                  SizedBox(height: height * 0.07),
+                  SizedBox(
+                    height: volumeSliderBoxHeight,
+                    child: Container(
+                      //  color: Colors.yellow,
+                      child: VolumeSlider(height: volumeSliderBoxHeight),
+                    ),
+                  ),
+                  SizedBox(height: height * 0.04),
                   SizedBox(
                     height: height * 0.09,
                     child: Container(
@@ -228,13 +283,13 @@ class ExpandedPlayer extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconBtn(
-                            icon: Icons.replay_10_rounded,
+                            icon: Icons.playlist_add_rounded,
                             onPressed: () {},
                             margin: EdgeInsets.zero,
                             padding: const EdgeInsets.all(4.0),
                           ),
                           IconBtn(
-                            icon: Icons.forward_10_rounded,
+                            icon: Icons.queue_music_rounded,
                             onPressed: () {},
                             margin: EdgeInsets.zero,
                             padding: const EdgeInsets.all(4.0),
@@ -245,86 +300,19 @@ class ExpandedPlayer extends StatelessWidget {
                       ),
                     ),
                   ),
-
-                  // Control
-                  SizedBox(
-                    height: height * 0.16,
-                    child: Container(
-                      //  color: Colors.deepOrange,
-                      child: Row(
-                        children: [
-                          IconBtn(
-                            icon: Icons.shuffle,
-                            onPressed: () {},
-                            margin: EdgeInsets.zero,
-                            padding: const EdgeInsets.all(4.0),
-                          ),
-                          const Spacer(),
-                          IconBtn(
-                            icon: Icons.fast_rewind_rounded,
-                            onPressed: () {},
-                            iconSize: 24.0,
-                            margin: EdgeInsets.zero,
-                            padding: const EdgeInsets.all(14.0),
-                          ),
-                          const SizedBox(width: 15),
-                          PlayButton(
-                            animationController: animationController,
-                            padding: const EdgeInsets.all(20.0),
-                            margin: EdgeInsets.zero,
-                          ),
-                          const SizedBox(width: 15),
-                          IconBtn(
-                            icon: Icons.fast_forward,
-                            onPressed: () {},
-                            iconSize: 24.0,
-                            margin: EdgeInsets.zero,
-                            padding: const EdgeInsets.all(14.0),
-                          ),
-                          const Spacer(),
-                          IconBtn(
-                            icon: Icons.repeat,
-                            onPressed: () {},
-                            margin: EdgeInsets.zero,
-                            padding: const EdgeInsets.all(4.0),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  // Volume
-                  SizedBox(height: height * 0.02),
-                  SizedBox(
-                    height: height * 0.1,
-                    child: Container(
-                      // color: Colors.yellow,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          const Icon(Icons.volume_mute_rounded),
-                          Expanded(
-                            child: NeumorphicSlider(
-                              // activeColor: theme.primaryColor,
-                              // inactiveColor: textGrayColor.withOpacity(0.4),
-                              value: 0.4,
-                              height: 5,
-                              max: 1,
-                              min: 0,
-                              onChanged: (value) {
-                                //
-                              },
-                              style: const SliderStyle(),
-                              // thumb: Container(
-                              //     // color: Colors.amber,
-                              //     ),
-                            ),
-                          ),
-                          const Icon(Icons.volume_up_rounded),
-                        ],
-                      ),
-                    ),
-                  ),
+                  // SizedBox(
+                  //   height: volumeSliderBoxHeight,
+                  //   child: Container(
+                  //     color: Colors.yellow,
+                  //     child: const NeumorphicProgress(
+                  //       percent: 0.5,
+                  //       style: ProgressStyle(
+                  //         accent: Colors.grey,
+                  //         variant: Colors.green,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             )
@@ -354,6 +342,7 @@ class AudioProgressBar extends StatelessWidget {
           bufferedBarColor: theme.primaryColor.withOpacity(0.1),
           thumbColor: theme.primaryColor,
           timeLabelType: TimeLabelType.remainingTime,
+          timeLabelLocation: TimeLabelLocation.above,
           barHeight: 4.0,
           thumbRadius: 6,
           onSeek: neoManager.seek,

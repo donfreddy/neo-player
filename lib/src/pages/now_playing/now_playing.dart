@@ -406,17 +406,7 @@ class NowPlaying extends HookWidget {
                         padding: const EdgeInsets.only(right: 8.0),
                         child: Opacity(
                           opacity: elementOpacity,
-                          child: ValueListenableBuilder<bool>(
-                            valueListenable: neoManager.isLastSongNotifier,
-                            builder: (_, isLast, __) {
-                              return IconBtn(
-                                icon: Icons.fast_forward,
-                                label: 'next'.tr(),
-                                onPressed:
-                                    (isLast) ? null : neoManager.skipToNext,
-                              );
-                            },
-                          ),
+                          child: NextSongButton(),
                         ),
                       ),
                     ],
@@ -429,6 +419,124 @@ class NowPlaying extends HookWidget {
               ),
             ],
           ),
+        );
+      },
+    );
+  }
+}
+
+class PreviousSongButton extends StatelessWidget {
+  final EdgeInsets padding;
+  final EdgeInsets margin;
+
+  const PreviousSongButton({
+    Key? key,
+    this.padding = const EdgeInsets.all(10.0),
+    this.margin = const EdgeInsets.all(8.0),
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: neoManager.isFirstSongNotifier,
+      builder: (_, isFirst, __) {
+        return IconBtn(
+          icon: Icons.fast_rewind_rounded,
+          label: 'previous'.tr(),
+          iconSize: 24.0,
+          margin: EdgeInsets.zero,
+          padding: const EdgeInsets.all(14.0),
+          onPressed: (isFirst) ? null : neoManager.skipToPrevious,
+        );
+      },
+    );
+  }
+}
+
+class NextSongButton extends StatelessWidget {
+  final EdgeInsets padding;
+  final EdgeInsets margin;
+
+  const NextSongButton({
+    Key? key,
+    this.padding = const EdgeInsets.all(10.0),
+    this.margin = const EdgeInsets.all(8.0),
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: neoManager.isLastSongNotifier,
+      builder: (_, isLast, __) {
+        return IconBtn(
+          icon: Icons.fast_forward_rounded,
+          label: 'next'.tr(),
+          padding: padding,
+          margin: margin,
+          iconSize: 24,
+          onPressed: (isLast) ? null : neoManager.skipToNext,
+        );
+      },
+    );
+  }
+}
+
+class RepeatButton extends StatelessWidget {
+  const RepeatButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<RepeatState>(
+      valueListenable: neoManager.repeatButtonNotifier,
+      builder: (_, value, __) {
+        IconData icon;
+        Color? color;
+        bool isActive;
+        switch (value) {
+          case RepeatState.off:
+            isActive = false;
+            icon = Icons.repeat_rounded;
+            break;
+
+          case RepeatState.repeatPlaylist:
+            isActive = true;
+            icon = Icons.repeat_rounded;
+            color = Theme.of(context).primaryColor;
+            break;
+          case RepeatState.repeatSong:
+            isActive = true;
+            icon = Icons.repeat_one_rounded;
+            color = Theme.of(context).primaryColor;
+            break;
+        }
+        return IconBtn(
+          icon: icon,
+          onPressed: neoManager.onRepeatButtonPressed,
+          iconColor: color,
+          // isActive: isActive,
+          margin: EdgeInsets.zero,
+          padding: const EdgeInsets.all(4.0),
+        );
+      },
+    );
+  }
+}
+
+class ShuffleButton extends StatelessWidget {
+  const ShuffleButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: neoManager.isShuffleModeEnabledNotifier,
+      builder: (_, isEnabled, __) {
+        return IconBtn(
+          icon: Icons.shuffle_rounded,
+          // isActive: isEnabled,
+          onPressed: neoManager.onShuffleButtonPressed,
+          iconColor: isEnabled ? Theme.of(context).primaryColor : null,
+          margin: EdgeInsets.zero,
+          padding: const EdgeInsets.all(4.0),
         );
       },
     );

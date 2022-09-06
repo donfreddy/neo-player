@@ -177,7 +177,7 @@ class NeoManager {
   void skipToNext() => _player.seekToNext();
 
   void skipToPrevious() async {
-    _player.seekToPrevious();
+    await _player.seekToPrevious();
   }
 
   void skipToQueueItem(int index) async {
@@ -198,6 +198,33 @@ class NeoManager {
     MediaItem mediaItem,
     BuildContext context,
   ) {}
+
+  Future<void> setVolume(double volume) async {
+    volumeNotifier.value = volume;
+    await _player.setVolume(volume);
+  }
+
+  void onRepeatButtonPressed() {
+    repeatButtonNotifier.nextState();
+    switch (repeatButtonNotifier.value) {
+      case RepeatState.off:
+        _player.setLoopMode(LoopMode.off);
+        break;
+      case RepeatState.repeatPlaylist:
+        _player.setLoopMode(LoopMode.all);
+        break;
+      case RepeatState.repeatSong:
+        _player.setLoopMode(LoopMode.one);
+    }
+  }
+
+  void onShuffleButtonPressed() async {
+    final enable = !_player.shuffleModeEnabled;
+    if (enable) {
+      await _player.shuffle();
+    }
+    await _player.setShuffleModeEnabled(enable);
+  }
 
   void remove() {}
 
@@ -230,8 +257,8 @@ class RepeatButtonNotifier extends ValueNotifier<RepeatState> {
 
 enum RepeatState {
   off,
-  repeatSong,
   repeatPlaylist,
+  repeatSong,
 }
 
 class ProgressNotifier extends ValueNotifier<ProgressBarState> {
