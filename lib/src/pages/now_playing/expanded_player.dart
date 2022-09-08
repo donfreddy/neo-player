@@ -218,48 +218,51 @@ class ExpandedPlayer extends StatelessWidget {
                     child: Container(
                       // color: Colors.deepOrange,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconBtn(
-                                icon: Icons.replay_10_rounded,
-                                onPressed: () {},
-                                margin: EdgeInsets.zero,
-                                padding: const EdgeInsets.all(4.0),
-                              ),
-                              const ShuffleButton()
-                            ],
-                          ),
+                          // Column(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     IconBtn(
+                          //       icon: Icons.replay_10_rounded,
+                          //       onPressed: () {},
+                          //       margin: EdgeInsets.zero,
+                          //       padding: const EdgeInsets.all(4.0),
+                          //     ),
+                          //     const ShuffleButton()
+                          //   ],
+                          // ),
+                          const ShuffleButton(),
                           const Spacer(),
                           const PreviousSongButton(
                             margin: EdgeInsets.zero,
-                            padding: EdgeInsets.all(12.0),
+                            padding: EdgeInsets.all(16.0),
                           ),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 20),
                           PlayButton(
                             animationController: animationController,
                             padding: const EdgeInsets.all(20.0),
                             margin: EdgeInsets.zero,
                           ),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 20),
                           const NextSongButton(
                             margin: EdgeInsets.zero,
-                            padding: EdgeInsets.all(12.0),
+                            padding: EdgeInsets.all(16.0),
                           ),
                           const Spacer(),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconBtn(
-                                icon: Icons.forward_10_rounded,
-                                onPressed: () {},
-                                margin: EdgeInsets.zero,
-                                padding: const EdgeInsets.all(4.0),
-                              ),
-                              const RepeatButton()
-                            ],
-                          )
+                          const RepeatButton()
+                          // Column(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     IconBtn(
+                          //       icon: Icons.forward_10_rounded,
+                          //       onPressed: () {},
+                          //       margin: EdgeInsets.zero,
+                          //       padding: const EdgeInsets.all(4.0),
+                          //     ),
+                          //     const RepeatButton()
+                          //   ],
+                          // )
                         ],
                       ),
                     ),
@@ -277,28 +280,33 @@ class ExpandedPlayer extends StatelessWidget {
                   SizedBox(height: height * 0.04),
                   SizedBox(
                     height: height * 0.09,
+                    // child: Container(
+                    //   // color: Colors.deepOrange,
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       IconBtn(
+                    //         icon: Icons.playlist_add_rounded,
+                    //         onPressed: () {},
+                    //         margin: EdgeInsets.zero,
+                    //         padding: const EdgeInsets.all(4.0),
+                    //       ),
+                    //       const ShuffleButton(),
+                    //       const ShuffleButton(),
+                    //       IconBtn(
+                    //         icon: Icons.queue_music_rounded,
+                    //         onPressed: () {},
+                    //         margin: EdgeInsets.zero,
+                    //         padding: const EdgeInsets.all(4.0),
+                    //         // iconColor: NeumorphicTheme.defaultTextColor(
+                    //         //     context),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     child: Container(
-                      // color: Colors.deepOrange,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconBtn(
-                            icon: Icons.playlist_add_rounded,
-                            onPressed: () {},
-                            margin: EdgeInsets.zero,
-                            padding: const EdgeInsets.all(4.0),
-                          ),
-                          IconBtn(
-                            icon: Icons.queue_music_rounded,
-                            onPressed: () {},
-                            margin: EdgeInsets.zero,
-                            padding: const EdgeInsets.all(4.0),
-                            // iconColor: NeumorphicTheme.defaultTextColor(
-                            //     context),
-                          ),
-                        ],
-                      ),
-                    ),
+                        color: Colors.blueGrey,
+                        child: VolumeSlider(height: volumeSliderBoxHeight)),
                   ),
                   // SizedBox(
                   //   height: volumeSliderBoxHeight,
