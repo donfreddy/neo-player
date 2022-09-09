@@ -1,5 +1,4 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -93,7 +92,7 @@ class ExpandedPlayer extends StatelessWidget {
                 // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   SizedBox(height: height * 0.02),
-                  // Title, subtitle and button
+                  // Info section
                   SizedBox(
                     height: titleBoxHeight,
                     child: Center(
@@ -211,28 +210,29 @@ class ExpandedPlayer extends StatelessWidget {
                   //     ),
                   //   ),
                   // ),
-                  SizedBox(height: height * 0.07),
+                  SizedBox(height: height * 0.06),
                   // Control
                   SizedBox(
-                    height: height * 0.18,
+                    height: height * 0.24,
                     child: Container(
                       // color: Colors.deepOrange,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // Column(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: [
-                          //     IconBtn(
-                          //       icon: Icons.replay_10_rounded,
-                          //       onPressed: () {},
-                          //       margin: EdgeInsets.zero,
-                          //       padding: const EdgeInsets.all(4.0),
-                          //     ),
-                          //     const ShuffleButton()
-                          //   ],
-                          // ),
-                          const ShuffleButton(),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconBtn(
+                                icon: Icons.replay_10_rounded,
+                                onPressed: () {},
+                                margin: EdgeInsets.zero,
+                                padding: const EdgeInsets.all(4.0),
+                              ),
+                              const ShuffleButton(),
+                              const ShuffleButton(),
+                            ],
+                          ),
+                          // const ShuffleButton(),
                           const Spacer(),
                           const PreviousSongButton(
                             margin: EdgeInsets.zero,
@@ -250,62 +250,61 @@ class ExpandedPlayer extends StatelessWidget {
                             padding: EdgeInsets.all(16.0),
                           ),
                           const Spacer(),
-                          const RepeatButton()
-                          // Column(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: [
-                          //     IconBtn(
-                          //       icon: Icons.forward_10_rounded,
-                          //       onPressed: () {},
-                          //       margin: EdgeInsets.zero,
-                          //       padding: const EdgeInsets.all(4.0),
-                          //     ),
-                          //     const RepeatButton()
-                          //   ],
-                          // )
+                          //  const RepeatButton()
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconBtn(
+                                icon: Icons.forward_10_rounded,
+                                onPressed: () {},
+                                margin: EdgeInsets.zero,
+                                padding: const EdgeInsets.all(4.0),
+                              ),
+                              const RepeatButton(),
+                              const RepeatButton()
+                            ],
+                          )
                         ],
                       ),
                     ),
                   ),
 
                   // Volume
-                  SizedBox(height: height * 0.07),
+                  // SizedBox(height: height * 0.07),
                   SizedBox(
                     height: volumeSliderBoxHeight,
                     child: Container(
-                      //  color: Colors.yellow,
-                      child: VolumeSlider(height: volumeSliderBoxHeight),
-                    ),
+                        //  color: Colors.yellow,
+                        // child: VolumeSlider(height: volumeSliderBoxHeight),
+                        // child: Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     IconBtn(
+                        //       icon: Icons.playlist_add_rounded,
+                        //       onPressed: () {},
+                        //       margin: EdgeInsets.zero,
+                        //       padding: const EdgeInsets.all(4.0),
+                        //     ),
+                        //     // const ShuffleButton(),
+                        //     // const ShuffleButton(),
+                        //     IconBtn(
+                        //       icon: Icons.queue_music_rounded,
+                        //       onPressed: () {},
+                        //       margin: EdgeInsets.zero,
+                        //       padding: const EdgeInsets.all(4.0),
+                        //       // iconColor: NeumorphicTheme.defaultTextColor(
+                        //       //     context),
+                        //     ),
+                        //   ],
+                        // ),
+                        ),
                   ),
-                  SizedBox(height: height * 0.04),
+                  // SizedBox(height: height * 0.07),
+                  //SizedBox(height: height * 0.02),
                   SizedBox(
                     height: height * 0.09,
-                    // child: Container(
-                    //   // color: Colors.deepOrange,
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       IconBtn(
-                    //         icon: Icons.playlist_add_rounded,
-                    //         onPressed: () {},
-                    //         margin: EdgeInsets.zero,
-                    //         padding: const EdgeInsets.all(4.0),
-                    //       ),
-                    //       const ShuffleButton(),
-                    //       const ShuffleButton(),
-                    //       IconBtn(
-                    //         icon: Icons.queue_music_rounded,
-                    //         onPressed: () {},
-                    //         margin: EdgeInsets.zero,
-                    //         padding: const EdgeInsets.all(4.0),
-                    //         // iconColor: NeumorphicTheme.defaultTextColor(
-                    //         //     context),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
                     child: Container(
-                        color: Colors.blueGrey,
+                        //      color: Colors.blueGrey,
                         child: VolumeSlider(height: volumeSliderBoxHeight)),
                   ),
                   // SizedBox(
