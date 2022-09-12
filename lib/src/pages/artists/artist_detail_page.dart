@@ -7,7 +7,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 import '../../../../locator.dart';
 import '../../common_widgets/common_widgets.dart';
 import '../../constants/constants.dart';
-import '../../helpers/helpers.dart';
+import '../../helpers/common.dart';
 import '../../service/audio_query.dart';
 import '../albums/album_detail_page.dart';
 import '../albums/widgets/album_card.dart';

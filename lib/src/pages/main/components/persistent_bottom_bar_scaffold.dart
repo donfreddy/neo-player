@@ -7,7 +7,7 @@ import 'package:neo_player/src/pages/now_playing/neo_manager.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/constants.dart';
-import '../../../helpers/helpers.dart';
+import '../../../helpers/common.dart';
 import '../../../provider/settings_provider.dart';
 import '../../../theme/theme.dart';
 import '../../now_playing/now_playing.dart';

@@ -30,9 +30,7 @@ class PlayingImageCard extends StatelessWidget {
                     ? Image.file(
                         File.fromUri(currentSong.artUri!),
                         fit: BoxFit.cover,
-                        repeat: ImageRepeat.noRepeat,
-                        // width: 46,
-                        // height: 45,
+                        filterQuality: FilterQuality.high,
                       )
                     : Container(),
               );

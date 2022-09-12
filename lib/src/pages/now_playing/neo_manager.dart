@@ -1,22 +1,28 @@
+import 'dart:async';
+
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:hive/hive.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:neo_player/locator.dart';
 
-import '../../helpers/helpers.dart';
+import '../../helpers/common.dart';
 
 class NeoManager {
   late AudioPlayer _player;
   late ConcatenatingAudioSource _playlist;
+  late ValueNotifier<double> volumeNotifier;
+
+  //
+  Box settingsBox = Hive.box('settings');
 
   final queueNotifier = ValueNotifier<List<MediaItem>>([]);
   final currentSongNotifier = ValueNotifier<MediaItem?>(null);
 
   //
   final queueIndexNotifier = ValueNotifier<int?>(0);
-  final volumeNotifier = ValueNotifier<double>(1.0);
   final speedNotifier = ValueNotifier<double>(1.0);
   final repeatButtonNotifier = RepeatButtonNotifier();
   final playButtonNotifier = PlayButtonNotifier();
@@ -37,6 +43,9 @@ class NeoManager {
   Future<void> _init() async {
     _player = locator<AudioPlayer>();
     _playlist = ConcatenatingAudioSource(children: []);
+    volumeNotifier = ValueNotifier<double>(
+      settingsBox.get('volume', defaultValue: 1.0) as double,
+    );
 
     // session config
     final session = await AudioSession.instance;
@@ -99,6 +108,10 @@ class NeoManager {
         total: totalDuration ?? Duration.zero,
       );
     });
+  }
+
+  void _listenForChangesInPlaybackEvent() {
+    _player.playbackEventStream.listen((event) {});
   }
 
   void _listenForChangesInCurrentIndex() {
@@ -164,9 +177,33 @@ class NeoManager {
     // _mediaItemExpando[_player.sequenceState?.effectiveSequence= mediaItem;
   }
 
-  void play() async => _player.play();
+  void play() async {
+    final userVolume = settingsBox.get('volume', defaultValue: 1.0) as double;
+    int volume = (userVolume * 10).round();
 
-  void pause() => _player.pause();
+    for (int i = 1; i <= volume; i++) {
+      final oneSec = Duration(milliseconds: i * 10);
+      await Future.delayed(oneSec, () async {
+        await _player.setVolume(i / 10);
+      });
+    }
+    await _player.play();
+  }
+
+  void pause() async {
+    final volume = _player.volume;
+    print('############################# Volume Start: $volume');
+
+    for (var i = 0.6; 0.0 <= i && i <= 1.0; i -= 0.1) {
+      print('############################# Volume: $i');
+      const oneSec = Duration(milliseconds: 100);
+      await Future.delayed(oneSec, () async {
+        final newValue = (0 + (1 - 0.0) * i).clamp(0.0, 1.0);
+        await _player.setVolume(newValue);
+      });
+    }
+    await _player.pause();
+  }
 
   void stop() async {
     await _player.stop();
@@ -194,6 +231,23 @@ class NeoManager {
 
   void shuffle() {}
 
+  void replay10() {
+    final position = _player.position.inSeconds;
+    if (position >= 10) {
+      _player.seek(Duration(seconds: position - 10));
+    } else {
+      _player.seek(Duration.zero);
+    }
+  }
+
+  void forward10() {
+    final position = _player.position.inSeconds;
+    final duration = _player.duration?.inSeconds ?? 0;
+    if (position <= duration - 10) {
+      _player.seek(Duration(seconds: position + 10));
+    }
+  }
+
   void playNext(
     MediaItem mediaItem,
     BuildContext context,
@@ -201,6 +255,7 @@ class NeoManager {
 
   Future<void> setVolume(double volume) async {
     volumeNotifier.value = volume;
+    await settingsBox.put('volume', volume);
     await _player.setVolume(volume);
   }
 

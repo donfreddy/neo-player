@@ -34,8 +34,8 @@ const double kBottomNavBarHeight = 58;
 /// MiniPlayer Percentage Declaration: 0.1
 const double kMiniPlayerPercentageDeclaration = 0.1;
 
-/// 100 milliseconds
-const Duration kShortDuration = Duration(milliseconds: 100);
+/// 150 milliseconds
+const Duration kShortDuration = Duration(milliseconds: 150);
 
 /// 300 milliseconds
 const Duration kMediumDuration = Duration(milliseconds: 300);

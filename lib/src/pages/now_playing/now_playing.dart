@@ -1,17 +1,16 @@
-import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:miniplayer/miniplayer.dart';
-import 'package:neo_player/src/pages/now_playing/widgets/play_button.dart';
+import 'package:neo_player/src/pages/now_playing/widgets/control_button.dart';
 import 'package:neo_player/src/pages/now_playing/widgets/playing_image_card.dart';
 import 'package:neo_player/src/theme/style.dart';
 
 import '../../../locator.dart';
 import '../../common_widgets/common_widgets.dart';
 import '../../constants/constants.dart';
-import '../../helpers/helpers.dart';
+import '../../helpers/common.dart';
 import '../../theme/theme.dart';
 import 'expanded_player.dart';
 import 'neo_manager.dart';
@@ -45,248 +44,15 @@ class NowPlaying extends HookWidget {
       elevation: 5,
       builder: (double height, double percentage) {
         final miniPlayer = percentage < kMiniPlayerPercentageDeclaration;
-        final maxImgSize = screenWidth(context) * 0.8;
+        final maxImgSize = screenWidth(context) * 0.9;
 
         // ========================== Expanded Player ==========================
         if (!miniPlayer) {
-          var percentageExpandedPlayer = percentageFromValueInRange(
-            min: kPlayerMaxHeight * kMiniPlayerPercentageDeclaration +
-                kPlayerMinHeight,
-            max: kPlayerMaxHeight,
-            value: height,
-          );
-          if (percentageExpandedPlayer < 0) percentageExpandedPlayer = 0;
-          final paddingVertical = valueFromPercentageInRange(
-              min: 0, max: 10, percentage: percentageExpandedPlayer);
-          final heightWithoutPadding = height - paddingVertical * 2;
-          final imageSize = heightWithoutPadding > maxImgSize
-              ? maxImgSize
-              : heightWithoutPadding;
-          final paddingLeft = valueFromPercentageInRange(
-                min: 0,
-                max: screenWidth(context) - imageSize,
-                percentage: percentageExpandedPlayer,
-              ) /
-              2;
-
           return ExpandedPlayer(
             miniplayerController: controller,
             animationController: animationController,
             miniPlayerHeight: height,
             maxImageSize: maxImgSize,
-          );
-          return GestureDetector(
-            onTap: () {},
-            child: Neumorphic(
-              style: const NeumorphicStyle(
-                boxShape: NeumorphicBoxShape.rect(),
-                depth: 2,
-              ),
-              child: Column(
-                children: [
-                  const SizedBox(height: 25.0),
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                      child: Opacity(
-                        opacity: percentageExpandedPlayer,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            IconBtn(
-                              icon: Icons.expand_more_rounded,
-                              label: 'Settings',
-                              onPressed: () {
-                                controller.animateToHeight(
-                                    state: PanelState.MIN);
-                              },
-                            ),
-                            Text(
-                              'now_playing'.tr(),
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            IconBtn(
-                              icon: Icons.more_horiz_rounded,
-                              label: 'Menu',
-                              onPressed: () {
-                                unImplementSnackBar(context);
-                              },
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20.0),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: paddingLeft,
-                        top: paddingVertical,
-                        bottom: paddingVertical,
-                      ),
-                      child: SizedBox(
-                        height: imageSize,
-                        child: PlayingImageCard(
-                          maxImgSize: maxImgSize,
-                        ),
-                      ),
-                    ),
-                  ),
-                  //const SizedBox(height: 10.0),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: kAppContentPadding),
-                      child: Opacity(
-                        opacity: percentageExpandedPlayer,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Flexible(
-                                child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: kAppContentPadding),
-                              child: Column(
-                                children: [
-                                  AnimatedText(
-                                    text:
-                                        'All My Love Ft. Arianna Grande and Marvin',
-                                    pauseAfterRound: const Duration(seconds: 3),
-                                    fadingEdgeEndFraction: 0.1,
-                                    fadingEdgeStartFraction: 0.1,
-                                    startAfter: const Duration(seconds: 2),
-                                    style: theme.textTheme.titleLarge!
-                                        .copyWith(fontWeight: FontWeight.bold),
-                                  ),
-                                  AnimatedText(
-                                    text: 'Major Lazer',
-                                    pauseAfterRound: const Duration(seconds: 3),
-                                    fadingEdgeEndFraction: 0.1,
-                                    fadingEdgeStartFraction: 0.1,
-                                    startAfter: const Duration(seconds: 2),
-                                    style: theme.textTheme.titleMedium!
-                                        .copyWith(color: textGrayColor),
-                                    startPadding: 0.0,
-                                  ),
-                                ],
-                              ),
-                            )),
-                            const SizedBox(height: 20.0),
-                            Flexible(
-                                child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    IconBtn(
-                                      icon: Icons.playlist_add,
-                                      onPressed: () {},
-                                      margin: EdgeInsets.zero,
-                                      padding: const EdgeInsets.all(4.0),
-                                      // iconColor: NeumorphicTheme.defaultTextColor(
-                                      //     context),
-                                    ),
-                                    const SizedBox(width: 16),
-                                    IconBtn(
-                                      icon: true
-                                          ? Icons.headset
-                                          : Icons.headset_off,
-                                      onPressed: () {},
-                                      margin: EdgeInsets.zero,
-                                      padding: const EdgeInsets.all(4.0),
-                                      //depth: isMuted ? -3.0 : 3.0,
-                                      // iconColor: isMuted
-                                      //     ? primaryColor
-                                      //     : NeumorphicTheme.defaultTextColor(
-                                      //         context),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            )),
-                            Flexible(
-                              child: ProgressBar(
-                                progress: const Duration(seconds: 100),
-                                // buffered: value.buffered,
-                                total: const Duration(seconds: 600) -
-                                    const Duration(seconds: 200),
-                                progressBarColor: theme.primaryColor,
-                                baseBarColor:
-                                    theme.primaryColor.withOpacity(0.2),
-                                thumbGlowColor: theme.primaryColor,
-                                thumbColor: theme.primaryColor,
-                                timeLabelTextStyle: theme.textTheme.bodyMedium!
-                                    .copyWith(color: textGrayColor),
-                                timeLabelType: TimeLabelType.remainingTime,
-                                barHeight: 4.0,
-                                // onSeek: _pageManager.seek,
-                              ),
-                            ),
-                            const SizedBox(height: 20.0),
-                            Flexible(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IconBtn(
-                                    icon: Icons.shuffle,
-                                    onPressed: () {},
-                                    margin: EdgeInsets.zero,
-                                    padding: const EdgeInsets.all(4.0),
-                                    // iconColor: NeumorphicTheme.defaultTextColor(
-                                    //     context),
-                                  ),
-                                  const SizedBox(width: 24),
-                                  IconBtn(
-                                    icon: Icons.skip_previous,
-                                    onPressed: () {},
-                                    iconSize: 24.0,
-                                    margin: EdgeInsets.zero,
-                                    padding: const EdgeInsets.all(14.0),
-                                    // iconColor: NeumorphicTheme.defaultTextColor(
-                                    //     context),
-                                  ),
-                                  const SizedBox(width: 20),
-                                  IconBtn(
-                                    icon: Icons.play_arrow_rounded,
-                                    onPressed: () {},
-                                    margin: EdgeInsets.zero,
-                                    color: theme.primaryColor,
-                                    iconSize: 24.0,
-                                    padding: const EdgeInsets.all(20.0),
-                                    // iconColor: NeumorphicTheme.defaultTextColor(
-                                    //     context),
-                                  ),
-                                  const SizedBox(width: 20),
-                                  IconBtn(
-                                    icon: Icons.skip_next,
-                                    onPressed: () {},
-                                    iconSize: 24.0,
-                                    margin: EdgeInsets.zero,
-                                    padding: const EdgeInsets.all(14.0),
-                                    // iconColor: NeumorphicTheme.defaultTextColor(
-                                    //     context),
-                                  ),
-                                  const SizedBox(width: 24),
-                                  IconBtn(
-                                    icon: Icons.repeat,
-                                    onPressed: () {},
-                                    margin: EdgeInsets.zero,
-                                    padding: const EdgeInsets.all(4.0),
-                                    // iconColor: NeumorphicTheme.defaultTextColor(
-                                    //     context),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
           );
         }
 
@@ -388,7 +154,7 @@ class NowPlaying extends HookWidget {
                         padding: const EdgeInsets.only(left: 6.0),
                         child: Opacity(
                           opacity: elementOpacity,
-                          child: PlayButton(
+                          child: PlayPauseButton(
                             animationController: animationController,
                             // onPressed: (value) {
                             //   if (value == ButtonState.playing) {
@@ -425,39 +191,11 @@ class NowPlaying extends HookWidget {
   }
 }
 
-class PreviousSongButton extends StatelessWidget {
+class NextSonButton extends StatelessWidget {
   final EdgeInsets padding;
   final EdgeInsets margin;
 
-  const PreviousSongButton({
-    Key? key,
-    this.padding = const EdgeInsets.all(10.0),
-    this.margin = const EdgeInsets.all(8.0),
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder<bool>(
-      valueListenable: neoManager.isFirstSongNotifier,
-      builder: (_, isFirst, __) {
-        return IconBtn(
-          icon: Icons.fast_rewind_rounded,
-          label: 'previous'.tr(),
-          iconSize: 24.0,
-          margin: EdgeInsets.zero,
-          padding: const EdgeInsets.all(14.0),
-          onPressed: (isFirst) ? null : neoManager.skipToPrevious,
-        );
-      },
-    );
-  }
-}
-
-class NextSongButton extends StatelessWidget {
-  final EdgeInsets padding;
-  final EdgeInsets margin;
-
-  const NextSongButton({
+  const NextSonButton({
     Key? key,
     this.padding = const EdgeInsets.all(10.0),
     this.margin = const EdgeInsets.all(8.0),

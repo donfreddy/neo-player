@@ -5,7 +5,7 @@ import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../common_widgets/common_widgets.dart';
 import '../../constants/constants.dart';
-import '../../helpers/helpers.dart';
+import '../../helpers/common.dart';
 import '../../theme/style.dart';
 
 class AlbumDetailPage extends StatefulWidget {

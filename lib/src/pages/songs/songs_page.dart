@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hive/hive.dart';
 import 'package:neo_player/src/constants/constants.dart';
-import 'package:neo_player/src/helpers/helpers.dart';
+import 'package:neo_player/src/helpers/common.dart';
 import 'package:neo_player/src/pages/songs/songs_notifier.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 

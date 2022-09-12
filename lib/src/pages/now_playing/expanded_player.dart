@@ -1,17 +1,16 @@
-import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:miniplayer/miniplayer.dart';
+import 'package:neo_player/src/helpers/extensions.dart';
 import 'package:neo_player/src/pages/now_playing/now_playing.dart';
-import 'package:neo_player/src/pages/now_playing/widgets/play_button.dart';
+import 'package:neo_player/src/pages/now_playing/widgets/control_button.dart';
 import 'package:neo_player/src/pages/now_playing/widgets/playing_image_card.dart';
-import 'package:neo_player/src/pages/now_playing/widgets/volume_slider.dart';
+import 'package:neo_player/src/pages/now_playing/widgets/seek_bar.dart';
 
 import '../../../locator.dart';
 import '../../common_widgets/common_widgets.dart';
 import '../../constants/constants.dart';
-import '../../helpers/helpers.dart';
+import '../../helpers/common.dart';
 import '../../theme/style.dart';
 import '../../theme/theme.dart';
 import 'neo_manager.dart';
@@ -56,11 +55,13 @@ class ExpandedPlayer extends StatelessWidget {
         ) /
         2;
 
-    //
     final height = playerMaxHeight - (screenWidth(context) * 0.85);
-    final titleBoxHeight = height * 0.16;
+    final spacerBoxHeight = height * 0.028;
+    final infoBoxHeight = height * 0.16;
     final progressBarBoxHeight = height * 0.1;
-    final volumeSliderBoxHeight = height * 0.1;
+    final controlBoxHeight = height * 0.2;
+    final volumeSliderBoxHeight = height * 0.04;
+    final bottomBtnBoxHeight = height * 0.1;
 
     return GestureDetector(
       onTap: () {},
@@ -68,7 +69,7 @@ class ExpandedPlayer extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         body: Column(
           children: [
-            SizedBox(height: height * 0.1),
+            SizedBox(height: height * 0.08),
             // Artwork
             Align(
               alignment: Alignment.centerLeft,
@@ -77,249 +78,27 @@ class ExpandedPlayer extends StatelessWidget {
                     EdgeInsets.only(left: paddingLeft),
                 child: SizedBox(
                   height: imageSize,
-                  child: PlayingImageCard(
-                    maxImgSize: maxImageSize,
-                  ),
+                  child: PlayingImageCard(maxImgSize: maxImageSize),
                 ),
               ),
             ),
-            // title and controls
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: kAppContentPadding,
-              ),
+            SizedBox(
+              width: maxImageSize,
               child: Column(
-                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(height: height * 0.02),
-                  // Info section
-                  SizedBox(
-                    height: titleBoxHeight,
-                    child: Center(
-                      child: Container(
-                        // color: Colors.yellow,
-                        child: ValueListenableBuilder<MediaItem?>(
-                          valueListenable: neoManager.currentSongNotifier,
-                          builder: (_, song, __) {
-                            return Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    //  mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      AnimatedText(
-                                          text: song != null
-                                              ? song.title
-                                                  .split(' (')[0]
-                                                  .split('|')[0]
-                                                  .trim()
-                                              : '',
-                                          pauseAfterRound:
-                                              const Duration(seconds: 3),
-                                          fadingEdgeEndFraction: 0.1,
-                                          fadingEdgeStartFraction: 0.1,
-                                          startAfter:
-                                              const Duration(seconds: 2),
-                                          style: theme.textTheme.titleMedium!
-                                              .copyWith(
-                                            fontSize: titleBoxHeight / 2.8,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          defaultAlignment: TextAlign.start),
-                                      AnimatedText(
-                                          text:
-                                              song != null ? song.artist! : '',
-                                          pauseAfterRound:
-                                              const Duration(seconds: 3),
-                                          fadingEdgeEndFraction: 0.1,
-                                          fadingEdgeStartFraction: 0.1,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          startAfter:
-                                              const Duration(seconds: 2),
-                                          style: theme.textTheme.titleSmall!
-                                              .copyWith(
-                                            color: textGrayColor,
-                                            fontSize: titleBoxHeight / 4,
-                                          ),
-                                          defaultAlignment: TextAlign.start),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(width: 10.0),
-                                IconBtn(
-                                  icon: Icons.favorite_rounded,
-                                  onPressed: () {
-                                    unImplementSnackBar(context);
-                                  },
-                                  margin: EdgeInsets.zero,
-                                  padding: const EdgeInsets.all(4.0),
-                                ),
-                                const SizedBox(width: 14.0),
-                                IconBtn(
-                                  icon: Icons.more_horiz_rounded,
-                                  onPressed: () {
-                                    unImplementSnackBar(context);
-                                  },
-                                  margin: EdgeInsets.zero,
-                                  padding: const EdgeInsets.all(4.0),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    ),
+                  SizedBox(height: spacerBoxHeight),
+                  SongInfoAndOption(height: infoBoxHeight),
+                  SizedBox(height: spacerBoxHeight),
+                  SeekBar(barHeight: progressBarBoxHeight),
+                  SizedBox(height: spacerBoxHeight),
+                  _TopControl(
+                    height: controlBoxHeight,
+                    animationController: animationController,
                   ),
-                  SizedBox(height: height * 0.06),
-
-                  // Progress Bar
-                  SizedBox(
-                    height: progressBarBoxHeight,
-                    child: Container(
-                      // color: Colors.green,
-                      child: const AudioProgressBar(),
-                    ),
-                  ),
-
-                  // SizedBox(
-                  //   height: height * 0.09,
-                  //   child: Container(
-                  //     // color: Colors.deepOrange,
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //       children: [
-                  //         IconBtn(
-                  //           icon: Icons.replay_10_rounded,
-                  //           onPressed: () {},
-                  //           margin: EdgeInsets.zero,
-                  //           padding: const EdgeInsets.all(4.0),
-                  //         ),
-                  //         IconBtn(
-                  //           icon: Icons.forward_10_rounded,
-                  //           onPressed: () {},
-                  //           margin: EdgeInsets.zero,
-                  //           padding: const EdgeInsets.all(4.0),
-                  //           // iconColor: NeumorphicTheme.defaultTextColor(
-                  //           //     context),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                  SizedBox(height: height * 0.06),
-                  // Control
-                  SizedBox(
-                    height: height * 0.24,
-                    child: Container(
-                      // color: Colors.deepOrange,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconBtn(
-                                icon: Icons.replay_10_rounded,
-                                onPressed: () {},
-                                margin: EdgeInsets.zero,
-                                padding: const EdgeInsets.all(4.0),
-                              ),
-                              const ShuffleButton(),
-                              const ShuffleButton(),
-                            ],
-                          ),
-                          // const ShuffleButton(),
-                          const Spacer(),
-                          const PreviousSongButton(
-                            margin: EdgeInsets.zero,
-                            padding: EdgeInsets.all(16.0),
-                          ),
-                          const SizedBox(width: 20),
-                          PlayButton(
-                            animationController: animationController,
-                            padding: const EdgeInsets.all(20.0),
-                            margin: EdgeInsets.zero,
-                          ),
-                          const SizedBox(width: 20),
-                          const NextSongButton(
-                            margin: EdgeInsets.zero,
-                            padding: EdgeInsets.all(16.0),
-                          ),
-                          const Spacer(),
-                          //  const RepeatButton()
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconBtn(
-                                icon: Icons.forward_10_rounded,
-                                onPressed: () {},
-                                margin: EdgeInsets.zero,
-                                padding: const EdgeInsets.all(4.0),
-                              ),
-                              const RepeatButton(),
-                              const RepeatButton()
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  // Volume
-                  // SizedBox(height: height * 0.07),
-                  SizedBox(
-                    height: volumeSliderBoxHeight,
-                    child: Container(
-                        //  color: Colors.yellow,
-                        // child: VolumeSlider(height: volumeSliderBoxHeight),
-                        // child: Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: [
-                        //     IconBtn(
-                        //       icon: Icons.playlist_add_rounded,
-                        //       onPressed: () {},
-                        //       margin: EdgeInsets.zero,
-                        //       padding: const EdgeInsets.all(4.0),
-                        //     ),
-                        //     // const ShuffleButton(),
-                        //     // const ShuffleButton(),
-                        //     IconBtn(
-                        //       icon: Icons.queue_music_rounded,
-                        //       onPressed: () {},
-                        //       margin: EdgeInsets.zero,
-                        //       padding: const EdgeInsets.all(4.0),
-                        //       // iconColor: NeumorphicTheme.defaultTextColor(
-                        //       //     context),
-                        //     ),
-                        //   ],
-                        // ),
-                        ),
-                  ),
-                  // SizedBox(height: height * 0.07),
-                  //SizedBox(height: height * 0.02),
-                  SizedBox(
-                    height: height * 0.09,
-                    child: Container(
-                        //      color: Colors.blueGrey,
-                        child: VolumeSlider(height: volumeSliderBoxHeight)),
-                  ),
-                  // SizedBox(
-                  //   height: volumeSliderBoxHeight,
-                  //   child: Container(
-                  //     color: Colors.yellow,
-                  //     child: const NeumorphicProgress(
-                  //       percent: 0.5,
-                  //       style: ProgressStyle(
-                  //         accent: Colors.grey,
-                  //         variant: Colors.green,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
+                  SizedBox(height: spacerBoxHeight * 2.2),
+                  _VolumeSlider(barHeight: volumeSliderBoxHeight),
+                  SizedBox(height: spacerBoxHeight * 2.7),
+                  _BottomControl(height: bottomBtnBoxHeight),
                 ],
               ),
             )
@@ -330,39 +109,254 @@ class ExpandedPlayer extends StatelessWidget {
   }
 }
 
-class AudioProgressBar extends StatelessWidget {
-  const AudioProgressBar({Key? key}) : super(key: key);
+class SongInfoAndOption extends StatelessWidget {
+  const SongInfoAndOption({
+    Key? key,
+    required this.height,
+  }) : super(key: key);
+
+  final double height;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return ValueListenableBuilder<ProgressBarState>(
-      valueListenable: neoManager.progressNotifier,
-      builder: (_, value, __) {
-        return ProgressBar(
-          progress: value.current,
-          buffered: value.buffered,
-          total: value.total,
-          progressBarColor: theme.primaryColor,
-          thumbGlowColor: theme.primaryColor,
-          thumbGlowRadius: 20,
-          bufferedBarColor: theme.primaryColor.withOpacity(0.1),
-          thumbColor: theme.primaryColor,
-          timeLabelType: TimeLabelType.remainingTime,
-          timeLabelLocation: TimeLabelLocation.above,
-          barHeight: 4.0,
-          thumbRadius: 6,
-          onSeek: neoManager.seek,
-          baseBarColor: textGrayColor.withOpacity(0.2),
-          timeLabelTextStyle:
-              theme.textTheme.bodyMedium!.copyWith(color: textGrayColor),
-          onDragStart: (details) {},
-          onDragUpdate: (details) {
-            if (kDebugMode) print(details.toString());
-          },
-          onDragEnd: () {},
+    return ValueListenableBuilder<MediaItem?>(
+      valueListenable: neoManager.currentSongNotifier,
+      builder: (_, song, __) {
+        return SizedBox(
+          height: height,
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  //  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AnimatedText(
+                        text: song != null
+                            ? song.title.split(' (')[0].split('|')[0].trim()
+                            : '',
+                        pauseAfterRound: const Duration(seconds: 3),
+                        fadingEdgeEndFraction: 0.1,
+                        fadingEdgeStartFraction: 0.1,
+                        startAfter: const Duration(seconds: 2),
+                        style: theme.textTheme.titleMedium!.copyWith(
+                          fontSize: height / 3,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        defaultAlignment: TextAlign.start),
+                    AnimatedText(
+                        text: song != null ? song.artist!.getArtist() : '',
+                        pauseAfterRound: const Duration(seconds: 3),
+                        fadingEdgeEndFraction: 0.1,
+                        fadingEdgeStartFraction: 0.1,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        startAfter: const Duration(seconds: 2),
+                        style: theme.textTheme.titleSmall!.copyWith(
+                          color: textGrayColor,
+                          fontSize: height / 4.5,
+                        ),
+                        defaultAlignment: TextAlign.start),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 10.0),
+              IconBtn(
+                icon: Icons.favorite_rounded,
+                onPressed: () {
+                  unImplementSnackBar(context);
+                },
+                margin: EdgeInsets.zero,
+                padding: const EdgeInsets.all(4.0),
+              ),
+              const SizedBox(width: 14.0),
+              IconBtn(
+                icon: Icons.more_horiz_rounded,
+                onPressed: () {
+                  unImplementSnackBar(context);
+                },
+                margin: EdgeInsets.zero,
+                padding: const EdgeInsets.all(4.0),
+              ),
+            ],
+          ),
         );
       },
+    );
+  }
+}
+
+class _TopControl extends StatelessWidget {
+  const _TopControl({
+    Key? key,
+    required this.height,
+    required this.animationController,
+  }) : super(key: key);
+
+  final double height;
+  final AnimationController animationController;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Replay10Button(),
+          const Spacer(),
+          const PreviousButton(
+            margin: EdgeInsets.zero,
+            padding: EdgeInsets.all(16.0),
+          ),
+          const SizedBox(width: 20),
+          PlayPauseButton(
+            animationController: animationController,
+            padding: const EdgeInsets.all(20.0),
+            margin: EdgeInsets.zero,
+          ),
+          const SizedBox(width: 20),
+          const NextSongButton(
+            margin: EdgeInsets.zero,
+            padding: EdgeInsets.all(16.0),
+          ),
+          const Spacer(),
+          const Forward10Button()
+        ],
+      ),
+    );
+  }
+}
+
+class Replay10Button extends StatelessWidget {
+  const Replay10Button({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<ProgressBarState>(
+      valueListenable: locator<NeoManager>().progressNotifier,
+      builder: (_, progressValue, __) {
+        return IconBtn(
+          icon: Icons.replay_10_rounded,
+          onPressed: neoManager.replay10,
+          margin: EdgeInsets.zero,
+          padding: const EdgeInsets.all(4.0),
+        );
+      },
+    );
+  }
+}
+
+class Forward10Button extends StatelessWidget {
+  const Forward10Button({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<ProgressBarState>(
+      valueListenable: locator<NeoManager>().progressNotifier,
+      builder: (_, progressValue, __) {
+        return IconBtn(
+          icon: Icons.forward_10_rounded,
+          onPressed: neoManager.forward10,
+          margin: EdgeInsets.zero,
+          padding: const EdgeInsets.all(4.0),
+        );
+      },
+    );
+  }
+}
+
+class _VolumeSlider extends StatelessWidget {
+  final double barHeight;
+
+  const _VolumeSlider({
+    Key? key,
+    required this.barHeight,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return SizedBox(
+      height: barHeight,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const Icon(Icons.volume_mute_rounded, size: 20),
+          Expanded(
+            child: ValueListenableBuilder<double>(
+              valueListenable: locator<NeoManager>().volumeNotifier,
+              builder: (_, volumeValue, __) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                  child: NeumorphicSlider(
+                    value: volumeValue,
+                    height: 2,
+                    max: 1,
+                    onChanged: (volume) {
+                      locator<NeoManager>().setVolume(volume);
+                    },
+                    style: const SliderStyle(depth: -kDepth),
+                    thumb: Neumorphic(
+                      style: NeumorphicStyle(
+                        shape: NeumorphicShape.concave,
+                        depth: kDepth,
+                        color: theme.primaryColor,
+                        boxShape: const NeumorphicBoxShape.circle(),
+                      ),
+                      child: SizedBox(
+                        height: barHeight,
+                        width: barHeight,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          const Icon(Icons.volume_up_rounded, size: 20),
+        ],
+      ),
+    );
+  }
+}
+
+class _BottomControl extends StatelessWidget {
+  const _BottomControl({
+    Key? key,
+    required this.height,
+  }) : super(key: key);
+
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconBtn(
+            icon: Icons.share_rounded,
+            onPressed: () {},
+            margin: EdgeInsets.zero,
+            padding: const EdgeInsets.all(4.0),
+          ),
+          const ShuffleButton(),
+          const RepeatButton(),
+          IconBtn(
+            icon: Icons.queue_music_rounded,
+            onPressed: () {},
+            margin: EdgeInsets.zero,
+            padding: const EdgeInsets.all(4.0),
+          ),
+        ],
+      ),
     );
   }
 }
