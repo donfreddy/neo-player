@@ -3,9 +3,12 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:neo_player/src/helpers/extensions.dart';
 import 'package:neo_player/src/pages/now_playing/now_playing.dart';
-import 'package:neo_player/src/pages/now_playing/widgets/control_button.dart';
+import 'package:neo_player/src/pages/now_playing/widgets/next_button.dart';
+import 'package:neo_player/src/pages/now_playing/widgets/play_pause_button.dart';
 import 'package:neo_player/src/pages/now_playing/widgets/playing_image_card.dart';
+import 'package:neo_player/src/pages/now_playing/widgets/previous_buttton.dart';
 import 'package:neo_player/src/pages/now_playing/widgets/seek_bar.dart';
+import 'package:neo_player/src/pages/now_playing/widgets/volume_slider.dart';
 
 import '../../../locator.dart';
 import '../../common_widgets/common_widgets.dart';
@@ -19,14 +22,12 @@ final neoManager = locator<NeoManager>();
 
 class ExpandedPlayer extends StatelessWidget {
   final MiniplayerController miniplayerController;
-  final AnimationController animationController;
   final double miniPlayerHeight;
   final double maxImageSize;
 
   const ExpandedPlayer({
     Key? key,
     required this.miniplayerController,
-    required this.animationController,
     required this.miniPlayerHeight,
     required this.maxImageSize,
   }) : super(key: key);
@@ -91,12 +92,9 @@ class ExpandedPlayer extends StatelessWidget {
                   SizedBox(height: spacerBoxHeight),
                   SeekBar(barHeight: progressBarBoxHeight),
                   SizedBox(height: spacerBoxHeight),
-                  _TopControl(
-                    height: controlBoxHeight,
-                    animationController: animationController,
-                  ),
+                  _TopControl(height: controlBoxHeight),
                   SizedBox(height: spacerBoxHeight * 2.2),
-                  _VolumeSlider(barHeight: volumeSliderBoxHeight),
+                  VolumeSlider(barHeight: volumeSliderBoxHeight),
                   SizedBox(height: spacerBoxHeight * 2.7),
                   _BottomControl(height: bottomBtnBoxHeight),
                 ],
@@ -191,11 +189,9 @@ class _TopControl extends StatelessWidget {
   const _TopControl({
     Key? key,
     required this.height,
-    required this.animationController,
   }) : super(key: key);
 
   final double height;
-  final AnimationController animationController;
 
   @override
   Widget build(BuildContext context) {
@@ -203,26 +199,25 @@ class _TopControl extends StatelessWidget {
       height: height,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Replay10Button(),
-          const Spacer(),
-          const PreviousButton(
+        children: const [
+          Replay10Button(),
+          Spacer(),
+          PreviousButton(
             margin: EdgeInsets.zero,
             padding: EdgeInsets.all(16.0),
           ),
-          const SizedBox(width: 20),
+          SizedBox(width: 20),
           PlayPauseButton(
-            animationController: animationController,
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(20.0),
             margin: EdgeInsets.zero,
           ),
-          const SizedBox(width: 20),
-          const NextSongButton(
+          SizedBox(width: 20),
+          NextButton(
             margin: EdgeInsets.zero,
             padding: EdgeInsets.all(16.0),
           ),
-          const Spacer(),
-          const Forward10Button()
+          Spacer(),
+          Forward10Button()
         ],
       ),
     );
@@ -245,6 +240,7 @@ class Replay10Button extends StatelessWidget {
           margin: EdgeInsets.zero,
           padding: const EdgeInsets.all(4.0),
         );
+        //
       },
     );
   }
@@ -267,61 +263,6 @@ class Forward10Button extends StatelessWidget {
           padding: const EdgeInsets.all(4.0),
         );
       },
-    );
-  }
-}
-
-class _VolumeSlider extends StatelessWidget {
-  final double barHeight;
-
-  const _VolumeSlider({
-    Key? key,
-    required this.barHeight,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return SizedBox(
-      height: barHeight,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Icon(Icons.volume_mute_rounded, size: 20),
-          Expanded(
-            child: ValueListenableBuilder<double>(
-              valueListenable: locator<NeoManager>().volumeNotifier,
-              builder: (_, volumeValue, __) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                  child: NeumorphicSlider(
-                    value: volumeValue,
-                    height: 2,
-                    max: 1,
-                    onChanged: (volume) {
-                      locator<NeoManager>().setVolume(volume);
-                    },
-                    style: const SliderStyle(depth: -kDepth),
-                    thumb: Neumorphic(
-                      style: NeumorphicStyle(
-                        shape: NeumorphicShape.concave,
-                        depth: kDepth,
-                        color: theme.primaryColor,
-                        boxShape: const NeumorphicBoxShape.circle(),
-                      ),
-                      child: SizedBox(
-                        height: barHeight,
-                        width: barHeight,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          const Icon(Icons.volume_up_rounded, size: 20),
-        ],
-      ),
     );
   }
 }

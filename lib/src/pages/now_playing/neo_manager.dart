@@ -178,30 +178,30 @@ class NeoManager {
   }
 
   void play() async {
-    final userVolume = settingsBox.get('volume', defaultValue: 1.0) as double;
-    int volume = (userVolume * 10).round();
-
-    for (int i = 1; i <= volume; i++) {
-      final oneSec = Duration(milliseconds: i * 10);
-      await Future.delayed(oneSec, () async {
-        await _player.setVolume(i / 10);
-      });
-    }
+    // final userVolume = settingsBox.get('volume', defaultValue: 1.0) as double;
+    // int volume = (userVolume * 10).round();
+    //
+    // for (int i = 1; i <= volume; i++) {
+    //   final oneSec = Duration(milliseconds: i * 10);
+    //   await Future.delayed(oneSec, () async {
+    //     await _player.setVolume(i / 10);
+    //   });
+    // }
     await _player.play();
   }
 
   void pause() async {
-    final volume = _player.volume;
-    print('############################# Volume Start: $volume');
-
-    for (var i = 0.6; 0.0 <= i && i <= 1.0; i -= 0.1) {
-      print('############################# Volume: $i');
-      const oneSec = Duration(milliseconds: 100);
-      await Future.delayed(oneSec, () async {
-        final newValue = (0 + (1 - 0.0) * i).clamp(0.0, 1.0);
-        await _player.setVolume(newValue);
-      });
-    }
+    // final volume = _player.volume;
+    // print('############################# Volume Start: $volume');
+    //
+    // for (var i = 0.6; 0.0 <= i && i <= 1.0; i -= 0.1) {
+    //   print('############################# Volume: $i');
+    //   const oneSec = Duration(milliseconds: 100);
+    //   await Future.delayed(oneSec, () async {
+    //     final newValue = (0 + (1 - 0.0) * i).clamp(0.0, 1.0);
+    //     await _player.setVolume(newValue);
+    //   });
+    // }
     await _player.pause();
   }
 

@@ -3,7 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:miniplayer/miniplayer.dart';
-import 'package:neo_player/src/pages/now_playing/widgets/control_button.dart';
+import 'package:neo_player/src/pages/now_playing/widgets/next_button.dart';
+import 'package:neo_player/src/pages/now_playing/widgets/play_pause_button.dart';
 import 'package:neo_player/src/pages/now_playing/widgets/playing_image_card.dart';
 import 'package:neo_player/src/theme/style.dart';
 
@@ -26,14 +27,12 @@ class NowPlaying extends HookWidget {
     final theme = Theme.of(context);
     final kPlayerMaxHeight = screenHeight(context);
 
-    final controller = useMemoized(() => MiniplayerController());
-    final animationController =
-        useAnimationController(duration: kMediumDuration);
+    final controller = useMemoized(() => MiniplayerController(), [key]);
 
     useEffect(() {
-      animationController.addListener(() {});
+      controller.dispose;
       return;
-    }, [animationController]);
+    }, [controller]);
 
     return Miniplayer(
       valueNotifier: playerExpandProgressNotifier,
@@ -50,7 +49,6 @@ class NowPlaying extends HookWidget {
         if (!miniPlayer) {
           return ExpandedPlayer(
             miniplayerController: controller,
-            animationController: animationController,
             miniPlayerHeight: height,
             maxImageSize: maxImgSize,
           );
@@ -154,25 +152,25 @@ class NowPlaying extends HookWidget {
                         padding: const EdgeInsets.only(left: 6.0),
                         child: Opacity(
                           opacity: elementOpacity,
-                          child: PlayPauseButton(
-                            animationController: animationController,
-                            // onPressed: (value) {
-                            //   if (value == ButtonState.playing) {
-                            //     neoManager.pause();
-                            //     animationController.forward();
-                            //   } else {
-                            //     neoManager.play();
-                            //     animationController.reverse();
-                            //   }
-                            // },
-                          ),
+                          child: const PlayPauseButton(
+
+                              // onPressed: (value) {
+                              //   if (value == ButtonState.playing) {
+                              //     neoManager.pause();
+                              //     animationController.forward();
+                              //   } else {
+                              //     neoManager.play();
+                              //     animationController.reverse();
+                              //   }
+                              // },
+                              ),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: Opacity(
                           opacity: elementOpacity,
-                          child: NextSongButton(),
+                          child: const NextButton(),
                         ),
                       ),
                     ],
