@@ -47,7 +47,6 @@ class _AlbumsPageState extends State<AlbumsPage> {
                       closedShape: const RoundedRectangleBorder(),
                       openColor: NeumorphicTheme.baseColor(context),
                       closedColor: NeumorphicTheme.baseColor(context),
-                      transitionDuration: const Duration(milliseconds: 500),
                       openBuilder: (_, __) {
                         return AlbumDetailPage(album: album, mode: 1);
                       },

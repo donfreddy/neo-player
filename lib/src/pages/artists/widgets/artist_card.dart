@@ -59,8 +59,8 @@ class ArtistCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
-                '${artist.numberOfAlbums!.getAlbumCount()} • ${artist.numberOfTracks!.getSongCount()}',
-                style: theme.textTheme.bodyMedium!.copyWith(
+                artist.numberOfAlbums!.getAlbumCount(),
+                style: theme.textTheme.titleSmall!.copyWith(
                   color: textGrayColor,
                 ),
                 maxLines: 1,

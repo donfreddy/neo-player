@@ -1,4 +1,5 @@
 import 'package:animations/animations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:neo_player/src/helpers/extensions.dart';
@@ -27,7 +28,17 @@ class ArtistDetailPage extends StatefulWidget {
 class _ArtistDetailPageState extends State<ArtistDetailPage> {
   final ScrollController _scrollController = ScrollController();
   double _scrollPosition = 0;
+  List<AlbumModel> albums = [];
   List<SongModel> songs = [];
+  String durations = '';
+  List<String> countries = [
+    "Brazil",
+    "Nepal",
+    "India",
+    "China",
+    "USA",
+    "Canada"
+  ];
 
   @override
   void initState() {
@@ -36,21 +47,21 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
       setState(() {
         _scrollPosition = _scrollController.position.pixels;
       });
+      print(_scrollPosition);
     });
     initSongs();
   }
 
   void initSongs() async {
-    // songs = await _audioQuery.queryAudiosFrom(
-    //   AudiosFromType.ALBUM_ID,
-    //   widget.album.id,
-    // );
-    //
-    // if (songs.length == 1) {
-    //   durations = songs[0].duration!.toDuration();
-    // } else {
-    //   durations = getTotalSongDuration(songs).toDuration();
-    // }
+    albums = await locator<AudioQuery>().getAlbumsFromArtist(widget.artist.id);
+    songs = await locator<AudioQuery>()
+        .getSongsFromArtist(widget.artist.id, sortType: SongSortType.ALBUM);
+
+    if (songs.length == 1) {
+      durations = songs[0].duration!.toDuration();
+    } else {
+      durations = getTotalSongDuration(songs).toDuration();
+    }
   }
 
   @override
@@ -72,10 +83,14 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
               ),
             ],
           ),
-          title: Text(
-            widget.artist.artist.getArtist(),
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
+          title: _scrollPosition > 33
+              ? AnimatedOpacity(
+                  opacity: _scrollPosition == 0 ? 0 : 1,
+                  duration: const Duration(milliseconds: 500),
+                  child: Text(widget.artist.artist.getArtist(),
+                      style: Theme.of(context).textTheme.titleMedium),
+                )
+              : null,
           actions: [
             IconBtn(
               icon: Icons.more_horiz_rounded,
@@ -94,6 +109,21 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
             physics: const BouncingScrollPhysics(),
             controller: _scrollController,
             slivers: [
+              // const SliverToBoxAdapter(child: SizedBox(height: 10.0)),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: kAppContentPadding, vertical: 10.0),
+                  child: Text(
+                    widget.artist.artist.getArtist(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall!
+                        .copyWith(fontWeight: FontWeight.w600),
+                    maxLines: 1,
+                  ),
+                ),
+              ),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -104,7 +134,7 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
                       Expanded(
                         child: IconTextBtn(
                           icon: Icons.play_arrow_rounded,
-                          text: 'Play All',
+                          text: 'play_all'.tr(),
                           onPressed: () {},
                         ),
                       ),
@@ -112,7 +142,7 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
                       Expanded(
                         child: IconTextBtn(
                           icon: Icons.shuffle,
-                          text: 'Shuffle',
+                          text: 'shuffle'.tr(),
                           onPressed: () {},
                         ),
                       )
@@ -120,29 +150,10 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
                   ),
                 ),
               ),
+              const SliverToBoxAdapter(child: SizedBox(height: 10.0)),
               SliverToBoxAdapter(
-                  child: Container(
-                padding: const EdgeInsets.only(
-                    top: 5.0, bottom: kBottomNavBarHeight),
-                child: FutureBuilder<List<AlbumModel>>(
-                    future: locator<AudioQuery>().getAlbums(),
-                    builder: (context, snapshot) {
-                      if (kDebugMode) {
-                        print(snapshot.data);
-                      }
-
-                      if (!snapshot.hasData) {
-                        return const Padding(
-                          padding: EdgeInsets.only(top: 20.0),
-                          child: Center(child: CircularProgressIndicator()),
-                        );
-                      }
-
-                      List<AlbumModel> albums = snapshot.data!;
-
-                      print(albums);
-
-                      return GridView.count(
+                child: albums.isNotEmpty
+                    ? GridView.count(
                         physics: const BouncingScrollPhysics(),
                         crossAxisCount: 2,
                         mainAxisSpacing: 0.0,
@@ -167,10 +178,16 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
                             },
                           );
                         }).toList(),
-                      );
-                    }),
-              )),
-              SliverToBoxAdapter(),
+                      )
+                    : ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: songs.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return SongCard(song: songs[index]);
+                        },
+                      ),
+              ),
             ],
           ),
           const CoverLine()

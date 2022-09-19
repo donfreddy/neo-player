@@ -63,82 +63,82 @@ class _SongsPageState extends State<SongsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: neoAppBar(
-          context,
-          title: 'songs'.tr(),
-          onTapSorting: _buildSortingModal,
-        ),
-        body: RawScrollbar(
-          thumbColor: Theme.of(context).primaryColor,
-          radius: const Radius.circular(kRadius * 2),
-          thickness: 4,
-          minThumbLength: 40,
-          controller: _scrollController,
-          child: Stack(
-            children: [
-              SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Center(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 12.0),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: kAppContentPadding),
-                        child: ValueListenableBuilder<List<SongModel>>(
-                            valueListenable: _songsNotifier,
-                            builder: (_, songs, __) {
-                              return Row(
-                                children: [
-                                  Expanded(
-                                    child: IconTextBtn(
-                                      icon: Icons.play_arrow_rounded,
-                                      text: 'play_all'.tr(),
-                                      onPressed: () => _onPlayAllPressed(songs),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 30.0),
-                                  Expanded(
-                                    child: IconTextBtn(
-                                      icon: Icons.shuffle,
-                                      text: 'shuffle'.tr(),
-                                      onPressed: () => _onShufflePressed(songs),
-                                    ),
-                                  )
-                                ],
-                              );
-                            }),
-                      ),
-                      const SizedBox(height: 20.0),
-                      Container(
-                        padding:
-                            const EdgeInsets.only(bottom: kPlayerMinHeight),
-                        child: ValueListenableBuilder<List<SongModel>>(
+      appBar: neoAppBar(
+        context,
+        title: 'songs'.tr(),
+        onTapSorting: _buildSortingModal,
+      ),
+      body: RawScrollbar(
+        thumbColor: Theme.of(context).primaryColor,
+        radius: const Radius.circular(kRadius * 2),
+        thickness: 4,
+        minThumbLength: 40,
+        controller: _scrollController,
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Center(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 12.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: kAppContentPadding),
+                      child: ValueListenableBuilder<List<SongModel>>(
                           valueListenable: _songsNotifier,
                           builder: (_, songs, __) {
-                            return ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              controller: _scrollController,
-                              shrinkWrap: true,
-                              itemCount: songs.length,
-                              itemBuilder: (_, i) {
-                                return SongCard(
-                                  song: songs[i],
-                                  onTap: () => _onSongTapped(songs[i]),
-                                );
-                              },
+                            return Row(
+                              children: [
+                                Expanded(
+                                  child: IconTextBtn(
+                                    icon: Icons.play_arrow_rounded,
+                                    text: 'play_all'.tr(),
+                                    onPressed: () => _onPlayAllPressed(songs),
+                                  ),
+                                ),
+                                const SizedBox(width: 30.0),
+                                Expanded(
+                                  child: IconTextBtn(
+                                    icon: Icons.shuffle,
+                                    text: 'shuffle'.tr(),
+                                    onPressed: () => _onShufflePressed(songs),
+                                  ),
+                                )
+                              ],
                             );
-                          },
-                        ),
-                      )
-                    ],
-                  ),
+                          }),
+                    ),
+                    const SizedBox(height: 20.0),
+                    Container(
+                      padding: const EdgeInsets.only(bottom: kPlayerMinHeight),
+                      child: ValueListenableBuilder<List<SongModel>>(
+                        valueListenable: _songsNotifier,
+                        builder: (_, songs, __) {
+                          return ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            controller: _scrollController,
+                            shrinkWrap: true,
+                            itemCount: songs.length,
+                            itemBuilder: (_, i) {
+                              return SongCard(
+                                song: songs[i],
+                                onTap: () => _onSongTapped(songs[i]),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    )
+                  ],
                 ),
               ),
-              const CoverLine()
-            ],
-          ),
-        ));
+            ),
+            const CoverLine()
+          ],
+        ),
+      ),
+    );
   }
 
   Future _buildSortingModal() {

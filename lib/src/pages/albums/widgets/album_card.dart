@@ -1,5 +1,6 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:neo_player/src/helpers/extensions.dart';
+import 'package:neo_player/src/theme/style.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../common_widgets/common_widgets.dart';
@@ -59,13 +60,14 @@ class AlbumCard extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              Opacity(
-                opacity: 0.6,
-                child: Text(
-                  album.artist!.getArtist(),
-                  style: Theme.of(context).textTheme.bodyLarge,
-                  maxLines: 1,
-                ),
+              Text(
+                album.artist!.getArtist(),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(color: textGrayColor),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),

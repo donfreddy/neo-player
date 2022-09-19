@@ -46,6 +46,19 @@ class AudioQuery {
     );
   }
 
+  Future<List<AlbumModel>> getAlbumsFromArtist(
+    int artistId, {
+    AlbumSortType? sortType,
+    OrderType? orderType,
+  }) async {
+    return getAlbums(
+      sortType: sortType,
+      orderType: orderType,
+    ).then(
+      (albums) => albums.where((album) => album.artistId == artistId).toList(),
+    );
+  }
+
   Future<List<GenreModel>> getGenres({
     GenreSortType? sortType,
     OrderType? orderType,
@@ -57,7 +70,21 @@ class AudioQuery {
     );
   }
 
-  Future<List<SongModel>> getSongsFromAlbums(
+  Future<List<SongModel>> getSongsFromArtist(
+    int artistId, {
+    SongSortType? sortType,
+    OrderType? orderType,
+    String? path,
+  }) {
+    return onAudioQuery.queryAudiosFrom(
+      AudiosFromType.ARTIST_ID,
+      artistId,
+      sortType: sortType,
+      orderType: orderType,
+    );
+  }
+
+  Future<List<SongModel>> getSongsFromAlbum(
     int albumId, {
     SongSortType? sortType,
     OrderType? orderType,
@@ -68,14 +95,6 @@ class AudioQuery {
       albumId,
       sortType: sortType,
       orderType: orderType,
-    );
-  }
-
-  Future<List<dynamic>> getAlbumsFromArtist(String artist) {
-    return onAudioQuery.queryWithFilters(
-      artist,
-      WithFiltersType.ALBUMS,
-      args: AlbumsArgs.ALBUM,
     );
   }
 }
