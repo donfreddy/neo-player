@@ -15,20 +15,20 @@ import 'modal_bottom_sheet.dart';
 class SongCard extends StatelessWidget {
   final SongModel song;
   final ArtworkType artworkType;
-  final VoidCallback? onPressed;
+  final VoidCallback? onTap;
 
   const SongCard({
     Key? key,
     required this.song,
     this.artworkType = ArtworkType.AUDIO,
-    this.onPressed,
+    this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return MaterialWitchInkWell(
-      onTap: onPressed,
+      onTap: onTap,
       onLongPress: () {
         showSongOptionsModalBottom(context, song);
       },
@@ -63,9 +63,10 @@ class SongCard extends StatelessWidget {
                       );
                     },
                   ),
+                  const SizedBox(height: 2),
                   Text(
-                    song.artist!.getArtist(),
-                    style: theme.textTheme.titleSmall!.copyWith(
+                    '${song.artist!.getArtist()} • ${song.duration?.formatMSToHHMMSS()}',
+                    style: theme.textTheme.bodyMedium!.copyWith(
                       color: textGrayColor,
                     ),
                     maxLines: 1,

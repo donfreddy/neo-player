@@ -3,19 +3,15 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 extension StringExtensions on String {
   // get artist name
-  String getArtist() => this == '<unknown>' ? 'Artiste Inconnu' : this;
+  String getArtist() => this == '<unknown>' ? 'unknown_artist'.tr() : this;
 }
 
 extension IntExtension on int {
   // get album count
-  String getAlbumCount() {
-    return this == 1 ? '${this} album' : '${this} albums';
-  }
+  String getAlbumCount() => plural('album_count', this);
 
   // get song count
-  String getSongCount() {
-    return this == 1 ? '${this} track' : '${this} tracks';
-  }
+  String getSongCount() => plural('song_count', this);
 
   /// Get formatted datetime e.g: Feb 20, 2022, 13:16
   String toDateAndTime(Locale currentLocale) {
@@ -25,10 +21,6 @@ extension IntExtension on int {
     final time = DateFormat.jm(locale).format(dateTime);
     return '$date, $time';
   }
-
-  // String toDuration() {
-  //   return '${this ~/ 60}:${this % 60}';
-  // }
 
   String formatMSToHHMMSS() {
     if (this == 0) return '00:00';

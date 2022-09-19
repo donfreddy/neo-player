@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 import '../constants/constants.dart';
-import '../pages/pages.dart';
+import '../helpers/common.dart';
 import 'icon_btn.dart';
 
 PreferredSizeWidget neoAppBar(
@@ -23,13 +23,13 @@ PreferredSizeWidget neoAppBar(
             fontWeight: FontWeight.w700),
       ),
       actions: <Widget>[
-        // IconBtn(
-        //   icon: Icons.search_rounded,
-        //   label: 'Search',
-        //   onPressed: () {
-        //     unImplementSnackBar(context);
-        //   },
-        // ),
+        IconBtn(
+          icon: Icons.search_rounded,
+          label: 'Search',
+          onPressed: () {
+            unImplementSnackBar(context);
+          },
+        ),
         Visibility(
           visible: onTapSorting != null ? true : false,
           child: IconBtn(
@@ -38,17 +38,17 @@ PreferredSizeWidget neoAppBar(
             onPressed: onTapSorting,
           ),
         ),
-        IconBtn(
-          icon: Icons.settings_outlined,
-          label: 'Menu',
-          onPressed: () {
-            // Navigator.pushNamed(context, settingsRoute);
-            Navigator.push(
-              context,
-              CupertinoPageRoute(builder: (_) => const SettingsPage()),
-            );
-          },
-        ),
+        // IconBtn(
+        //   icon: Icons.settings_outlined,
+        //   label: 'Menu',
+        //   onPressed: () {
+        //     // Navigator.pushNamed(context, settingsRoute);
+        //     Navigator.push(
+        //       context,
+        //       CupertinoPageRoute(builder: (_) => const SettingsPage()),
+        //     );
+        //   },
+        // ),
         const SizedBox(width: kAppContentPadding / 2),
       ],
     ),

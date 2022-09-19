@@ -14,6 +14,7 @@ class IconTextBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return NeumorphicButton(
       onPressed: onPressed,
       style: NeumorphicStyle(
@@ -23,21 +24,16 @@ class IconTextBtn extends StatelessWidget {
             Radius.circular(08.0),
           ),
         ),
-        depth: 2
+        depth: 2,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            color: NeumorphicTheme.accentColor(context),
-          ),
+          Icon(icon, color: theme.primaryColor),
           const SizedBox(width: 10.0),
           Text(
             text,
-            style: Theme.of(context).textTheme.button?.copyWith(
-                  color: NeumorphicTheme.accentColor(context),
-                ),
+            style: theme.textTheme.button?.copyWith(color: theme.primaryColor),
           ),
         ],
       ),

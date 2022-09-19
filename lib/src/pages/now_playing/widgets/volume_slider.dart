@@ -20,7 +20,7 @@ class VolumeSlider extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Icon(Icons.volume_down_rounded, size: 20),
+          const Icon(Icons.volume_mute_rounded, size: 20),
           Expanded(
             child: ValueListenableBuilder<double>(
               valueListenable: locator<NeoManager>().volumeNotifier,

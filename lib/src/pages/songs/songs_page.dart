@@ -9,7 +9,6 @@ import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../locator.dart';
 import '../../common_widgets/common_widgets.dart';
-import '../../helpers/media_item_converter.dart';
 import '../../models/sort_item.dart';
 import '../../theme/style.dart';
 import '../../theme/theme.dart';
@@ -35,6 +34,30 @@ class _SongsPageState extends State<SongsPage> {
   void initState() {
     _songsNotifier.loadSongs(songSortValue, songOrderValue);
     super.initState();
+  }
+
+  void _onPlayAllPressed(List<SongModel> songs) async {
+    await neoManager.addQueueItems(await getMediaItems(songs));
+
+    // neoManager.stop();
+    // neoManager.clear();
+    neoManager.play();
+  }
+
+  void _onShufflePressed(List<SongModel> songs) async {
+    await neoManager.addQueueItems(await getMediaItems(songs));
+    neoManager.shuffle();
+
+    // neoManager.stop();
+    // neoManager.clear();
+    neoManager.play();
+  }
+
+  void _onSongTapped(SongModel song) async {
+    // neoManager.stop();
+    // neoManager.clear();
+    neoManager.addQueueItem(await getMediaItem(song));
+    neoManager.play();
   }
 
   @override
@@ -71,20 +94,7 @@ class _SongsPageState extends State<SongsPage> {
                                     child: IconTextBtn(
                                       icon: Icons.play_arrow_rounded,
                                       text: 'play_all'.tr(),
-                                      onPressed: () async {
-                                        for (int i = 0; i < songs.length; i++) {
-                                          final file = await getFileFromArtwork(
-                                            songs[i].id,
-                                            songs[i].displayNameWOExt,
-                                          );
-                                          await neoManager.addQueueItem(
-                                              MediaItemConverter.mapToMediaItem(
-                                                  songs[i].getMap, file));
-                                        }
-                                        // neoManager.stop();
-                                        // neoManager.clear();
-                                        neoManager.play();
-                                      },
+                                      onPressed: () => _onPlayAllPressed(songs),
                                     ),
                                   ),
                                   const SizedBox(width: 30.0),
@@ -92,7 +102,7 @@ class _SongsPageState extends State<SongsPage> {
                                     child: IconTextBtn(
                                       icon: Icons.shuffle,
                                       text: 'shuffle'.tr(),
-                                      onPressed: () {},
+                                      onPressed: () => _onShufflePressed(songs),
                                     ),
                                   )
                                 ],
@@ -111,23 +121,10 @@ class _SongsPageState extends State<SongsPage> {
                               controller: _scrollController,
                               shrinkWrap: true,
                               itemCount: songs.length,
-                              itemBuilder: (_, index) {
-                                SongModel song = songs[index];
+                              itemBuilder: (_, i) {
                                 return SongCard(
-                                  song: song,
-                                  onPressed: () async {
-                                    final file = await getFileFromArtwork(
-                                        song.id, song.displayNameWOExt);
-
-                                    final mediaItem =
-                                        MediaItemConverter.mapToMediaItem(
-                                            song.getMap, file);
-
-                                    // neoManager.stop();
-                                    // neoManager.clear();
-                                    neoManager.addQueueItem(mediaItem);
-                                    neoManager.play();
-                                  },
+                                  song: songs[i],
+                                  onTap: () => _onSongTapped(songs[i]),
                                 );
                               },
                             );

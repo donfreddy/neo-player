@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hive/hive.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -10,10 +9,11 @@ import 'package:neo_player/locator.dart';
 
 import '../../helpers/common.dart';
 
-class NeoManager {
+class NeoManager extends JustAudioBackground {
   late AudioPlayer _player;
   late ConcatenatingAudioSource _playlist;
   late ValueNotifier<double> volumeNotifier;
+  final _mediaItemExpando = Expando<MediaItem>();
 
   //
   Box settingsBox = Hive.box('settings');
@@ -40,6 +40,10 @@ class NeoManager {
     _listenForChangesInSequenceState();
   }
 
+  // ===========================================================================
+  // =========================== INIT AUDIO PLAYER =============================
+  // ===========================================================================
+
   Future<void> _init() async {
     _player = locator<AudioPlayer>();
     _playlist = ConcatenatingAudioSource(children: []);
@@ -61,6 +65,10 @@ class NeoManager {
 
     await _player.setAudioSource(_playlist, preload: false);
   }
+
+  // ===========================================================================
+  // ========================= AUDIO PLAYER LISTEN =============================
+  // ===========================================================================
 
   void _listenForChangesInPlayerState() {
     _player.playerStateStream.listen((playerState) {
@@ -153,6 +161,10 @@ class NeoManager {
     });
   }
 
+  // ===========================================================================
+  // ============================ QUEUE HANDLE =================================
+  // ===========================================================================
+
   Future<void> addQueueItem(MediaItem mediaItem) async {
     await _playlist.add(createAudioSource(mediaItem));
   }
@@ -173,11 +185,21 @@ class NeoManager {
   }
 
   Future<void> updateMediaItem(MediaItem mediaItem) async {
-    // final index = queue.value.indexWhere((item) => item.id == mediaItem.id);
-    // _mediaItemExpando[_player.sequenceState?.effectiveSequence= mediaItem;
+    final index =
+        queueNotifier.value.indexWhere((item) => item.id == mediaItem.id);
+    _mediaItemExpando[_player.sequence![index]] = mediaItem;
   }
 
-  void play() async {
+  Future<void> removeQueueItem(MediaItem mediaItem) async {
+    final index = queueNotifier.value.indexOf(mediaItem);
+    await _playlist.removeAt(index);
+  }
+
+  // ===========================================================================
+  // ========================= AUDIO PLAYER HANDLE =============================
+  // ===========================================================================
+
+  Future<void> play() async {
     // final userVolume = settingsBox.get('volume', defaultValue: 1.0) as double;
     // int volume = (userVolume * 10).round();
     //
@@ -190,7 +212,7 @@ class NeoManager {
     await _player.play();
   }
 
-  void pause() async {
+  Future<void> pause() async {
     // final volume = _player.volume;
     // print('############################# Volume Start: $volume');
     //
@@ -205,19 +227,15 @@ class NeoManager {
     await _player.pause();
   }
 
-  void stop() async {
-    await _player.stop();
-  }
+  Future<void> stop() => _player.stop();
 
-  void seek(Duration position) => _player.seek(position);
+  Future<void> seek(Duration position) => _player.seek(position);
 
-  void skipToNext() => _player.seekToNext();
+  Future<void> skipToNext() => _player.seekToNext();
 
-  void skipToPrevious() async {
-    await _player.seekToPrevious();
-  }
+  Future<void> skipToPrevious() => _player.seekToPrevious();
 
-  void skipToQueueItem(int index) async {
+  Future<void> skipToQueueItem(int index) async {
     if (index < 0 || index >= _playlist.children.length) return;
 
     _player.seek(
@@ -227,11 +245,7 @@ class NeoManager {
     );
   }
 
-  void repeat() {}
-
-  void shuffle() {}
-
-  void replay10() {
+  Future<void> replay10() async {
     final position = _player.position.inSeconds;
     if (position >= 10) {
       _player.seek(Duration(seconds: position - 10));
@@ -240,7 +254,7 @@ class NeoManager {
     }
   }
 
-  void forward10() {
+  Future<void> forward10() async {
     final position = _player.position.inSeconds;
     final duration = _player.duration?.inSeconds ?? 0;
     if (position <= duration - 10) {
@@ -248,10 +262,27 @@ class NeoManager {
     }
   }
 
-  void playNext(
-    MediaItem mediaItem,
-    BuildContext context,
-  ) {}
+  Future<void> repeat() async {
+    repeatButtonNotifier.nextState();
+    switch (repeatButtonNotifier.value) {
+      case RepeatState.off:
+        _player.setLoopMode(LoopMode.off);
+        break;
+      case RepeatState.all:
+        _player.setLoopMode(LoopMode.all);
+        break;
+      case RepeatState.one:
+        _player.setLoopMode(LoopMode.one);
+    }
+  }
+
+  Future<void> shuffle() async {
+    final enable = !_player.shuffleModeEnabled;
+    if (enable) {
+      await _player.shuffle();
+    }
+    await _player.setShuffleModeEnabled(enable);
+  }
 
   Future<void> setVolume(double volume) async {
     volumeNotifier.value = volume;
@@ -259,26 +290,9 @@ class NeoManager {
     await _player.setVolume(volume);
   }
 
-  void onRepeatButtonPressed() {
-    repeatButtonNotifier.nextState();
-    switch (repeatButtonNotifier.value) {
-      case RepeatState.off:
-        _player.setLoopMode(LoopMode.off);
-        break;
-      case RepeatState.repeatPlaylist:
-        _player.setLoopMode(LoopMode.all);
-        break;
-      case RepeatState.repeatSong:
-        _player.setLoopMode(LoopMode.one);
-    }
-  }
-
-  void onShuffleButtonPressed() async {
-    final enable = !_player.shuffleModeEnabled;
-    if (enable) {
-      await _player.shuffle();
-    }
-    await _player.setShuffleModeEnabled(enable);
+  Future<void> setSpeed(double speed) async {
+    speedNotifier.value = speed;
+    await _player.setSpeed(speed);
   }
 
   void remove() {}
@@ -295,10 +309,7 @@ class PlayButtonNotifier extends ValueNotifier<ButtonState> {
   static const _initialValue = ButtonState.paused;
 }
 
-enum ButtonState {
-  paused,
-  playing,
-}
+enum ButtonState { paused, playing }
 
 class RepeatButtonNotifier extends ValueNotifier<RepeatState> {
   RepeatButtonNotifier() : super(_initialValue);
@@ -310,11 +321,7 @@ class RepeatButtonNotifier extends ValueNotifier<RepeatState> {
   }
 }
 
-enum RepeatState {
-  off,
-  repeatPlaylist,
-  repeatSong,
-}
+enum RepeatState { off, all, one }
 
 class ProgressNotifier extends ValueNotifier<ProgressBarState> {
   ProgressNotifier() : super(_initialValue);

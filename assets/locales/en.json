@@ -13,6 +13,16 @@
   },
   "song": "Song",
   "songs": "Songs",
+  "song_count": {
+    "one": "{} song",
+    "many": "{} songs",
+    "other": "{} songs"
+  },
+  "album_count": {
+    "one": "{} album",
+    "many": "{} albums",
+    "other": "{} albums"
+  },
   "play": "Play",
   "play_all": "Play all",
   "play_next": "Play next",
@@ -21,6 +31,9 @@
   "sorting": "Sorting",
   "title": "Title",
   "artist": "Artist",
+  "artists": "Artists",
+  "unknown_artist": "Unknown Artist",
+  "folders": "Folders",
   "duration": "Duration",
   "size": "Size",
   "date_added": "Date added",
@@ -39,8 +52,7 @@
   "add_playlist": "Add to playlist",
   "set_ringtone": "Set as ringtone",
   "delete_from_device": "Delete from Device",
-  "now_playing": "Now playing",
-  "": "",
+  "playlists": "playlists",
   "": "",
   "": ""
 }

@@ -10,6 +10,8 @@ import 'package:neo_player/src/theme/style.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'media_item_converter.dart';
+
 double valueFromPercentageInRange(
     {required final double min, max, percentage}) {
   return percentage * (max - min) + min;
@@ -66,6 +68,19 @@ Future<File> getFileFromArtwork(int songId, String path) async {
     }
   }
   return file;
+}
+
+Future<MediaItem> getMediaItem(SongModel song) async {
+  final file = await getFileFromArtwork(song.id, song.displayNameWOExt);
+  return MediaItemConverter.mapToMediaItem(song.getMap, file);
+}
+
+Future<List<MediaItem>> getMediaItems(List<SongModel> songs) async {
+  final List<MediaItem> mediaItems = [];
+  for (int i = 0; i < songs.length; i++) {
+    mediaItems.add(await getMediaItem(songs[i]));
+  }
+  return mediaItems;
 }
 
 void showSnackBar(BuildContext context, String message) {

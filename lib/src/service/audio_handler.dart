@@ -3,7 +3,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../pages/now_playing/queue.dart';
+import '../pages/now_playing/neo_manager.dart';
 
 Future<AudioHandler> initAudioService() async {
   return await AudioService.init(
@@ -80,24 +80,24 @@ class NeoPlayerHandlerImpl extends BaseAudioHandler
   }
 
   @override
-  Stream<QueueState> get queueState =>
-      Rx.combineLatest3<List<MediaItem>, PlaybackState, List<int>, QueueState>(
-        queue,
-        playbackState,
-        _player!.shuffleIndicesStream.whereType<List<int>>(),
-        (queue, playbackState, shuffleIndices) => QueueState.currentValue(
-          queue,
-          playbackState.queueIndex,
-          playbackState.shuffleMode == AudioServiceShuffleMode.all
-              ? shuffleIndices
-              : null,
-          playbackState.repeatMode,
-        ),
-      ).where(
-        (state) =>
-            state.shuffleIndices == null ||
-            state.queue.length == state.shuffleIndices!.length,
-      );
+  // Stream<QueueState> get queueState =>
+  //     Rx.combineLatest3<List<MediaItem>, PlaybackState, List<int>, QueueState>(
+  //       queue,
+  //       playbackState,
+  //       _player!.shuffleIndicesStream.whereType<List<int>>(),
+  //       (queue, playbackState, shuffleIndices) => QueueState.currentValue(
+  //         queue,
+  //         playbackState.queueIndex,
+  //         playbackState.shuffleMode == AudioServiceShuffleMode.all
+  //             ? shuffleIndices
+  //             : null,
+  //         playbackState.repeatMode,
+  //       ),
+  //     ).where(
+  //       (state) =>
+  //           state.shuffleIndices == null ||
+  //           state.queue.length == state.shuffleIndices!.length,
+  //     );
 
   @override
   Future<void> addQueueItem(MediaItem mediaItem) async {
@@ -207,4 +207,8 @@ class NeoPlayerHandlerImpl extends BaseAudioHandler
   }
 
   void _handleMediaActionPressed() {}
+
+  @override
+  // TODO: implement queueState
+  Stream<QueueState> get queueState => throw UnimplementedError();
 }

@@ -14,12 +14,10 @@ import '../albums/widgets/album_card.dart';
 
 class ArtistDetailPage extends StatefulWidget {
   final ArtistModel artist;
-  final int mode;
 
   const ArtistDetailPage({
     Key? key,
     required this.artist,
-    required this.mode,
   }) : super(key: key);
 
   @override
@@ -28,6 +26,32 @@ class ArtistDetailPage extends StatefulWidget {
 
 class _ArtistDetailPageState extends State<ArtistDetailPage> {
   final ScrollController _scrollController = ScrollController();
+  double _scrollPosition = 0;
+  List<SongModel> songs = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      setState(() {
+        _scrollPosition = _scrollController.position.pixels;
+      });
+    });
+    initSongs();
+  }
+
+  void initSongs() async {
+    // songs = await _audioQuery.queryAudiosFrom(
+    //   AudiosFromType.ALBUM_ID,
+    //   widget.album.id,
+    // );
+    //
+    // if (songs.length == 1) {
+    //   durations = songs[0].duration!.toDuration();
+    // } else {
+    //   durations = getTotalSongDuration(songs).toDuration();
+    // }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,10 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:miniplayer/miniplayer.dart';
-import 'package:neo_player/src/pages/now_playing/widgets/next_button.dart';
-import 'package:neo_player/src/pages/now_playing/widgets/play_pause_button.dart';
+import 'package:neo_player/src/pages/now_playing/widgets/control_button.dart';
 import 'package:neo_player/src/pages/now_playing/widgets/playing_image_card.dart';
 import 'package:neo_player/src/theme/style.dart';
 
@@ -48,7 +46,6 @@ class NowPlaying extends HookWidget {
         // ========================== Expanded Player ==========================
         if (!miniPlayer) {
           return ExpandedPlayer(
-            miniplayerController: controller,
             miniPlayerHeight: height,
             maxImageSize: maxImgSize,
           );
@@ -183,96 +180,6 @@ class NowPlaying extends HookWidget {
               ),
             ],
           ),
-        );
-      },
-    );
-  }
-}
-
-class NextSonButton extends StatelessWidget {
-  final EdgeInsets padding;
-  final EdgeInsets margin;
-
-  const NextSonButton({
-    Key? key,
-    this.padding = const EdgeInsets.all(10.0),
-    this.margin = const EdgeInsets.all(8.0),
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder<bool>(
-      valueListenable: neoManager.isLastSongNotifier,
-      builder: (_, isLast, __) {
-        return IconBtn(
-          icon: Icons.fast_forward_rounded,
-          label: 'next'.tr(),
-          padding: padding,
-          margin: margin,
-          iconSize: 24,
-          onPressed: (isLast) ? null : neoManager.skipToNext,
-        );
-      },
-    );
-  }
-}
-
-class RepeatButton extends StatelessWidget {
-  const RepeatButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder<RepeatState>(
-      valueListenable: neoManager.repeatButtonNotifier,
-      builder: (_, value, __) {
-        IconData icon;
-        Color? color;
-        bool isActive;
-        switch (value) {
-          case RepeatState.off:
-            isActive = false;
-            icon = Icons.repeat_rounded;
-            break;
-
-          case RepeatState.repeatPlaylist:
-            isActive = true;
-            icon = Icons.repeat_rounded;
-            color = Theme.of(context).primaryColor;
-            break;
-          case RepeatState.repeatSong:
-            isActive = true;
-            icon = Icons.repeat_one_rounded;
-            color = Theme.of(context).primaryColor;
-            break;
-        }
-        return IconBtn(
-          icon: icon,
-          onPressed: neoManager.onRepeatButtonPressed,
-          iconColor: color,
-          // isActive: isActive,
-          margin: EdgeInsets.zero,
-          padding: const EdgeInsets.all(4.0),
-        );
-      },
-    );
-  }
-}
-
-class ShuffleButton extends StatelessWidget {
-  const ShuffleButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder<bool>(
-      valueListenable: neoManager.isShuffleModeEnabledNotifier,
-      builder: (_, isEnabled, __) {
-        return IconBtn(
-          icon: Icons.shuffle_rounded,
-          // isActive: isEnabled,
-          onPressed: neoManager.onShuffleButtonPressed,
-          iconColor: isEnabled ? Theme.of(context).primaryColor : null,
-          margin: EdgeInsets.zero,
-          padding: const EdgeInsets.all(4.0),
         );
       },
     );

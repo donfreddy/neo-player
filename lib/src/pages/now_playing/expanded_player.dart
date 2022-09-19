@@ -1,17 +1,14 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:just_audio_background/just_audio_background.dart';
-import 'package:miniplayer/miniplayer.dart';
 import 'package:neo_player/src/helpers/extensions.dart';
-import 'package:neo_player/src/pages/now_playing/now_playing.dart';
-import 'package:neo_player/src/pages/now_playing/widgets/next_button.dart';
-import 'package:neo_player/src/pages/now_playing/widgets/play_pause_button.dart';
+import 'package:neo_player/src/pages/now_playing/widgets/control_button.dart';
 import 'package:neo_player/src/pages/now_playing/widgets/playing_image_card.dart';
-import 'package:neo_player/src/pages/now_playing/widgets/previous_buttton.dart';
 import 'package:neo_player/src/pages/now_playing/widgets/seek_bar.dart';
 import 'package:neo_player/src/pages/now_playing/widgets/volume_slider.dart';
 
 import '../../../locator.dart';
 import '../../common_widgets/common_widgets.dart';
+import '../../common_widgets/modal_bottom_sheet.dart';
 import '../../constants/constants.dart';
 import '../../helpers/common.dart';
 import '../../theme/style.dart';
@@ -21,13 +18,11 @@ import 'neo_manager.dart';
 final neoManager = locator<NeoManager>();
 
 class ExpandedPlayer extends StatelessWidget {
-  final MiniplayerController miniplayerController;
   final double miniPlayerHeight;
   final double maxImageSize;
 
   const ExpandedPlayer({
     Key? key,
-    required this.miniplayerController,
     required this.miniPlayerHeight,
     required this.maxImageSize,
   }) : super(key: key);
@@ -88,7 +83,7 @@ class ExpandedPlayer extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(height: spacerBoxHeight),
-                  SongInfoAndOption(height: infoBoxHeight),
+                  _SongInfoAndOption(height: infoBoxHeight),
                   SizedBox(height: spacerBoxHeight),
                   SeekBar(barHeight: progressBarBoxHeight),
                   SizedBox(height: spacerBoxHeight),
@@ -107,8 +102,8 @@ class ExpandedPlayer extends StatelessWidget {
   }
 }
 
-class SongInfoAndOption extends StatelessWidget {
-  const SongInfoAndOption({
+class _SongInfoAndOption extends StatelessWidget {
+  const _SongInfoAndOption({
     Key? key,
     required this.height,
   }) : super(key: key);
@@ -161,7 +156,7 @@ class SongInfoAndOption extends StatelessWidget {
               ),
               const SizedBox(width: 10.0),
               IconBtn(
-                icon: Icons.favorite_rounded,
+                icon: Icons.equalizer_rounded,
                 onPressed: () {
                   unImplementSnackBar(context);
                 },
@@ -171,9 +166,7 @@ class SongInfoAndOption extends StatelessWidget {
               const SizedBox(width: 14.0),
               IconBtn(
                 icon: Icons.more_horiz_rounded,
-                onPressed: () {
-                  unImplementSnackBar(context);
-                },
+                onPressed: () => showPlayingNowOptionsModalBottom(context),
                 margin: EdgeInsets.zero,
                 padding: const EdgeInsets.all(4.0),
               ),
@@ -224,49 +217,6 @@ class _TopControl extends StatelessWidget {
   }
 }
 
-class Replay10Button extends StatelessWidget {
-  const Replay10Button({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder<ProgressBarState>(
-      valueListenable: locator<NeoManager>().progressNotifier,
-      builder: (_, progressValue, __) {
-        return IconBtn(
-          icon: Icons.replay_10_rounded,
-          onPressed: neoManager.replay10,
-          margin: EdgeInsets.zero,
-          padding: const EdgeInsets.all(4.0),
-        );
-        //
-      },
-    );
-  }
-}
-
-class Forward10Button extends StatelessWidget {
-  const Forward10Button({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder<ProgressBarState>(
-      valueListenable: locator<NeoManager>().progressNotifier,
-      builder: (_, progressValue, __) {
-        return IconBtn(
-          icon: Icons.forward_10_rounded,
-          onPressed: neoManager.forward10,
-          margin: EdgeInsets.zero,
-          padding: const EdgeInsets.all(4.0),
-        );
-      },
-    );
-  }
-}
-
 class _BottomControl extends StatelessWidget {
   const _BottomControl({
     Key? key,
@@ -283,7 +233,7 @@ class _BottomControl extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconBtn(
-            icon: Icons.share_rounded,
+            icon: Icons.favorite_rounded,
             onPressed: () {},
             margin: EdgeInsets.zero,
             padding: const EdgeInsets.all(4.0),

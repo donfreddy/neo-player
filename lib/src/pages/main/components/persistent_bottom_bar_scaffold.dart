@@ -184,7 +184,6 @@ class BottomNavBar extends StatelessWidget {
                     unselectedItemColor: unselectedItemColor,
                     index: i,
                     icon: item.icon,
-                    activeIcon: item.activeIcon,
                   ),
                 );
               })
@@ -201,7 +200,7 @@ class PersistentTabItem {
   final Widget tab;
   final GlobalKey<NavigatorState>? navigatorKey;
   final IconData icon;
-  final IconData activeIcon;
+
   final String? tooltip;
 
   PersistentTabItem({
@@ -210,7 +209,7 @@ class PersistentTabItem {
     required this.icon,
     IconData? activeIcon,
     this.tooltip,
-  }) : activeIcon = activeIcon ?? icon;
+  });
 }
 
 class BottomNavBarItem {
@@ -227,7 +226,6 @@ class BottomNavBarItem {
 
 class BottomNaveItem extends StatelessWidget {
   final IconData icon;
-  final IconData activeIcon;
   final int index;
   final int currentIndex;
   final Color? backgroundColor;
@@ -241,7 +239,6 @@ class BottomNaveItem extends StatelessWidget {
   const BottomNaveItem({
     Key? key,
     required this.icon,
-    required this.activeIcon,
     this.tooltip,
     this.onTap,
     // this.selected = false,
@@ -270,7 +267,7 @@ class BottomNaveItem extends StatelessWidget {
           boxShape: const NeumorphicBoxShape.circle(),
         ),
         child: Icon(
-          isActiveTab ? activeIcon : icon,
+          icon,
           size: 26.0,
           color: isActiveTab
               ? NeumorphicTheme.accentColor(context)

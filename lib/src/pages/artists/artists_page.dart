@@ -1,4 +1,5 @@
 import 'package:animations/animations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:neo_player/src/constants/constants.dart';
 import 'package:neo_player/src/pages/artists/widgets/artist_card.dart';
@@ -15,7 +16,7 @@ class ArtistsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: neoAppBar(context, title: 'Artists'),
+      appBar: neoAppBar(context, title: 'artists'.tr()),
       body: FutureBuilder<List<ArtistModel>>(
         future: locator<AudioQuery>().getArtists(),
         builder: (context, snapshot) {
@@ -38,7 +39,7 @@ class ArtistsPage extends StatelessWidget {
                     closedColor: NeumorphicTheme.baseColor(context),
                     transitionDuration: const Duration(milliseconds: 500),
                     openBuilder: (_, __) {
-                      return ArtistDetailPage(artist: artist, mode: 1);
+                      return ArtistDetailPage(artist: artist);
                     },
                     closedBuilder: (_, openContainer) {
                       return ArtistCard(artist: artist, onTap: openContainer);

@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:neo_player/src/pages/albums/albums_page.dart';
 import 'package:neo_player/src/pages/artists/artists_page.dart';
+import 'package:neo_player/src/pages/folders/folders_page.dart';
 import 'package:neo_player/src/pages/songs/songs_page.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../../../../locator.dart';
 import '../../provider/settings_provider.dart';
 import '../../provider/song_provider.dart';
+import '../playlists/playlists_page.dart';
 import 'components/persistent_bottom_bar_scaffold.dart';
 
 ValueNotifier<SongModel?> currentlyPlaying = ValueNotifier(null);
@@ -56,33 +58,28 @@ class _MainPageState extends State<MainPage> {
         items: [
           PersistentTabItem(
             tab: const SongsPage(),
-            icon: Icons.music_note_outlined,
-            activeIcon: Icons.music_note_rounded,
+            icon: Icons.music_note_rounded,
             navigatorKey: _tab3navigatorKey,
           ),
           PersistentTabItem(
             tab: const ArtistsPage(),
-            icon: Icons.mic_none_outlined,
-            activeIcon: Icons.mic,
+            icon: Icons.person_rounded,
             navigatorKey: _tab1navigatorKey,
             tooltip: 'Artists',
           ),
           PersistentTabItem(
             tab: const AlbumsPage(),
-            icon: Icons.album_outlined,
-            activeIcon: Icons.album_rounded,
+            icon: Icons.album_rounded,
             navigatorKey: _tab2navigatorKey,
           ),
           PersistentTabItem(
-            tab: const Scaffold(body: Center(child: Text('Folders'))),
-            icon: Icons.folder_outlined,
-            activeIcon: Icons.folder_rounded,
+            tab: const FoldersPage(),
+            icon: Icons.folder_rounded,
             navigatorKey: _tab4navigatorKey,
           ),
           PersistentTabItem(
-            tab: const Scaffold(body: Center(child: Text('Playlists'))),
-            icon: Icons.playlist_play_outlined,
-            activeIcon: Icons.playlist_play_rounded,
+            tab: const PlaylistsPage(),
+            icon: Icons.playlist_play_rounded,
             navigatorKey: _tab5navigatorKey,
           )
         ],
