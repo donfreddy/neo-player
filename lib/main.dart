@@ -4,7 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:neo_player/src/neo_player_app.dart';
 import 'package:neo_player/src/provider/settings_provider.dart';
@@ -21,7 +20,7 @@ Future<void> main() async {
   final prefs = await SharedPreferences.getInstance();
 
   // Init Hive
-  // await Hive.initFlutter();
+  await Hive.initFlutter();
 
   // Open box
   // await Hive.openBox('settings');

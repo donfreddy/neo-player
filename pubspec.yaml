@@ -6,7 +6,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.1 <3.0.0"
+  sdk: ">=3.1.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -15,13 +15,13 @@ dependencies:
   ################################ UI PACKAGES #################################
 
   # Icons for IOS
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.6
 
   # Showcase/Highlight widgets step by step.
-  showcaseview: ^1.1.6
+  showcaseview: ^2.0.3
 
   # A flutter package to allow drag-and-drop reordering of two-level lists.
-  drag_and_drop_lists: ^0.3.2+2
+  drag_and_drop_lists: ^0.3.3
 
   # mini player
   miniplayer: ^1.0.1
@@ -30,50 +30,50 @@ dependencies:
   marquee: ^2.2.3
 
   # A Flutter implementation of sticky headers with a sliver as a child.
-  flutter_sticky_header: ^0.6.3
+  flutter_sticky_header: ^0.6.5
 
   # Neumorphic ui kit for Flutter.
-  flutter_neumorphic: ^3.2.0
+  flutter_neumorphic_plus: ^3.3.0
 
   # Easy and Fast internationalizing and localization.
-  easy_localization: ^3.0.1
+  easy_localization: ^3.0.3
 
   # Small, easy to use and extensible logger which prints beautiful logs.
-  logger: ^1.1.0
+  logger: ^2.0.2+1
 
   # An SVG rendering
-  flutter_svg: ^1.1.0
+  flutter_svg: ^2.0.8
 
   # Toast Library for Flutter
-  fluttertoast: ^8.0.9
+  fluttertoast: ^8.2.2
 
   # Loading indicators animated
-  flutter_spinkit: ^5.1.0
+  flutter_spinkit: ^5.2.0
 
   # Easily add staggered animations to your ListView, GridView, Column
-  flutter_staggered_animations: ^1.0.0
+  flutter_staggered_animations: ^1.1.1
 
   # A progress bar widget to show or change the position of an audio or video stream.
   # https://suragch.medium.com/steaming-audio-in-flutter-with-just-audio-7435fcf672bf
   # https://suragch.medium.com/managing-playlists-in-flutter-with-just-audio-c4b8f2af12eb
-  audio_video_progress_bar: ^0.10.0
+  audio_video_progress_bar: ^2.0.1
 
   # pre-canned animations for commonly-desired effects
-  animations: ^2.0.3
+  animations: ^2.0.8
 
   # Powerful package to create beautiful custom animations in no time.
-  simple_animations: ^4.2.0
+  simple_animations: ^5.0.2
 
   # Flutter's core Dropdown Button widget with steady dropdown menu.
-  dropdown_button2: ^1.6.3
+  dropdown_button2: ^2.3.9
 
   ########################## DATA PERSISTENCE PACKAGES #########################
 
   # Flutter plugin for reading and writing simple key-value pairs.
-  shared_preferences: ^2.0.15
+  shared_preferences: ^2.2.2
 
   # Adds SQLite support with Data Access Objects and streams
-  sqflite: ^2.0.2+1
+  sqflite: ^2.3.0
 
   # Fast, Enjoyable & Secure NoSQL Database
   hive: ^2.2.3
@@ -82,56 +82,56 @@ dependencies:
   ############################### OTHER PACKAGES ###############################
 
   # A feature-rich audio player
-  just_audio: ^0.9.27
-  # just_audio_background: ^0.0.1-beta.7
+  just_audio: ^0.9.35
+  just_audio_background: ^0.0.1-beta.10
 
   # query audios/tracks 🎶 from device storage.
-  on_audio_query: ^2.6.1
+  on_audio_query: ^2.9.0
 
   # Create a room to storage audio sections
   on_audio_room: ^2.2.1+1
 
   # To play audio in the background while the screen is off.
-  audio_service: ^0.18.6
-  audio_session: ^0.1.8
+  audio_service: ^0.18.12
+  audio_session: ^0.1.16
 
   # Supplies the app with the directory location for storing files
-  path_provider: ^2.0.11
-  provider: ^6.0.3
-  path: ^1.8.0
+  path_provider: ^2.1.1
+  provider: ^6.0.5
+  path: ^1.8.3
 
   # A simple yet powerful state management technique for Flutter.
-  states_rebuilder: ^6.1.0+1
+  states_rebuilder: ^6.3.0
 
   # Querying information about an application package.
-  package_info_plus: ^1.4.2
+#  package_info_plus: ^1.4.2
 
   # Sharing content via the platform share UI,
-  share_plus: ^4.0.10
+  share_plus: ^7.2.1
 
   # Get current device information
-  device_info_plus: ^4.0.0
+  device_info_plus: ^9.1.0
 
   # A Flutter plugin for launching a URL
-  url_launcher: ^6.1.4
+  url_launcher: ^6.2.1
 
   # Permission plugin for Flutter.
-  permission_handler: ^9.2.0
+  permission_handler: ^11.0.1
 
   # Service Locator
-  get_it: ^7.2.0
+  get_it: ^7.6.4
 
   # RxDart is an implementation of the popular reactiveX api for asynchronous
-  rxdart: ^0.27.4
+  rxdart: ^0.27.7
 
   # A Flutter implementation of React hooks
-  flutter_hooks: ^0.18.5+1
+  flutter_hooks: ^0.20.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.0
 
 flutter:
   # The following line ensures that the Material Icons font is

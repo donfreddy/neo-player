@@ -1,5 +1,5 @@
 import 'package:animations/animations.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
 import 'package:neo_player/src/constants/constants.dart';
 import 'package:neo_player/src/provider/song_provider.dart';
 import 'package:neo_player/src/ui/components/neo_app_bar.dart';

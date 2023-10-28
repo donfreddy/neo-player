@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+
+import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
 import 'package:neo_player/locator.dart';
 import 'package:neo_player/src/constants/constants.dart';
 import 'package:neo_player/src/ui/pages/now_playing/neo_manager.dart';

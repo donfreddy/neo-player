@@ -108,7 +108,7 @@ class _PlayerState extends State<Player> {
   Widget _shuffleButton(BuildContext context, bool isEnabled) {
     return IconButton(
       icon: isEnabled
-          ? Icon(Icons.shuffle, color: Theme.of(context).accentColor)
+          ? Icon(Icons.shuffle, color: Theme.of(context).primaryColor)
           : Icon(Icons.shuffle),
       onPressed: () async {
         final enable = !isEnabled;
@@ -137,8 +137,8 @@ class _PlayerState extends State<Player> {
   Widget _repeatButton(BuildContext context, LoopMode loopMode) {
     final icons = [
       Icon(Icons.repeat),
-      Icon(Icons.repeat, color: Theme.of(context).accentColor),
-      Icon(Icons.repeat_one, color: Theme.of(context).accentColor),
+      Icon(Icons.repeat, color: Theme.of(context).primaryColor),
+      Icon(Icons.repeat_one, color: Theme.of(context).primaryColor),
     ];
     const cycleModes = [
       LoopMode.off,

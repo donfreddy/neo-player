@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
+// import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -121,22 +121,22 @@ class SettingsPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 30),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: FutureBuilder<PackageInfo>(
-                future: PackageInfo.fromPlatform(),
-                builder: (_, snapshot) {
-                  if (snapshot.hasData && !snapshot.hasError) {
-                    return Text(
-                      "Version ${snapshot.data?.version} (${snapshot.data?.buildNumber})",
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    );
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                },
-              ),
-            )
+            // Align(
+            //   alignment: Alignment.bottomCenter,
+            //   child: FutureBuilder<PackageInfo>(
+            //     future: PackageInfo.fromPlatform(),
+            //     builder: (_, snapshot) {
+            //       if (snapshot.hasData && !snapshot.hasError) {
+            //         return Text(
+            //           "Version ${snapshot.data?.version} (${snapshot.data?.buildNumber})",
+            //           style: Theme.of(context).textTheme.bodyLarge,
+            //         );
+            //       } else {
+            //         return const SizedBox.shrink();
+            //       }
+            //     },
+            //   ),
+            // )
           ],
         ),
       ),
