@@ -1,4 +1,4 @@
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
 import 'package:neo_player/locator.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 

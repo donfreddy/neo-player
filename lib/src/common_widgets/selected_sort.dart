@@ -1,4 +1,4 @@
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
 import 'package:neo_player/src/constants/constants.dart';
 
 class SelectedSort extends StatelessWidget {

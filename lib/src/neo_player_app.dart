@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
 import 'package:neo_player/src/provider/settings_provider.dart';
 import 'package:neo_player/src/routes/route.dart';
 import 'package:neo_player/src/routes/route_constants.dart';

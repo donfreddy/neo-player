@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 
 import '../../../../locator.dart';

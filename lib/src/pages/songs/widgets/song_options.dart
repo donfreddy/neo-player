@@ -1,6 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
 import 'package:neo_player/src/common_widgets/top_bottom_sheet_bar.dart';
 import 'package:neo_player/src/constants/constants.dart';
 import 'package:neo_player/src/helpers/extensions.dart';

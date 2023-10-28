@@ -1,4 +1,4 @@
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
 import 'package:neo_player/src/constants/constants.dart';
 import 'package:neo_player/src/theme/style.dart';
 import 'package:provider/provider.dart';
